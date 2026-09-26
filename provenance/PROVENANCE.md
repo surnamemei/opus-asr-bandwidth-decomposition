@@ -48,6 +48,7 @@ All development commits are on the development repository's paper branch.
 | Manuscript | Draft 1 from frozen evidence only; rendered assets; editorial pass (figures regenerated from frozen files only) | Complete draft | `manuscript/` | `7d76286d1e1646a85ff5e469d0246f20d068a8ed`, `04a13ad8c70d3b0710dbe594d30a5acc12f819f6`, `c49e1e90327fc210cbcfcd44ba6d9589df177ce4` |
 | Last development commit | Removal of outdated project documents | – | – | `051a96330c244804714c5e49faed997339ece987` |
 | TASLP upgrade (this repository) | Plan for two additions frozen; nothing decoded | Planned, not run | `paper/taslp_upgrade/` | this repository |
+| TASLP upgrade U1–U2 (this repository) | Calibration on the 20-utterance Stage 3 calibration set only: E1, E2 and supplementary checks (run 1 FAIL on the wav2vec2 level-invariance expectation alone, kept unchanged); amendment 01 corrects that expectation (section 3.5); checks re-run; code freeze | E1, E2 PASS; every freeze gate PASS; code frozen; no evaluation utterance decoded | `results_paper/taslp_upgrade/`, `paper/taslp_upgrade/amendments/` | this repository |
 
 ## 3. Frozen identifiers
 

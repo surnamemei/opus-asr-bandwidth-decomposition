@@ -1,0 +1,53 @@
+{
+ "created_utc": "2026-09-26T13:17:01.035639+00:00",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "purpose": "environment reproduction (E1) and sweep pipeline sanity (E2) on the Stage 3 calibration set; no condition comparison is computed",
+ "utterances": 20,
+ "E1": {
+  "rows": {
+   "audio_frozen": 120,
+   "audio_new": 120,
+   "audio_matched": 120,
+   "asr_frozen": 240,
+   "asr_new": 240,
+   "asr_matched": 240
+  },
+  "waveform_mismatches": 0,
+  "ogg_mismatches": 0,
+  "hypothesis_mismatches": 0,
+  "pass": true
+ },
+ "E2": {
+  "codec_round_trip_identity": {
+   "checked": 10,
+   "identical": 10
+  },
+  "determinism": {
+   "waveforms_identical": true,
+   "hypotheses_identical": true
+  },
+  "packets_all_expected_config": true,
+  "lengths_equal_ref": true,
+  "nonfinite_samples": 0,
+  "empty_hypotheses": 0,
+  "median_payload_kbps": {
+   "SILK8": 7.3665612625033,
+   "SILK12": 11.483198418890101,
+   "SILK16": 15.499334616251453,
+   "SILK24": 23.394060618956885,
+   "SILK40": 38.49218431791046
+  },
+  "pass": true
+ },
+ "seconds_per_utterance": {
+  "E1_six_stage3_conditions": 0.8980477929115296,
+  "E2_six_sweep_conditions": 0.7478279590606689
+ },
+ "files": {
+  "e1_asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+  "e1_audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f",
+  "e2_asr_outputs.csv": "0c4b279697763532adc795908797d5fc8475045467da88a11f258c138b3d0aed",
+  "e2_audio_manifest.csv": "7a75d3eee115c96fb4ff701a1ac57dc7279a164b91ebb424aedd998d3852515a"
+ },
+ "report_sha256": "949b218ad4450f012355bfe76af67ab90d8db140a93b7f36ec6a2d52cda2cb48"
+}

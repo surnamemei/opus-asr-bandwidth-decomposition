@@ -1,0 +1,474 @@
+{
+ "created_utc": "2026-09-26T13:40:14.912196+00:00",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "calibration_report_sha256": "949b218ad4450f012355bfe76af67ab90d8db140a93b7f36ec6a2d52cda2cb48",
+ "purpose": "U1 supplementary pre-run checks, run after run_bitrate_sweep.py calibrate (E1, E2) and before the code freeze, on the Stage 3 calibration set only; no evaluation utterance is read, encoded, decoded or recognised; no WER is computed; not a gate of the sealed plan and no change to it",
+ "run": {
+  "number": 2,
+  "directory": "results_paper/taslp_upgrade/calibration/checks_after_amendment_01",
+  "amendments": {
+   "01": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393"
+  }
+ },
+ "isolation": {
+  "set": "Stage 3 calibration selection",
+  "selection_sha256": "f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b",
+  "n_utterances": 20,
+  "n_speakers": 4,
+  "subsets": [
+   "dev-clean"
+  ],
+  "overlap_sweep_selection": 0,
+  "overlap_confirmation_selection": 0,
+  "overlap_used_test_utterances": 0
+ },
+ "verdict": "PASS",
+ "verdict_rule": "PASS if every freeze gate passes: every check except those reclassified as descriptive calibration findings by a sealed amendment",
+ "failed": [
+  "A_wav2vec2_scale_invariance"
+ ],
+ "failed_gates": [],
+ "classification": {
+  "gates": [
+   "calibration_E1_pass",
+   "calibration_E2_pass",
+   "env_pip_freeze_equals_stage3_lock",
+   "env_lock_sha256_equals_plan",
+   "env_libopus_equals_plan",
+   "env_ffmpeg_equals_stage3",
+   "env_gpu_equals_stage3",
+   "env_wav2vec2_checkpoint_equals_stage3",
+   "env_torch_flags_equal_stage3",
+   "P_every_sealed_record_verified",
+   "P_earlier_u1_reports_preserved",
+   "P_output_manifests_verified",
+   "P_calibration_report_files_verified",
+   "P_stage3_identifiers_equal_plan",
+   "P_provenance_md_hashes_recomputed",
+   "P_design_code_unchanged",
+   "P_plan_markdown_rendered_from_spec",
+   "P_lp_taps_equal_plan",
+   "P_no_evaluation_outputs",
+   "A_opus_settings_equal_plan",
+   "A1_calibration",
+   "A2_calibration",
+   "A3_calibration",
+   "A_metrics_equal_stage3",
+   "A_transform_exact",
+   "A_no_clipping_or_limiting",
+   "A_no_length_change",
+   "A_no_alignment_change",
+   "A_no_reencoding",
+   "A_opus_wav2vec2_hypothesis_equals_stage3",
+   "B_V1_calibration",
+   "B_V3_readback",
+   "B_settings_equal_plan",
+   "B_settings_differ_only_in_bitrate",
+   "B_V4_calibration",
+   "B_one_decoder_resampler_path",
+   "B_decode_path_equals_stage3_codec_round_trip",
+   "B_lp_equals_stage3",
+   "B_silk40_equals_stage3_silk",
+   "B_signal_metrics_equal_stage3"
+  ],
+  "descriptive": {
+   "A_wav2vec2_scale_invariance": {
+    "value": false,
+    "amendment": "01",
+    "amendment_sha256": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393",
+    "classification": "descriptive calibration finding"
+   }
+  }
+ },
+ "checks": {
+  "calibration_E1_pass": true,
+  "calibration_E2_pass": true,
+  "env_pip_freeze_equals_stage3_lock": true,
+  "env_lock_sha256_equals_plan": true,
+  "env_libopus_equals_plan": true,
+  "env_ffmpeg_equals_stage3": true,
+  "env_gpu_equals_stage3": true,
+  "env_wav2vec2_checkpoint_equals_stage3": true,
+  "env_torch_flags_equal_stage3": true,
+  "P_every_sealed_record_verified": true,
+  "P_earlier_u1_reports_preserved": true,
+  "P_output_manifests_verified": true,
+  "P_calibration_report_files_verified": true,
+  "P_stage3_identifiers_equal_plan": true,
+  "P_provenance_md_hashes_recomputed": true,
+  "P_design_code_unchanged": true,
+  "P_plan_markdown_rendered_from_spec": true,
+  "P_lp_taps_equal_plan": true,
+  "P_no_evaluation_outputs": true,
+  "A_opus_settings_equal_plan": true,
+  "A1_calibration": true,
+  "A2_calibration": true,
+  "A3_calibration": true,
+  "A_metrics_equal_stage3": true,
+  "A_transform_exact": true,
+  "A_no_clipping_or_limiting": true,
+  "A_no_length_change": true,
+  "A_no_alignment_change": true,
+  "A_no_reencoding": true,
+  "A_opus_wav2vec2_hypothesis_equals_stage3": true,
+  "A_wav2vec2_scale_invariance": false,
+  "B_V1_calibration": true,
+  "B_V3_readback": true,
+  "B_settings_equal_plan": true,
+  "B_settings_differ_only_in_bitrate": true,
+  "B_V4_calibration": true,
+  "B_one_decoder_resampler_path": true,
+  "B_decode_path_equals_stage3_codec_round_trip": true,
+  "B_lp_equals_stage3": true,
+  "B_silk40_equals_stage3_silk": true,
+  "B_signal_metrics_equal_stage3": true
+ },
+ "level": {
+  "gain_db": {
+   "median": 0.6716214971203508,
+   "min": 0.17295801470929117,
+   "max": 1.537834398455287
+  },
+  "max_abs_level_error_db": 1.0259007865442982e-08,
+  "max_abs_gain_reproduction_error_db": 9.547918011776346e-15,
+  "level_matched_samples_at_or_above_full_scale": 0,
+  "opus_samples_at_or_above_full_scale": 0,
+  "lags_opus": "2:20",
+  "lags_level_matched": "2:20",
+  "wav2vec2": {
+   "hypotheses_identical": "19/20",
+   "frames_argmax_changed": "30/8193",
+   "max_conv_linearity_rel_error": 3.591989282098331e-08,
+   "max_groupnorm_abs_diff": 3.6718398334218065,
+   "max_groupnorm_abs_diff_eps0": 0.00038406645498012537,
+   "max_emissions_abs_diff": 11.726083755493164,
+   "min_emissions_max_abs": 16.281356811523438
+  },
+  "whisper_descriptive": {
+   "expected_offset_median": 0.01679053742800877,
+   "observed_offset_median": 0.016790568828582764,
+   "max_abs_deviation_speech": 4.4172315217909375e-05,
+   "max_abs_deviation_padding": 1.0981906261968433e-07,
+   "min_share_bins_within_1e-4": 1.0
+  }
+ },
+ "sweep": {
+  "per_condition": [
+   {
+    "condition": "LP",
+    "utterances": 20,
+    "lag_vs_ref_samples": "0:20",
+    "rms_change_db_median": -0.11088107412592543,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": NaN,
+    "vs_lp_lsd_0_4k_db_median": NaN,
+    "vs_lp_coherence_0_3500_median": NaN,
+    "vs_ref_coherence_0_3500_median": 0.9999735960491491,
+    "vs_ref_retained_bandwidth_hz_median": 4093.75,
+    "vs_ref_hf_power_change_db_median": -27.16026843266151
+   },
+   {
+    "condition": "SILK8",
+    "utterances": 20,
+    "lag_vs_ref_samples": "2:20",
+    "rms_change_db_median": -0.7891666615430819,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": 6.432328224182129,
+    "vs_lp_lsd_0_4k_db_median": 6.501600503921509,
+    "vs_lp_coherence_0_3500_median": 0.61325722579101,
+    "vs_ref_coherence_0_3500_median": 0.6132691305478242,
+    "vs_ref_retained_bandwidth_hz_median": 4531.25,
+    "vs_ref_hf_power_change_db_median": -19.964655868046982,
+    "nominal_kbps": 8.0,
+    "packets": 8223,
+    "packet_modes": [
+     "SILK-NB"
+    ],
+    "packet_frame_ms": [
+     "20.0"
+    ],
+    "packet_configs": [
+     1
+    ],
+    "min_share_config_1": 1.0,
+    "payload_kbps_median": 7.3665612625033,
+    "payload_kbps_min": 6.166939443535187,
+    "payload_kbps_max": 7.6733890801770785,
+    "payload_median_vs_nominal": -0.07917984218708751,
+    "container_kbps_median": 8.241800969667977,
+    "readback_mismatch_encodes": 0,
+    "lookahead_samples": [
+     104
+    ]
+   },
+   {
+    "condition": "SILK12",
+    "utterances": 20,
+    "lag_vs_ref_samples": "2:20",
+    "rms_change_db_median": -0.4181828877238676,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": 5.18444037437439,
+    "vs_lp_lsd_0_4k_db_median": 5.353049993515015,
+    "vs_lp_coherence_0_3500_median": 0.8026773334439828,
+    "vs_ref_coherence_0_3500_median": 0.8026746990350438,
+    "vs_ref_retained_bandwidth_hz_median": 4515.625,
+    "vs_ref_hf_power_change_db_median": -21.22263443487315,
+    "nominal_kbps": 12.0,
+    "packets": 8223,
+    "packet_modes": [
+     "SILK-NB"
+    ],
+    "packet_frame_ms": [
+     "20.0"
+    ],
+    "packet_configs": [
+     1
+    ],
+    "min_share_config_1": 1.0,
+    "payload_kbps_median": 11.483198418890101,
+    "payload_kbps_min": 9.990180032733225,
+    "payload_kbps_max": 11.71234628627644,
+    "payload_median_vs_nominal": -0.04306679842582495,
+    "container_kbps_median": 12.289047813438195,
+    "readback_mismatch_encodes": 0,
+    "lookahead_samples": [
+     104
+    ]
+   },
+   {
+    "condition": "SILK16",
+    "utterances": 20,
+    "lag_vs_ref_samples": "2:20",
+    "rms_change_db_median": -0.32969799192475735,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": 4.1930131912231445,
+    "vs_lp_lsd_0_4k_db_median": 4.439151048660278,
+    "vs_lp_coherence_0_3500_median": 0.8902214244099147,
+    "vs_ref_coherence_0_3500_median": 0.8902109969497695,
+    "vs_ref_retained_bandwidth_hz_median": 4515.625,
+    "vs_ref_hf_power_change_db_median": -20.718618468408124,
+    "nominal_kbps": 16.0,
+    "packets": 8223,
+    "packet_modes": [
+     "SILK-NB"
+    ],
+    "packet_frame_ms": [
+     "20.0"
+    ],
+    "packet_configs": [
+     1
+    ],
+    "min_share_config_1": 1.0,
+    "payload_kbps_median": 15.499334616251453,
+    "payload_kbps_min": 13.77937806873977,
+    "payload_kbps_max": 15.80875553369405,
+    "payload_median_vs_nominal": -0.031291586484284206,
+    "container_kbps_median": 16.308557233113245,
+    "readback_mismatch_encodes": 0,
+    "lookahead_samples": [
+     104
+    ]
+   },
+   {
+    "condition": "SILK24",
+    "utterances": 20,
+    "lag_vs_ref_samples": "2:20",
+    "rms_change_db_median": -0.21331273230848208,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": 2.839129686355591,
+    "vs_lp_lsd_0_4k_db_median": 3.0807623863220215,
+    "vs_lp_coherence_0_3500_median": 0.9615111520944851,
+    "vs_ref_coherence_0_3500_median": 0.9615303198185603,
+    "vs_ref_retained_bandwidth_hz_median": 4531.25,
+    "vs_ref_hf_power_change_db_median": -19.664198701125077,
+    "nominal_kbps": 24.0,
+    "packets": 8223,
+    "packet_modes": [
+     "SILK-NB"
+    ],
+    "packet_frame_ms": [
+     "20.0"
+    ],
+    "packet_configs": [
+     1
+    ],
+    "min_share_config_1": 1.0,
+    "payload_kbps_median": 23.394060618956885,
+    "payload_kbps_min": 20.608837970540097,
+    "payload_kbps_max": 23.90027397260274,
+    "payload_median_vs_nominal": -0.02524747421012974,
+    "container_kbps_median": 24.148945568032705,
+    "readback_mismatch_encodes": 0,
+    "lookahead_samples": [
+     104
+    ]
+   },
+   {
+    "condition": "SILK40",
+    "utterances": 20,
+    "lag_vs_ref_samples": "2:20",
+    "rms_change_db_median": -0.1342607651224234,
+    "samples_at_or_above_full_scale": 0,
+    "vs_lp_lsd_0_3k_db_median": 1.5255391001701355,
+    "vs_lp_lsd_0_4k_db_median": 1.7572241425514221,
+    "vs_lp_coherence_0_3500_median": 0.9933570626096218,
+    "vs_ref_coherence_0_3500_median": 0.9933617835077289,
+    "vs_ref_retained_bandwidth_hz_median": 4562.5,
+    "vs_ref_hf_power_change_db_median": -18.488212109551704,
+    "nominal_kbps": 40.0,
+    "packets": 8223,
+    "packet_modes": [
+     "SILK-NB"
+    ],
+    "packet_frame_ms": [
+     "20.0"
+    ],
+    "packet_configs": [
+     1
+    ],
+    "min_share_config_1": 1.0,
+    "payload_kbps_median": 38.49218431791046,
+    "payload_kbps_min": 32.81440261865794,
+    "payload_kbps_max": 39.97041095890411,
+    "payload_median_vs_nominal": -0.0376953920522386,
+    "container_kbps_median": 39.28720227920228,
+    "readback_mismatch_encodes": 0,
+    "lookahead_samples": [
+     104
+    ]
+   }
+  ],
+  "v2_forecast_on_calibration": {
+   "note": "descriptive: V2 is a gate of the validation step on the sweep selection, not of U1",
+   "median_payload_kbps": [
+    7.3665612625033,
+    11.483198418890101,
+    15.499334616251453,
+    23.394060618956885,
+    38.49218431791046
+   ],
+   "adjacent_ratios": [
+    1.5588275193394494,
+    1.3497402074629943,
+    1.5093590272209239,
+    1.645382772357148
+   ],
+   "would_pass": true
+  },
+  "rates_flagged": {},
+  "bridge_share_silk8_ogg_equals_stage3_opus": 1.0
+ },
+ "environment": {
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "python_executable": "/home/mei/elec5305-project/.venv/bin/python",
+  "packages": {
+   "torch": "2.13.0",
+   "torchaudio": "2.11.0",
+   "torchcodec": "0.16.0",
+   "transformers": "5.17.0",
+   "huggingface_hub": "1.33.0",
+   "numpy": "2.5.2",
+   "pandas": "3.0.5",
+   "jiwer": "4.0.0",
+   "soundfile": "0.14.0"
+  },
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "driver": "596.49",
+  "torch_flags": {
+   "cuda.matmul.allow_tf32": false,
+   "cudnn.allow_tf32": true,
+   "cudnn.benchmark": false,
+   "cudnn.deterministic": false,
+   "float32_matmul_precision": "highest"
+  },
+  "libopus": "libopus 1.4",
+  "libopus_path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "wav2vec2_checkpoint_sha256": "488fd4f16de84438ffc945334278c1b9fb9b7159a806c1080b16111a958c945d",
+  "pip_freeze_sha256": "745b91dd04708e7226ac691191c33f4118b316248335f778ee0af0d87357d45f"
+ },
+ "provenance": {
+  "sealed_records": {
+   "paper/taslp_upgrade/selection_sweep.json": "d3fb1487594ed35fde1ad6419ff694b9c2200656fa4aa11f4c6db48966b3f680",
+   "paper/taslp_upgrade/upgrade_spec.json": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+   "provenance/prior_study_context.json": "7d1b24021c0e1107e463b5b67536c502164c43ec003d678e3378dd77a6fdf161",
+   "provenance/used_test_utterances.json": "2f7948753945353e582052120141d159ea9f7df390182e3083bf7d6e81cfcb11",
+   "results_paper/lowpass_confirmation/revised_spec.json": "166f5672263373ece22a955baf3b2e1f3c7ac7c9ce14098f9daa65938d9055ff",
+   "results_paper/lowpass_confirmation/selection.json": "0dfc09813d018c3f5026da7723cec3222fe14c957289f126e6aa3108e9932212",
+   "results_paper/stage3_asr/calibration/outputs_sha256.json": "3ae2f98149f483ee60bcf46516e2beec366d7a599738e53875fcc616f5a53100",
+   "results_paper/stage3_asr/confirmation_freeze.json": "7beca2163329d259ccf169293f3173115ec8da474e5c372e46f15b93dfaaf39b",
+   "results_paper/stage3_asr/pilot/pilot_decision.json": "fb63d2fa95e5998e67b66475a511af4461416b587475972cbf7b95168e16ea61",
+   "results_paper/stage3_asr/raw/confirmation/outputs_sha256.json": "de82f749b6a1446ff45cfed187c59fdd7da0feb8aa459f035d1108b0893b8d17",
+   "results_paper/stage3_asr/raw/pilot/outputs_sha256.json": "df65e8cbe2fa8be245b1e0520b930487923fd3f9996705973ba9330bcd0d6a3b",
+   "results_paper/stage3_asr/selection_calibration.json": "f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b",
+   "results_paper/stage3_asr/selection_confirmation.json": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+   "results_paper/stage3_asr/selection_pilot.json": "94fee5a6bde157bc818ca50dbb933442eb5dfc64506a033f48763df387ea0aea",
+   "results_paper/stage3_asr/stage3_decision.json": "608c919c33e135bb7ca236e2e07e1c9b1b567285a5b1d9d8caabedeb08cb3a41",
+   "results_paper/stage3_asr/stage3_spec.json": "ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219",
+   "paper/taslp_upgrade/amendments/amendment_01_2026-09-26.json": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393"
+  },
+  "output_manifests_verified": {
+   "results_paper/stage3_asr/calibration/outputs_sha256.json": true,
+   "results_paper/stage3_asr/raw/confirmation/outputs_sha256.json": true,
+   "results_paper/stage3_asr/raw/pilot/outputs_sha256.json": true
+  },
+  "stage3_identifiers": {
+   "stage3_spec_sha256": "ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219",
+   "stage3_confirmation_freeze_sha256": "7beca2163329d259ccf169293f3173115ec8da474e5c372e46f15b93dfaaf39b",
+   "stage3_decision_sha256": "608c919c33e135bb7ca236e2e07e1c9b1b567285a5b1d9d8caabedeb08cb3a41",
+   "stage3_decision": "GO",
+   "stage3_bootstrap_csv_sha256": "aaa556b987e5c33b0f1c419561de78e81e1971c93e90c0cccc73db135b1a6644",
+   "stage3_confirmation_outputs_sha256": "de82f749b6a1446ff45cfed187c59fdd7da0feb8aa459f035d1108b0893b8d17",
+   "stage3_calibration_outputs_sha256": "3ae2f98149f483ee60bcf46516e2beec366d7a599738e53875fcc616f5a53100",
+   "stage3_confirmation_selection_sha256": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+   "stage3_calibration_selection_sha256": "f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b",
+   "stage3_code_files_verified": 11,
+   "frozen_lp_taps_sha256": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+   "stage3_requirements_lock_sha256": "745b91dd04708e7226ac691191c33f4118b316248335f778ee0af0d87357d45f"
+  },
+  "provenance_md_section3_hashes": 16,
+  "provenance_md_hashes_not_recomputed": [],
+  "earlier_u1_reports": {
+   "results_paper/taslp_upgrade/calibration/checks/checks_report.json": "3552a7e5c240a645510dad8a72f3a141c71ffb78d8b8d47a7eb37d2d31f05a02"
+  },
+  "head": "8247913ebc4808337163a1d8da69a20f5e5b2a53",
+  "working_tree_status": [
+   "?? paper/taslp_upgrade/amendments/",
+   "?? paper/taslp_upgrade/pre_run_checks.py",
+   "?? paper/taslp_upgrade/tests/test_amendments.py",
+   "?? paper/taslp_upgrade/tests/test_pre_run_checks.py",
+   "?? paper/taslp_upgrade/upgrade_amendments.py",
+   "?? results_paper/taslp_upgrade/"
+  ]
+ },
+ "seconds": {
+  "level": 7.307847261428833,
+  "sweep": 15.088459968566895
+ },
+ "code_sha256": {
+  "paper/taslp_upgrade/upgrade_design.py": "333302d6774c478f939d5a39bc9acbd7b5b2e54fe7b044ea757a340c77bcc3fe",
+  "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe",
+  "paper/taslp_upgrade/upgrade_pipeline.py": "26a8fb5907e69fdbfe92cc8bc12ff80218a76856e5b47d2c8e7ec23ba5fc47e2",
+  "paper/taslp_upgrade/run_bitrate_sweep.py": "ae28f1a6e4a0ed45e79ea6ecb35f91e786a8a89eefde47da9363771479608249",
+  "paper/taslp_upgrade/run_level_sensitivity.py": "ab9bb7bd53af434d5e95532f20b082b67fbb156f9f2c9634cefc1f790cbcdde0",
+  "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+  "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+  "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+  "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+  "paper/stage3_report.py": "92240a89d1239bc406a4c782ff0bb630295106f3be250ba8cb9adbc7cec7000b",
+  "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+  "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+  "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+  "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+  "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+  "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54",
+  "paper/taslp_upgrade/pre_run_checks.py": "82d1893fa80859e9c10c6f7bb26e71b5538d14b77a5d8bc48fa834f537abc2c5",
+  "paper/taslp_upgrade/upgrade_amendments.py": "dd26603016ce780fb279027e8e540d9dfcb4c2185f020b0cbf50a15e0fc624cb"
+ },
+ "files": {
+  "level_rows.csv": "66d4a47301d9ac8e8c70c6cc7e07cb8aa2775cb322b3effb0b048263993314d9",
+  "sweep_audio_rows.csv": "a265343d555730deff87e7d68195ddbff0f84045f28a2721dd66ae666cf5e887",
+  "sweep_signal_rows.csv": "11a9fc683c2155627e5b1b28ce7b1b344b4ffbf602c8d2e5d2865989ef15a3d1"
+ },
+ "report_sha256": "2365cc5d518aff5670ebdd0771a7ba7fba00f9c92c6c14a4a1875ecd0cbc20ea"
+}

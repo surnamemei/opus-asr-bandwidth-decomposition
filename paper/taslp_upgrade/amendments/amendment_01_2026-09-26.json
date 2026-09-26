@@ -1,0 +1,130 @@
+{
+ "amendment": "01",
+ "date": "2026-09-26",
+ "created_utc": "2026-09-26T13:36:42.884539+00:00",
+ "title": "Correction of the wav2vec2-base-960h level-invariance expectation (plan section 3.5)",
+ "approval": "Explicitly approved by the study owner on 2026-09-26, choosing option 1 after the U1 run-1 FAIL report, before the code freeze (U2) and before any evaluation step.",
+ "amends": {
+  "record": "paper/taslp_upgrade/upgrade_spec.json",
+  "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+  "plan_markdown": "paper/taslp_upgrade/00_UPGRADE_PLAN.md",
+  "plan_markdown_sha256": "e059e7ede020518d2a2ded1b01c2738d22efa3b8c3d03cd9a841a7ae7d469bd8",
+  "section": "3.5 Analytic expectations (not tests)",
+  "item": "A.analytic_expectations[0]",
+  "original_text": "wav2vec2-base-960h: the torchaudio bundle does not normalise the waveform, but its first convolution has no bias and is followed by GroupNorm with one channel per group. A per-utterance scalar gain is therefore removed by that normalisation, up to GroupNorm's epsilon (1e-5) and float32 rounding. Expected: K near 0 and nearly all wav2vec2 hypotheses unchanged. For wav2vec2, A is expected to be uninformative about level, and a GO for wav2vec2 is reported as expected by construction.",
+  "replacement_text": "wav2vec2-base-960h (amendment 01, 2026-09-26): the torchaudio bundle does not normalise the waveform; its first convolution has no bias and is followed by GroupNorm with one channel per group and epsilon 1e-5. Because epsilon is nonzero, a per-utterance scalar gain is removed only approximately: where a channel's variance is small relative to epsilon, the normalisation divides by about the square root of epsilon instead of by the channel's standard deviation, and gain information persists. On the Stage 3 calibration set, level matching left 19 of 20 wav2vec2 hypotheses unchanged and changed the most probable label in 30 of 8,193 frames. wav2vec2-base-960h is therefore approximately, not exactly, level-invariant: for wav2vec2, A is informative about level, its result is interpreted normally, and no outcome is expected by construction."
+ },
+ "statement": [
+  "The original expectation in plan section 3.5, that wav2vec2-base-960h removes a per-utterance scalar gain in its first-layer normalisation, so that for wav2vec2 addition A would be uninformative about level and a GO would be reported as expected by construction, was incorrect.",
+  "Calibration showed approximate, not exact, level invariance. On the 20 utterances of the Stage 3 calibration set (dev-clean; U1, before any evaluation utterance was encoded, decoded or recognised), matching the RMS level of OPUS to that of LP (gains +0.17 to +1.54 dB) left 19 of 20 wav2vec2-base-960h hypotheses unchanged, changed the most probable CTC label in 30 of 8,193 frames and changed the output logits by up to 11.7.",
+  "The deviation arises from the nonzero epsilon (1e-5) of the model's first-layer normalisation, a GroupNorm with one channel per group that follows a convolution without bias. Where a channel's variance is small relative to epsilon, the normalisation divides by about the square root of epsilon instead of by the channel's standard deviation, so gain information persists in sufficiently low-variance channels. In every calibration utterance the lowest first-layer channel variance (2.1e-10 to 6.2e-08) was far below epsilon; the normalised first-layer output changed by up to 3.67 with epsilon 1e-5, and by at most 3.8e-04 (float32 rounding of the level-matched input) with epsilon set to 0.",
+  "Therefore the wav2vec2 level-matched result (L and K for wav2vec2-base-960h) is scientifically informative and is interpreted normally, as the Whisper result is, under the unchanged rules and manuscript consequences of sections 3.6 and 3.7; it is not treated as a predetermined sanity-null.",
+  "This correction changes no estimand, gate, decision threshold, condition, dataset selection or analysis rule. upgrade_spec.json and 00_UPGRADE_PLAN.md are not edited: only the first analytic expectation of section 3.5 is superseded, by the replacement text of this amendment, and the SHA-256 of every other section of the plan is recorded here.",
+  "The U1 supplementary check A_wav2vec2_scale_invariance (paper/taslp_upgrade/pre_run_checks.py; pass criterion: every calibration hypothesis of wav2vec2-base-960h identical with and without level matching, first convolution without bias, GroupNorm with one channel per group), which tested the superseded expectation, is reclassified from a freeze gate to a descriptive calibration finding. It is still computed and reported in every later U1 run, and it gates neither the code freeze nor any later step. The U1 run-1 report (verdict FAIL) is preserved unchanged as historical provenance."
+ ],
+ "reclassified_checks": [
+  {
+   "check": "A_wav2vec2_scale_invariance",
+   "defined_in": "paper/taslp_upgrade/pre_run_checks.py (U1 supplementary checks)",
+   "criterion": "every calibration hypothesis of wav2vec2-base-960h identical with and without level matching; first convolution without bias; GroupNorm with one channel per group",
+   "from": "freeze gate",
+   "to": "descriptive calibration finding",
+   "run1_value": false
+  }
+ ],
+ "reason": "The U1 supplementary checks (run 1) failed only A_wav2vec2_scale_invariance. That check tested an analytic expectation of section 3.5, which the plan states is not a test and does not enter the rules; it did not test the pipeline: every pipeline gate passed and the level-matching transform behaved exactly as specified. Left uncorrected, section 3.5 would present the wav2vec2 outcome of addition A as predetermined. The amendment is made after U1, before the code freeze (U2) and before any evaluation utterance was encoded, decoded or recognised; under plan section 6 it therefore applies to every later step.",
+ "applies_to": "U2 onwards. The evaluation steps U3-U8 run under the unchanged plan; the interpretation of the wav2vec2 result of addition A (U8) and the manuscript revision after U8 follow the replacement text.",
+ "evidence": {
+  "set": "Stage 3 calibration selection, 20 dev-clean utterances, 4 speakers (selection_sha256 f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b); no evaluation utterance",
+  "u1_calibration_report": {
+   "path": "results_paper/taslp_upgrade/calibration/calibration_report.json",
+   "report_sha256": "949b218ad4450f012355bfe76af67ab90d8db140a93b7f36ec6a2d52cda2cb48",
+   "E1_pass": true,
+   "E2_pass": true
+  },
+  "u1_checks_run1": {
+   "path": "results_paper/taslp_upgrade/calibration/checks/checks_report.json",
+   "report_sha256": "3552a7e5c240a645510dad8a72f3a141c71ffb78d8b8d47a7eb37d2d31f05a02",
+   "verdict": "FAIL",
+   "failed": [
+    "A_wav2vec2_scale_invariance"
+   ],
+   "level_rows_sha256": "66d4a47301d9ac8e8c70c6cc7e07cb8aa2775cb322b3effb0b048263993314d9"
+  },
+  "level_matching_gain_db": {
+   "median": 0.6716214971203508,
+   "min": 0.17295801470929117,
+   "max": 1.537834398455287
+  },
+  "wav2vec2_hypotheses_unchanged": "19/20",
+  "wav2vec2_frames_most_probable_label_changed": "30/8193",
+  "wav2vec2_max_abs_logit_difference": 11.726083755493164,
+  "first_convolution_max_relative_linearity_error": 3.591989282098331e-08,
+  "first_layer_normalised_output_max_abs_difference": {
+   "epsilon_1e-5": 3.6718398334218065,
+   "epsilon_0": 0.00038406645498012537
+  },
+  "lowest_first_layer_channel_variance_per_utterance": {
+   "min": 2.0612417250712806e-10,
+   "max": 6.171719957365447e-08
+  },
+  "groupnorm_epsilon": 1e-05
+ },
+ "unchanged": {
+  "statement": "Every section of upgrade_spec.json except the superseded item, by the SHA-256 of its JSON (json.dumps, sort_keys=True); no code file changed since the design freeze.",
+  "plan_sections_sha256": {
+   "stage": "e5609e7debe38de1c81b7745530286827716b3742a81ed942a9c0589fc403f1c",
+   "created_utc": "264fb158929ae260d5c68986a0b1f7c5e71243c6bfe8843714a66655ac8bfa28",
+   "status": "da6b74e8017bfdd6cd949e02a4b425574420f655d34739ae60df3ee43afad766",
+   "scope": "60e5743f16cc3a2573dfa931dff99d4246d697a4e03580848e2cdf7d57283646",
+   "provenance": "48ccf9999c28e46c73f03ea57ba0117032449f447af00b08537c90f09362696a",
+   "code_sha256_at_design_freeze": "d71288ea5c582fb61f23322c0fe9cccf44e743821329bfbe1028620952d64de3",
+   "common_pipeline": "c3e0abec866c73c8cb67a31efbbd030215b877c045b69c40e7689ce9a2f47431",
+   "A.title": "b2cdce5490530fd91059b7ea93945a0593918bad2223ed0b1809d5bb152b5f66",
+   "A.label": "e2e0742db1b76d9e2dca02b460b80543ab2a9f661e45e3059bf0ba7ff9322456",
+   "A.question": "65da50a539d43c20f31398b52c7f27588cb63a6d89a4680fff5293904b917258",
+   "A.data": "b260e2aac8d161e3d32299a10a3fd2ef0e277d284c8f00074cc22f0f800dde3b",
+   "A.conditions": "24dc9ab8e69259851890d9cf177008f4c354fc3dcea91d38ae0107558241d2a3",
+   "A.encoder_settings_opus": "edfb84e82d70fceee114ee79abad3048c451cfbedeedb2dd86fd324a533ae4a5",
+   "A.derivation": "b62fe9b8516b7635a6f762344485ad57d024ae280a405628cf6d372b76bf4051",
+   "A.expected_gains_from_frozen_stage3": "beccd0aeefb7833aec5459b6e2e2e3e515ee4c1da36feaab2b03c21256145d0c",
+   "A.pre_asr_gates": "81ad8d80227631b54b973f5323368f638734a2369c51f1a9cfea87e162770bc0",
+   "A.asr": "044e024f04ab7112d38fb34e3512a4a8b95d3f3ad15f417f5c2e8c60fe9621b0",
+   "A.estimands": "a20ce8570e7b2ec3e9ea954b1383bb07ac0c19af1264237286f40069c3a41b52",
+   "A.bootstrap": "83b70efcf09d752abe93a4d3c4a8d1a9b2b973cf7f53c6634ee9a66d9ddc4cb6",
+   "A.reproduction_check": "0a6225647c5cc3efa468569ea571eed8841970e7bc88d4a1205abd82c9b72ba1",
+   "A.analytic_expectations[1]": "3212053e6420c3bd639bc8f7d2bf5215422e95eb6fca09219c451a80306fa2ec",
+   "A.analytic_expectations[2]": "08dccd29c948ba79a2f003119575fe9988465bc19f315e4ec8843ff7525ae99f",
+   "A.anchors": "34b64bdcf77ae128a95a4f66baceb365b547111df695c7ad89699408687489c4",
+   "A.rules": "c7afe5d5c4991bf74b67f682d15beb1647f5bfde9842725fc41c387642bc4bbb",
+   "A.manuscript_consequences": "1c0fb260a0191510231e7597ea15537ce479616e224f2af3a13730d1372c61fd",
+   "A.commands": "37b3aa2391a97ab47228ecb14048bc6f7d9e0a8bf71f3fb55286adb1096de965",
+   "B.title": "a382dfc90172ca98582a48b6616ed8dd0e29c9f0dcddac9289ed8390729ddffd",
+   "B.label": "daea17693525470dc47d5fb2f00eb7832bf4d0b77e33d6bbcb21d91c6d88cbc3",
+   "B.question": "b8a430fe8d8c0191f5e459873c38b05b5157358c4e4bec0e001e171856b5067b",
+   "B.motivation": "f6acf675acb8c0b915e637c68113ce09a9aac6ecdabf83a7046479cad4900ea6",
+   "B.claim_tested": "6a2bcd9ea5d0946c3a9544ce4cf0f239356cc0970d5043b3e422deca2e4cade4",
+   "B.data": "a3004c684ce3c14485f22d352b5e79e297ab0da97572b998ea30c8b8892fbd8c",
+   "B.holdout_statement": "18ffafd1098ef8997e7bc311dab5dd4731a8484ce07504f95122fe0d5424ad5a",
+   "B.conditions": "a4b42cbdc9eb7b91091f518161ff97f95dbaf5d8da4591fefc76093050e9fabb",
+   "B.encoder_settings": "4f122da7fa21254ff27a36c37d5cc94e16e57bfaaca294f084c540017a416907",
+   "B.settings_identity": "2f5e2e083b5f8169b21ea3966bcb19f1468030e089ebec4683ba4fc51d3d1efc",
+   "B.technical_calibration": "d384b18c844bc85aee8639ad38e83e10b49d0ca08c79982ce20018d50d720dc8",
+   "B.pre_asr_validation": "e18a9b946cbe33c228606db2d33b4e3c561d3af03f8ac363c6b329e93e526a82",
+   "B.estimands": "bd73c8f01ba0d780d5f1b68be9d5d4c55a3dcaefccd3350be024d4389e6fd008",
+   "B.bootstrap": "30b1e0cd7711de38ed792cd6b5425eeda17b23234c8891be930a7f9dcc1185ac",
+   "B.anchor_definition": "cf6592aa6348ef5cf39f2711028806d3bc37ecfb5883e60dd74c429c8ef8dc14",
+   "B.anchors": "f260a02473afd9317ae73272abbe8e143a4ce44f7b44212bd806c2d304547864",
+   "B.rules": "45b90e87fd1f88722f387851bb0c9bb0de46e38073f90d8d66b4635e1339cb79",
+   "B.manuscript_consequences": "b29a637f7fc0e673257ae34968e146c3b534bb04fa572ab7af15b0c78d7e104d",
+   "B.commands": "a43e985f5787782a30ecadde843e15a20336dd6c9c6817976d68fdef19848c65",
+   "outputs": "82e57f8abf56368dfd9132d540c8df76f9ab621a0623eaaf4ae8b852bdf0cb1a",
+   "run_order": "154f0e8eea9d6e00a1e150dfc6f19d50afe59815978dfa61f777ebadc30c037b",
+   "policies": "cdd41f37cb89bab2bfaac6c21c3aafb22a5ca73a8a7e67c489094726d93bc3c5",
+   "compute_estimate": "e19ca767e18e28cd8b6f5f2486816242b13846728655989ac8a4b56c090e360d",
+   "not_done": "705ad94e4a3233da46d70e79c9f38ffbecd66ce65055e3f712bbd8cf4ca132b0"
+  },
+  "code_unchanged_since_design_freeze": true
+ },
+ "amendment_sha256": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393"
+}

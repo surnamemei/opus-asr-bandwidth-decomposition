@@ -1,0 +1,135 @@
+{
+ "created_utc": "2026-09-26T13:41:14.597935+00:00",
+ "purpose": "SHA-256 of every code, specification, amendment, selection, statistics, test, provenance and calibration file at the code freeze (U2), before any evaluation utterance is encoded, decoded or recognised",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "code_freeze_sha256": "af54518c0aa92b4ee6135d8d6e6fdc17fb2526602490fc026fc9972160a7624f",
+ "amendments": {
+  "01": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393"
+ },
+ "calibration_report_sha256": "949b218ad4450f012355bfe76af67ab90d8db140a93b7f36ec6a2d52cda2cb48",
+ "checks_report_sha256": "2365cc5d518aff5670ebdd0771a7ba7fba00f9c92c6c14a4a1875ecd0cbc20ea",
+ "u1_checks_runs": {
+  "results_paper/taslp_upgrade/calibration/checks/checks_report.json": {
+   "report_sha256": "3552a7e5c240a645510dad8a72f3a141c71ffb78d8b8d47a7eb37d2d31f05a02",
+   "verdict": "FAIL",
+   "failed": [
+    "A_wav2vec2_scale_invariance"
+   ]
+  },
+  "results_paper/taslp_upgrade/calibration/checks_after_amendment_01/checks_report.json": {
+   "report_sha256": "2365cc5d518aff5670ebdd0771a7ba7fba00f9c92c6c14a4a1875ecd0cbc20ea",
+   "verdict": "PASS",
+   "failed": [
+    "A_wav2vec2_scale_invariance"
+   ]
+  }
+ },
+ "freeze_gates": {
+  "passed": 40,
+  "failed": [],
+  "descriptive_findings": {
+   "A_wav2vec2_scale_invariance": {
+    "value": false,
+    "amendment": "01",
+    "amendment_sha256": "1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393",
+    "classification": "descriptive calibration finding"
+   }
+  }
+ },
+ "sweep_selection_sha256": "d3fb1487594ed35fde1ad6419ff694b9c2200656fa4aa11f4c6db48966b3f680",
+ "confirmation_selection_sha256": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+ "used_test_utterances_sha256": "2f7948753945353e582052120141d159ea9f7df390182e3083bf7d6e81cfcb11",
+ "evaluation_outputs_present": {
+  "sweep": false,
+  "level": false
+ },
+ "head": "8247913ebc4808337163a1d8da69a20f5e5b2a53",
+ "working_tree_status": [
+  "?? paper/taslp_upgrade/amendments/",
+  "?? paper/taslp_upgrade/pre_run_checks.py",
+  "?? paper/taslp_upgrade/tests/test_amendments.py",
+  "?? paper/taslp_upgrade/tests/test_pre_run_checks.py",
+  "?? paper/taslp_upgrade/upgrade_amendments.py",
+  "?? results_paper/taslp_upgrade/"
+ ],
+ "files": {
+  "upgrade_code": {
+   "paper/taslp_upgrade/pre_run_checks.py": "82d1893fa80859e9c10c6f7bb26e71b5538d14b77a5d8bc48fa834f537abc2c5",
+   "paper/taslp_upgrade/run_bitrate_sweep.py": "ae28f1a6e4a0ed45e79ea6ecb35f91e786a8a89eefde47da9363771479608249",
+   "paper/taslp_upgrade/run_level_sensitivity.py": "ab9bb7bd53af434d5e95532f20b082b67fbb156f9f2c9634cefc1f790cbcdde0",
+   "paper/taslp_upgrade/upgrade_amendments.py": "dd26603016ce780fb279027e8e540d9dfcb4c2185f020b0cbf50a15e0fc624cb",
+   "paper/taslp_upgrade/upgrade_design.py": "333302d6774c478f939d5a39bc9acbd7b5b2e54fe7b044ea757a340c77bcc3fe",
+   "paper/taslp_upgrade/upgrade_pipeline.py": "26a8fb5907e69fdbfe92cc8bc12ff80218a76856e5b47d2c8e7ec23ba5fc47e2",
+   "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe"
+  },
+  "stage3_code": {
+   "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+   "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+   "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+   "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+   "paper/stage3_report.py": "92240a89d1239bc406a4c782ff0bb630295106f3be250ba8cb9adbc7cec7000b",
+   "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+   "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+   "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+   "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+   "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+   "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+  },
+  "statistics": {
+   "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe",
+   "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d"
+  },
+  "tests": {
+   "paper/taslp_upgrade/tests/helpers.py": "612f0972fdba3b307c6aef0879bb022f434f6ab905884b31a94728bd7aaa111e",
+   "paper/taslp_upgrade/tests/test_amendments.py": "ea0ea4f3c591b955faeb3b1e38295436a31aa2633de815de286ac2761d34848e",
+   "paper/taslp_upgrade/tests/test_level_match.py": "f28934131577447df3aaa92f549a309d32eaf4b54021f5f661fa089323071dba",
+   "paper/taslp_upgrade/tests/test_plan.py": "7bcca1d7bd7af26411ad6575c0b9ae9ac9f78caf638377b7d441df87bad13a9d",
+   "paper/taslp_upgrade/tests/test_pre_run_checks.py": "edf17b8d6f12a7aa6e07f3b38a04c0b2bb150299ec1fa22d749d1bfb247d2cb6",
+   "paper/taslp_upgrade/tests/test_rules.py": "5c8fc9fd6ed668e473817ffe74720145503980b5ce0d44bf1da62a4f70ff2e12",
+   "paper/taslp_upgrade/tests/test_upgrade_stats.py": "739e0f13187c411380eac6e8d22a749481c46ddb9d378e2f3454857377e36f3d"
+  },
+  "specification": {
+   "paper/taslp_upgrade/upgrade_spec.json": "1e7216d31b444dc059fb586f6cf9119bc4aae3b2035c2ee638b209b121ddaf12",
+   "paper/taslp_upgrade/00_UPGRADE_PLAN.md": "e059e7ede020518d2a2ded1b01c2738d22efa3b8c3d03cd9a841a7ae7d469bd8",
+   "paper/taslp_upgrade/amendments/amendment_01_2026-09-26.json": "b0af736ebd446ae6562169741116c3f826cf9aa3ff98b08c165999c9475f007a",
+   "paper/taslp_upgrade/amendments/amendment_01_2026-09-26.md": "ac40af191103a91c31abe116eef1dc32f85468762f19ae4f8f7b570c0d01452b"
+  },
+  "selections": {
+   "paper/taslp_upgrade/selection_sweep.json": "80e3298f4b60e6b9740d4ec782422052815bdc4f4f35520d3091871670d1b8c1",
+   "paper/taslp_upgrade/selection_sweep.csv": "da8097955a421dfc9cee8955abe85732d2e61222b42a5cb50e037719f3505e29",
+   "results_paper/stage3_asr/selection_calibration.json": "8e4fec6e909775739c32756aa074eda3396a14db0cd83fd44f1d87840ef27f76",
+   "results_paper/stage3_asr/selection_confirmation.json": "6093dd7ef9f879043018a5c89b2676a9997ca8b9e4ec82cd5a112dec1627925e",
+   "provenance/used_test_utterances.json": "45e829498c50631bf7a2c8e8d57224adb02fbbb5f94d4ad13a8260e949b9a981"
+  },
+  "stage3_references": {
+   "results_paper/stage3_asr/stage3_spec.json": "b041751c67364c7022bfbe98b40ea917a9077c3301f9774af770cc764bc08f07",
+   "results_paper/stage3_asr/confirmation_freeze.json": "6dc1b64cfd1904d10bd6f7434e65a95310b842ac925ca51a3a707def8b95129b",
+   "results_paper/stage3_asr/stage3_decision.json": "015c4ad137d326983792c24fa1623627a0c211f2b3223a354fe588817493cd29",
+   "results_paper/stage3_asr/07_paired_bootstrap.csv": "aaa556b987e5c33b0f1c419561de78e81e1971c93e90c0cccc73db135b1a6644",
+   "results_paper/stage3_asr/requirements-lock.txt": "745b91dd04708e7226ac691191c33f4118b316248335f778ee0af0d87357d45f",
+   "results_paper/stage3_asr/raw/confirmation/outputs_sha256.json": "75a9c3c1884c60db45e8fb0b19265a7968f646e5c0d83cc0a41485084402df92",
+   "results_paper/stage3_asr/raw/confirmation/audio_manifest.csv": "ef2e104992c810d100cc5a4e67096051ab1ce14153f7900f76749fa70a819f40",
+   "results_paper/stage3_asr/raw/confirmation/asr_outputs.csv": "22a87c439b977fb1fc0f0770868121153bb8a79b35b6c41169aba3af6263b44f",
+   "results_paper/stage3_asr/calibration/outputs_sha256.json": "9c95a7874e93cdd2e142e9658ae9307b220c4cb9bfe7f4061b7f381cca0be24c"
+  },
+  "calibration": {
+   "results_paper/taslp_upgrade/calibration/calibration_report.json": "26e310045207c536f5d413e86e1af408f2e073d815c2d86b8a2787881a76d0d3",
+   "results_paper/taslp_upgrade/calibration/checks/checks_report.json": "a468fb66b0e7544104a2496c2abfbfac83d72b433a230e5b469409f4e52c3eb1",
+   "results_paper/taslp_upgrade/calibration/checks/level_rows.csv": "66d4a47301d9ac8e8c70c6cc7e07cb8aa2775cb322b3effb0b048263993314d9",
+   "results_paper/taslp_upgrade/calibration/checks/sweep_audio_rows.csv": "a265343d555730deff87e7d68195ddbff0f84045f28a2721dd66ae666cf5e887",
+   "results_paper/taslp_upgrade/calibration/checks/sweep_signal_rows.csv": "11a9fc683c2155627e5b1b28ce7b1b344b4ffbf602c8d2e5d2865989ef15a3d1",
+   "results_paper/taslp_upgrade/calibration/checks_after_amendment_01/checks_report.json": "82704ea53c0be74caa9fb677002543bba859411663f15df5f6260f1ea4edeef1",
+   "results_paper/taslp_upgrade/calibration/checks_after_amendment_01/level_rows.csv": "66d4a47301d9ac8e8c70c6cc7e07cb8aa2775cb322b3effb0b048263993314d9",
+   "results_paper/taslp_upgrade/calibration/checks_after_amendment_01/sweep_audio_rows.csv": "a265343d555730deff87e7d68195ddbff0f84045f28a2721dd66ae666cf5e887",
+   "results_paper/taslp_upgrade/calibration/checks_after_amendment_01/sweep_signal_rows.csv": "11a9fc683c2155627e5b1b28ce7b1b344b4ffbf602c8d2e5d2865989ef15a3d1",
+   "results_paper/taslp_upgrade/calibration/e1_asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+   "results_paper/taslp_upgrade/calibration/e1_audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f",
+   "results_paper/taslp_upgrade/calibration/e2_asr_outputs.csv": "0c4b279697763532adc795908797d5fc8475045467da88a11f258c138b3d0aed",
+   "results_paper/taslp_upgrade/calibration/e2_audio_manifest.csv": "7a75d3eee115c96fb4ff701a1ac57dc7279a164b91ebb424aedd998d3852515a"
+  },
+  "code_freeze": {
+   "results_paper/taslp_upgrade/code_freeze.json": "9e6aea4f2ee035fdae5d7cd25d3ccaa8d7e7e4cc78f8f921d7f544a1a5c34133"
+  }
+ },
+ "manifest_sha256": "f971700cfa7343418c79290b1708d8771c97573bbc16cd30e58707f5f5dada23"
+}

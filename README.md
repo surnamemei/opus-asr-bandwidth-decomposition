@@ -53,13 +53,18 @@ priority claim.
 - **Stages 1–3:** complete. All outputs are sealed and unchanged.
 - **Manuscript:** complete draft (`manuscript/manuscript.md`). Every reported number is checked
   against the frozen outputs.
-- **TASLP upgrade:** planning in progress. A plan for two additions is frozen in
-  `paper/taslp_upgrade/00_UPGRADE_PLAN.md`:
+- **TASLP upgrade:** pre-run stage complete; evaluation not started. A plan for two additions is
+  frozen in `paper/taslp_upgrade/00_UPGRADE_PLAN.md`:
   - A, a level-matched OPUS sensitivity analysis, run after the confirmation and not a second
     confirmatory test;
   - B, a forced SILK-NB bitrate sweep on fresh utterances. It is a fresh-utterance holdout, not
     a fresh-speaker holdout.
-- **No upgrade experiment has been decoded** and no upgrade ASR has been run.
+
+  Calibration (U1) ran on the 20-utterance Stage 3 calibration set only. Amendment 01
+  (`paper/taslp_upgrade/amendments/`) corrects the plan's wav2vec2 level-invariance expectation
+  (section 3.5); it changes no estimand, gate, threshold, condition, selection or rule. The code
+  is frozen (U2: `results_paper/taslp_upgrade/code_freeze.json`, `freeze_manifest.json`).
+- **No upgrade evaluation utterance has been encoded, decoded or recognised.**
 
 ## Repository structure
 
@@ -68,9 +73,11 @@ manuscript/         manuscript.md, references.bib, figures/, tools/ (make_tables
                     check_numbers.py, figure scripts, render.sh), planning and audit notes
 paper/              Stage 1-3 code and tests (unchanged since the Stage 3 freeze)
 paper/taslp_upgrade/  frozen upgrade plan (upgrade_spec.json, 00_UPGRADE_PLAN.md,
-                    selection_sweep.json), runners, statistics and tests (not yet run)
+                    selection_sweep.json), amendments/, runners, statistics, pre-run checks
+                    and tests (evaluation not yet run)
 results_paper/      sealed Stage 1-3 outputs (reproduce/, opus_validation/,
-                    lowpass_validation/, lowpass_confirmation/, stage3_asr/, STAGE_STATUS.md)
+                    lowpass_validation/, lowpass_confirmation/, stage3_asr/, STAGE_STATUS.md);
+                    taslp_upgrade/ (U1 calibration, code freeze)
 provenance/         PROVENANCE.md, used_test_utterances.json (test utterances already used),
                     prior_study_context.json (two cited prior-study rows), derivation scripts
 ```
@@ -102,8 +109,8 @@ python -m unittest discover -s paper/tests -p "test_[los]*.py"
 
 - The first command checks every table row and number in the manuscript against the frozen
   outputs, applies the wording rules, and resolves every citation key.
-- The second runs the upgrade tests: statistics, rules, the integrity of the frozen plan, and a
-  check that nothing has been decoded.
+- The second runs the upgrade tests: statistics, rules, the integrity of the frozen plan and its
+  amendments, and, since the code freeze, that no file hashed by the freeze manifest has changed.
 - The third runs the Stage 2–3 unit tests, which use synthetic signals only.
 - `test_stage3.py`'s prior-study exclusion test and `paper/tests/test_equivalence.py` (Stage 1)
   need the coursework `src/` and `results/` of the development repository. See
