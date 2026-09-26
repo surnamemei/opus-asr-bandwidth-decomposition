@@ -6,6 +6,8 @@
 4. Figure paths must exist; citation keys must exist in references.bib.
 """
 import csv
+import hashlib
+import json
 import re
 import subprocess
 import sys
@@ -144,7 +146,13 @@ for tok in ("0.031 dB", "4093.8 Hz", "4125.0", "-24.7 dB", "-24.9 dB", "0.57 dB"
         fails.append(f"STAGE2B token not in gates.csv: {tok}")
 for tok in ("0.031 dB", "4,093.8 Hz", "4,125.0 Hz", f"{M}24.7 dB", f"{M}24.9 dB", "0.57 dB", "0.9992", "0.168"):
     need(tok, "Stage 2B confirmation")
-prior = list(csv.DictReader(open(ROOT / "results" / "bootstrap_results.csv")))
+# The prior study's outputs are not part of this repository; its two cited rows are kept as a
+# sealed extract with the source file's hash (provenance/derive_prior_study_context.py).
+extract = json.loads((ROOT / "provenance" / "prior_study_context.json").read_text())
+if hashlib.sha256(json.dumps({k: v for k, v in extract.items() if k != "record_sha256"},
+                             sort_keys=True).encode()).hexdigest() != extract["record_sha256"]:
+    fails.append("PRIOR extract seal mismatch")
+prior = extract["rows"]
 for br, token in (("12k", "1.33 pp at 12 kbit/s"), ("8k", "6.63 pp at 8 kbit/s")):
     row = [r for r in prior if r["codec"] == "opus" and r["bitrate"] == br and r["dataset"] == "test-other"][0]
     if f"{float(row['delta_wer_pp']):.2f}" not in token:

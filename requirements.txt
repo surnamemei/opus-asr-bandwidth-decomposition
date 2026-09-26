@@ -1,19 +1,21 @@
-# Python dependencies for ELEC5305 project
-# Tested in Python 3.12 under WSL/Linux.
+# Python 3.12. Direct dependencies of paper/ and manuscript/tools/, pinned to the
+# frozen Stage 3 environment. The complete frozen environment (pip freeze) is
+# results_paper/stage3_asr/requirements-lock.txt.
 #
-# System dependency (not installed by pip):
-#   FFmpeg with libmp3lame and libopus support
-#
-# For a fully locked copy of the current environment, run:
-#   pip freeze > requirements-lock.txt
+# Not installed by pip:
+#   libopus 1.4 (system library, called through ctypes by paper/opus_direct.py)
+#   FFmpeg 6.1.1 (decodes Opus through torchaudio/torchcodec)
+#   pandoc >= 3 and a TeX installation with xelatex (manuscript rendering only)
+#   CUDA GPU for Whisper large-v3 in float16 (ASR runs only)
 
-torch
-torchaudio
-torchcodec
-jiwer
-numpy
-pandas
-matplotlib
-soundfile
-tqdm
-encodec
+torch==2.13.0
+torchaudio==2.11.0
+torchcodec==0.16.0
+transformers==5.17.0
+huggingface_hub==1.33.0
+jiwer==4.0.0
+numpy==2.5.2
+pandas==3.0.5
+soundfile==0.14.0
+tqdm==4.70.0
+matplotlib==3.11.1

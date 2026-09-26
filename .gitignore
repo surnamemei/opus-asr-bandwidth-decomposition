@@ -1,15 +1,19 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
-data/
-compressed/
 .cache/
+
+# LibriSpeech is not distributed with this repository. The code expects it at
+# data/LibriSpeech; `data` may be a directory or a symlink.
+/data
 
 # Windows download metadata (WSL)
 *:Zone.Identifier
 
-# Resumable Stage 3 decode checkpoints (not covered by any seal)
-results_paper/stage3_asr/raw/*/progress.jsonl
+# Resumable decode checkpoints (not covered by any seal)
+**/progress.jsonl
+**/*.tmp.npz
 
 # Rendered manuscript output (regenerate with manuscript/tools/render.sh)
 manuscript/build/

@@ -1,0 +1,60 @@
+{
+ "description": "Prior-study rows cited as context in the manuscript Introduction (preliminary analysis: wav2vec2-base-960h, raw-text scoring, different utterances; context only)",
+ "created_utc": "2026-09-26T12:39:05.240095+00:00",
+ "development_repository_commit": "051a96330c244804714c5e49faed997339ece987",
+ "source": {
+  "path": "results/bootstrap_results.csv",
+  "git_blob": "3967266498737ba5779d3071baf60e58437ea2b7",
+  "sha256": "6fc72de831f515365a1465b87cfa4e4b491bff2f3145b051dc7e3e9f1ac4a678",
+  "n_rows": 22
+ },
+ "selection": [
+  {
+   "codec": "opus",
+   "bitrate": "12k",
+   "dataset": "test-other"
+  },
+  {
+   "codec": "opus",
+   "bitrate": "8k",
+   "dataset": "test-other"
+  }
+ ],
+ "rows": [
+  {
+   "codec": "opus",
+   "bitrate": "12k",
+   "num_samples": "500",
+   "wav_wer": "0.08262108262108261",
+   "compressed_wer": "0.09595441595441595",
+   "delta_wer": "0.013333333333333336",
+   "ci_lower": "0.00870262223748998",
+   "ci_upper": "0.018207901125579337",
+   "ci_excludes_zero": "True",
+   "dataset": "test-other",
+   "wav_wer_percent": "8.262108262108262",
+   "compressed_wer_percent": "9.595441595441596",
+   "delta_wer_pp": "1.3333333333333335",
+   "ci_lower_pp": "0.8702622237489979",
+   "ci_upper_pp": "1.8207901125579338"
+  },
+  {
+   "codec": "opus",
+   "bitrate": "8k",
+   "num_samples": "500",
+   "wav_wer": "0.08262108262108261",
+   "compressed_wer": "0.14894586894586895",
+   "delta_wer": "0.06632478632478633",
+   "ci_lower": "0.05714612918002748",
+   "ci_upper": "0.07616936894902601",
+   "ci_excludes_zero": "True",
+   "dataset": "test-other",
+   "wav_wer_percent": "8.262108262108262",
+   "compressed_wer_percent": "14.894586894586896",
+   "delta_wer_pp": "6.632478632478634",
+   "ci_lower_pp": "5.714612918002748",
+   "ci_upper_pp": "7.616936894902601"
+  }
+ ],
+ "record_sha256": "7d1b24021c0e1107e463b5b67536c502164c43ec003d678e3378dd77a6fdf161"
+}
