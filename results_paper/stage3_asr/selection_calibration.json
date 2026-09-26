@@ -1,0 +1,226 @@
+{
+ "set": "calibration",
+ "created_utc": "2026-09-26T07:14:59.366111+00:00",
+ "seed": 53051,
+ "rules": {
+  "calibration": "dev-clean: 4 speakers (random.Random(53051).sample of sorted speaker IDs), 5 utterances each",
+  "pilot": "dev-clean speakers not used for calibration + all dev-other speakers, 2 utterances each (random.Random(53052))",
+  "confirmation": "test-clean + test-other, all speakers, up to 30 utterances each (random.Random(53053))",
+  "eligibility": "duration <= 30.0 s (Whisper window); non-empty normalised reference; not in the excluded set of the subset",
+  "exclusions": {
+   "dev-clean": "Stage 2A/2B signal-level development utterances (one per speaker)",
+   "dev-other": "Stage 2A/2B signal-level development utterances (one per speaker)",
+   "test-clean": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)",
+   "test-other": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)"
+  },
+  "selection_inputs": "file names, FLAC header durations, reference transcripts (for the non-empty rule only); no ASR output of any kind"
+ },
+ "n_utterances": 20,
+ "n_speakers": 4,
+ "subsets": {
+  "dev-clean": 20
+ },
+ "utterances": [
+  {
+   "subset": "dev-clean",
+   "utterance": "777-126732-0023",
+   "speaker_id": 777,
+   "chapter_id": 126732,
+   "path": "dev-clean/777/126732/777-126732-0023.flac",
+   "duration_s": 7.02,
+   "sample_rate": 16000,
+   "reference": "THE FAMOUS TERRORIST HAD NEVER IN HIS LIFE RAISED PERSONALLY AS MUCH AS HIS LITTLE FINGER AGAINST THE SOCIAL EDIFICE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "777-126732-0026",
+   "speaker_id": 777,
+   "chapter_id": 126732,
+   "path": "dev-clean/777/126732/777-126732-0026.flac",
+   "duration_s": 1.97,
+   "sample_rate": 16000,
+   "reference": "HE HAD BEEN A PRISONER HIMSELF"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "777-126732-0034",
+   "speaker_id": 777,
+   "chapter_id": 126732,
+   "path": "dev-clean/777/126732/777-126732-0034.flac",
+   "duration_s": 3.48,
+   "sample_rate": 16000,
+   "reference": "I DON'T SAY THAT PROTESTED MICHAELIS GENTLY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "777-126732-0052",
+   "speaker_id": 777,
+   "chapter_id": 126732,
+   "path": "dev-clean/777/126732/777-126732-0052.flac",
+   "duration_s": 4.95,
+   "sample_rate": 16000,
+   "reference": "MISTER VERLOC PERCEIVED WITH SOME SURPRISE THAT HE DID NOT KNOW REALLY WHAT TO SAY TO STEVIE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "777-126732-0076",
+   "speaker_id": 777,
+   "chapter_id": 126732,
+   "path": "dev-clean/777/126732/777-126732-0076.flac",
+   "duration_s": 4.26,
+   "sample_rate": 16000,
+   "reference": "I WISH HE HAD NEVER BEEN TO SCHOOL MISSUS VERLOC BEGAN AGAIN BRUSQUELY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1993-147149-0006",
+   "speaker_id": 1993,
+   "chapter_id": 147149,
+   "path": "dev-clean/1993/147149/1993-147149-0006.flac",
+   "duration_s": 27.88,
+   "sample_rate": 16000,
+   "reference": "SHE OPENED THE DOOR SOFTLY THERE SAT MISSUS WILSON IN THE OLD ROCKING CHAIR WITH ONE SICK DEATH LIKE BOY LYING ON HER KNEE CRYING WITHOUT LET OR PAUSE BUT SOFTLY GENTLY AS FEARING TO DISTURB THE TROUBLED GASPING CHILD WHILE BEHIND HER OLD ALICE LET HER FAST DROPPING TEARS FALL DOWN ON THE DEAD BODY OF THE OTHER TWIN WHICH SHE WAS LAYING OUT ON A BOARD PLACED ON A SORT OF SOFA SETTEE IN A CORNER OF THE ROOM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1993-147149-0014",
+   "speaker_id": 1993,
+   "chapter_id": 147149,
+   "path": "dev-clean/1993/147149/1993-147149-0014.flac",
+   "duration_s": 3.055,
+   "sample_rate": 16000,
+   "reference": "THEN ALICE BROKE THE SILENCE BY SAYING"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1993-147149-0020",
+   "speaker_id": 1993,
+   "chapter_id": 147149,
+   "path": "dev-clean/1993/147149/1993-147149-0020.flac",
+   "duration_s": 16.98,
+   "sample_rate": 16000,
+   "reference": "MARY I ALMOST LOATHE MYSELF WHEN I FEEL I WOULD NOT GIVE UP THIS MINUTE WHEN MY BROTHERS LIE DEAD AND FATHER AND MOTHER ARE IN SUCH TROUBLE FOR ALL MY LIFE THAT'S PAST AND GONE AND MARY AS SHE TRIED TO RELEASE HER HAND YOU KNOW WHAT MAKES ME FEEL SO BLESSED"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1993-147964-0004",
+   "speaker_id": 1993,
+   "chapter_id": 147964,
+   "path": "dev-clean/1993/147964/1993-147964-0004.flac",
+   "duration_s": 7.3,
+   "sample_rate": 16000,
+   "reference": "ON THE WHITE PAGES I GROUPED SUNDAY SCHOOL CARDS AND ADVERTISING CARDS WHICH I HAD BROUGHT FROM MY OLD COUNTRY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1993-147965-0003",
+   "speaker_id": 1993,
+   "chapter_id": 147965,
+   "path": "dev-clean/1993/147965/1993-147965-0003.flac",
+   "duration_s": 7.375,
+   "sample_rate": 16000,
+   "reference": "BECAUSE HE TALKED SO LITTLE HIS WORDS HAD A PECULIAR FORCE THEY WERE NOT WORN DULL FROM CONSTANT USE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3170-137482-0012",
+   "speaker_id": 3170,
+   "chapter_id": 137482,
+   "path": "dev-clean/3170/137482/3170-137482-0012.flac",
+   "duration_s": 2.985,
+   "sample_rate": 16000,
+   "reference": "WE TOOK OUR THREE PRISONERS TO A LARGE BOAT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3170-137482-0019",
+   "speaker_id": 3170,
+   "chapter_id": 137482,
+   "path": "dev-clean/3170/137482/3170-137482-0019.flac",
+   "duration_s": 5.33,
+   "sample_rate": 16000,
+   "reference": "I PICKED IT UP AND COMING UP TO HIM JUST AS HE WAS GOING DOWN THE STEPS I HANDED IT TO HIM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3170-137482-0025",
+   "speaker_id": 3170,
+   "chapter_id": 137482,
+   "path": "dev-clean/3170/137482/3170-137482-0025.flac",
+   "duration_s": 7.445,
+   "sample_rate": 16000,
+   "reference": "THEY DID NOT KNOW WHO I WAS AND DID NOT LIKE TO ASK ME WHILST I THOUGHT IT BETTER TO PRESERVE A MODEST SILENCE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3170-137482-0033",
+   "speaker_id": 3170,
+   "chapter_id": 137482,
+   "path": "dev-clean/3170/137482/3170-137482-0033.flac",
+   "duration_s": 2.465,
+   "sample_rate": 16000,
+   "reference": "THE THREE FRIENDS WERE ASTOUNDED"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3170-137482-0040",
+   "speaker_id": 3170,
+   "chapter_id": 137482,
+   "path": "dev-clean/3170/137482/3170-137482-0040.flac",
+   "duration_s": 13.255,
+   "sample_rate": 16000,
+   "reference": "BUT ALTHOUGH BELIEVING FULLY IN MY ORACLES THEY WERE TOO KIND HEARTED TO THINK THEM THE WORK OF THE DEVIL AND IT SUITED THEIR NATURAL GOODNESS BETTER TO BELIEVE MY ANSWERS INSPIRED BY SOME HEAVENLY SPIRIT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3536-23268-0001",
+   "speaker_id": 3536,
+   "chapter_id": 23268,
+   "path": "dev-clean/3536/23268/3536-23268-0001.flac",
+   "duration_s": 15.905,
+   "sample_rate": 16000,
+   "reference": "EVERY TIME HE BEHELD THE OBJECT OF HIS PASSION FOR HE STILL CONTINUED HIS VISITS THOUGH NOT SO FREQUENTLY AS HERETOFORE HE PLEADED HIS CAUSE WITH SUCH ARDOUR THAT MISS WOODLEY WHO WAS SOMETIMES PRESENT AND EVER COMPASSIONATE COULD NOT RESIST WISHING HIM SUCCESS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3536-23268-0019",
+   "speaker_id": 3536,
+   "chapter_id": 23268,
+   "path": "dev-clean/3536/23268/3536-23268-0019.flac",
+   "duration_s": 10.165,
+   "sample_rate": 16000,
+   "reference": "MISSUS HORTON TOO IN THE SELF APPROVING REFLECTION THAT SHE WAS NOT IN A QUARREL OR ALTERCATION OF ANY KIND FELT HERSELF AT THIS MOMENT REMARKABLY PEACEFUL AND CHARITABLE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3536-8226-0004",
+   "speaker_id": 3536,
+   "chapter_id": 8226,
+   "path": "dev-clean/3536/8226/3536-8226-0004.flac",
+   "duration_s": 14.625,
+   "sample_rate": 16000,
+   "reference": "MISSUS BOZZLE WAS DISPOSED TO THINK THAT LADIES OF QUALITY AMONG WHOM MADAME T WAS ENTITLED IN HER ESTIMATION TO TAKE RANK WERE SELDOM BETTER THAN THEY OUGHT TO BE AND SHE WAS QUITE WILLING THAT HER HUSBAND SHOULD EARN HIS BREAD BY WATCHING THE LADY OR THE LADY'S LOVER"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3536-8226-0007",
+   "speaker_id": 3536,
+   "chapter_id": 8226,
+   "path": "dev-clean/3536/8226/3536-8226-0007.flac",
+   "duration_s": 2.335,
+   "sample_rate": 16000,
+   "reference": "OF COURSE IT AIN'T SAID MISSUS BOZZLE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3536-8226-0019",
+   "speaker_id": 3536,
+   "chapter_id": 8226,
+   "path": "dev-clean/3536/8226/3536-8226-0019.flac",
+   "duration_s": 5.33,
+   "sample_rate": 16000,
+   "reference": "BOZZLE HAD ALWAYS WAITED UPON HIM WITH A DECENT COAT AND A WELL BRUSHED HAT AND CLEAN SHOES"
+  }
+ ],
+ "selection_sha256": "f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b"
+}

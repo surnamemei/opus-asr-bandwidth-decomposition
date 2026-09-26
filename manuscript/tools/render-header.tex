@@ -1,0 +1,28 @@
+% LaTeX preamble additions for tools/render.sh (presentation only).
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[font=small,labelfont=bf,labelsep=period,justification=justified,singlelinecheck=false]{caption}
+\captionsetup[table]{position=top,skip=4pt}
+\captionsetup[figure]{skip=6pt}
+% Text and maths fonts: STIX Two (Times-like, full Unicode coverage), from TeX Live.
+\setmainfont{STIXTwoText}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+\setmathfont{STIXTwoMath-Regular.otf}
+% STIX Two Text has no arrow glyph; take it from the maths font.
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+% Keep floats near their first citation.
+\makeatletter
+\def\fps@figure{!htbp}
+\def\fps@table{!htbp}
+\makeatother
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+\setlength{\emergencystretch}{3em}
+% Reference entries with long commit hashes and URLs: ragged right, not stretched.
+\AddToHook{env/CSLReferences/begin}{\raggedright}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}

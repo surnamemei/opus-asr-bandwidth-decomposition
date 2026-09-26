@@ -1,0 +1,1407 @@
+{
+ "set": "pilot",
+ "created_utc": "2026-09-26T07:14:59.370093+00:00",
+ "seed": 53052,
+ "rules": {
+  "calibration": "dev-clean: 4 speakers (random.Random(53051).sample of sorted speaker IDs), 5 utterances each",
+  "pilot": "dev-clean speakers not used for calibration + all dev-other speakers, 2 utterances each (random.Random(53052))",
+  "confirmation": "test-clean + test-other, all speakers, up to 30 utterances each (random.Random(53053))",
+  "eligibility": "duration <= 30.0 s (Whisper window); non-empty normalised reference; not in the excluded set of the subset",
+  "exclusions": {
+   "dev-clean": "Stage 2A/2B signal-level development utterances (one per speaker)",
+   "dev-other": "Stage 2A/2B signal-level development utterances (one per speaker)",
+   "test-clean": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)",
+   "test-other": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)"
+  },
+  "selection_inputs": "file names, FLAC header durations, reference transcripts (for the non-empty rule only); no ASR output of any kind"
+ },
+ "n_utterances": 138,
+ "n_speakers": 69,
+ "subsets": {
+  "dev-clean": 72,
+  "dev-other": 66
+ },
+ "utterances": [
+  {
+   "subset": "dev-clean",
+   "utterance": "84-121123-0009",
+   "speaker_id": 84,
+   "chapter_id": 121123,
+   "path": "dev-clean/84/121123/84-121123-0009.flac",
+   "duration_s": 2.6950625,
+   "sample_rate": 16000,
+   "reference": "DO YOU KNOW THE ASSASSIN ASKED MORREL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "84-121550-0021",
+   "speaker_id": 84,
+   "chapter_id": 121550,
+   "path": "dev-clean/84/121550/84-121550-0021.flac",
+   "duration_s": 8.71,
+   "sample_rate": 16000,
+   "reference": "AND ONE OF THEM AS IF BY HEAVEN COMMISSIONED SINGING VENI SPONSA DE LIBANO SHOUTED THREE TIMES AND ALL THE OTHERS AFTER"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "174-50561-0003",
+   "speaker_id": 174,
+   "chapter_id": 50561,
+   "path": "dev-clean/174/50561/174-50561-0003.flac",
+   "duration_s": 3.34,
+   "sample_rate": 16000,
+   "reference": "THE WANDERING SINGER APPROACHES THEM WITH HIS LUTE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "174-84280-0013",
+   "speaker_id": 174,
+   "chapter_id": 84280,
+   "path": "dev-clean/174/84280/174-84280-0013.flac",
+   "duration_s": 16.86,
+   "sample_rate": 16000,
+   "reference": "IN MARY IT SEEMS TO ME I FOUND BOTH WOMANHOOD AND FELLOWSHIP I FOUND WHAT MANY HAVE DREAMT OF LOVE AND FRIENDSHIP FREELY GIVEN AND I COULD DO NOTHING BUT CLUTCH AT HER TO MAKE HER MY POSSESSION"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "251-136532-0002",
+   "speaker_id": 251,
+   "chapter_id": 136532,
+   "path": "dev-clean/251/136532/251-136532-0002.flac",
+   "duration_s": 6.55,
+   "sample_rate": 16000,
+   "reference": "THAT TOOK THE CENTER OF INTEREST AWAY FROM ARCHAEOLOGY AND STARTED A NEW BURST OF ACTIVITY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "251-137823-0005",
+   "speaker_id": 251,
+   "chapter_id": 137823,
+   "path": "dev-clean/251/137823/251-137823-0005.flac",
+   "duration_s": 5.445,
+   "sample_rate": 16000,
+   "reference": "AN INSTANT LATER IT CRASHED OVER PINNING MARK FABER BENEATH IT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "422-122949-0000",
+   "speaker_id": 422,
+   "chapter_id": 122949,
+   "path": "dev-clean/422/122949/422-122949-0000.flac",
+   "duration_s": 20.22,
+   "sample_rate": 16000,
+   "reference": "EVERY ELEVATION OF THE TYPE MAN HAS HITHERTO BEEN THE WORK OF AN ARISTOCRATIC SOCIETY AND SO IT WILL ALWAYS BE A SOCIETY BELIEVING IN A LONG SCALE OF GRADATIONS OF RANK AND DIFFERENCES OF WORTH AMONG HUMAN BEINGS AND REQUIRING SLAVERY IN SOME FORM OR OTHER"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "422-122949-0018",
+   "speaker_id": 422,
+   "chapter_id": 122949,
+   "path": "dev-clean/422/122949/422-122949-0018.flac",
+   "duration_s": 14.565,
+   "sample_rate": 16000,
+   "reference": "IN OUR VERY DEMOCRATIC OR RATHER VERY PLEBEIAN AGE EDUCATION AND CULTURE MUST BE ESSENTIALLY THE ART OF DECEIVING DECEIVING WITH REGARD TO ORIGIN WITH REGARD TO THE INHERITED PLEBEIANISM IN BODY AND SOUL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "652-130726-0021",
+   "speaker_id": 652,
+   "chapter_id": 130726,
+   "path": "dev-clean/652/130726/652-130726-0021.flac",
+   "duration_s": 11.385,
+   "sample_rate": 16000,
+   "reference": "ONE CAN ALMOST IMAGINE HIMSELF IN ONE OF THE FAMOUS RATHSKELLERS OF OLD HEIDELBERG NOT AT THE SCHLOSS OF COURSE FOR HERE YOU CANNOT LOOK DOWN ON THE WEISER AS IT FLOWS BENEATH THE WINDOWS OF THE GREAT WINE STUBE ON THE HILL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "652-130726-0024",
+   "speaker_id": 652,
+   "chapter_id": 130726,
+   "path": "dev-clean/652/130726/652-130726-0024.flac",
+   "duration_s": 10.735,
+   "sample_rate": 16000,
+   "reference": "TO THE PICKLE ADD TWO LARGE ONIONS CUT IN QUARTERS TWO FRESH CARROTS AND ABOUT ONE OUNCE OF MIXED WHOLE ALLSPICE BLACK PEPPERS CLOVES AND BAY LEAVES"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1272-135031-0012",
+   "speaker_id": 1272,
+   "chapter_id": 135031,
+   "path": "dev-clean/1272/135031/1272-135031-0012.flac",
+   "duration_s": 2.04,
+   "sample_rate": 16000,
+   "reference": "WHERE IS MY BROTHER NOW"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1272-141231-0006",
+   "speaker_id": 1272,
+   "chapter_id": 141231,
+   "path": "dev-clean/1272/141231/1272-141231-0006.flac",
+   "duration_s": 4.93,
+   "sample_rate": 16000,
+   "reference": "THE BUZZER'S WHIRR TRIGGERED HIS MUSCLES INTO COMPLETE RELAXATION"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1462-170138-0025",
+   "speaker_id": 1462,
+   "chapter_id": 170138,
+   "path": "dev-clean/1462/170138/1462-170138-0025.flac",
+   "duration_s": 4.44,
+   "sample_rate": 16000,
+   "reference": "ALL THE SAME HE LIFTED HIS GLASS HERE'S TO YOU LITTLE HILDA"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1462-170142-0002",
+   "speaker_id": 1462,
+   "chapter_id": 170142,
+   "path": "dev-clean/1462/170142/1462-170142-0002.flac",
+   "duration_s": 6.45,
+   "sample_rate": 16000,
+   "reference": "SHE BLUSHED AND SMILED AND FUMBLED HIS CARD IN HER CONFUSION BEFORE SHE RAN UPSTAIRS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1673-143396-0005",
+   "speaker_id": 1673,
+   "chapter_id": 143396,
+   "path": "dev-clean/1673/143396/1673-143396-0005.flac",
+   "duration_s": 11.7400625,
+   "sample_rate": 16000,
+   "reference": "THE SON OF A VIRGIN GENERATED BY THE INEFFABLE OPERATION OF THE HOLY SPIRIT WAS A CREATURE WITHOUT EXAMPLE OR RESEMBLANCE SUPERIOR IN EVERY ATTRIBUTE OF MIND AND BODY TO THE CHILDREN OF ADAM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1673-143397-0015",
+   "speaker_id": 1673,
+   "chapter_id": 143397,
+   "path": "dev-clean/1673/143397/1673-143397-0015.flac",
+   "duration_s": 6.345,
+   "sample_rate": 16000,
+   "reference": "RETURN TO YOUR PROVINCES AND MAY YOUR PRIVATE VIRTUES REPAIR THE MISCHIEF AND SCANDAL OF YOUR MEETING"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1919-142785-0015",
+   "speaker_id": 1919,
+   "chapter_id": 142785,
+   "path": "dev-clean/1919/142785/1919-142785-0015.flac",
+   "duration_s": 4.29,
+   "sample_rate": 16000,
+   "reference": "WHEN IT IS SUFFICIENTLY THICK TAKE IT OFF AS IT SHOULD NOT BOIL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1919-142785-0033",
+   "speaker_id": 1919,
+   "chapter_id": 142785,
+   "path": "dev-clean/1919/142785/1919-142785-0033.flac",
+   "duration_s": 7.71,
+   "sample_rate": 16000,
+   "reference": "NOTE THE WINE IN THIS SAUCE MAY BE OMITTED AND AN ONION SLICED AND FRIED OF A NICE BROWN SUBSTITUTED FOR IT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1988-147956-0003",
+   "speaker_id": 1988,
+   "chapter_id": 147956,
+   "path": "dev-clean/1988/147956/1988-147956-0003.flac",
+   "duration_s": 2.495,
+   "sample_rate": 16000,
+   "reference": "NOW WHY IS THAT OTTO"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "1988-147956-0007",
+   "speaker_id": 1988,
+   "chapter_id": 147956,
+   "path": "dev-clean/1988/147956/1988-147956-0007.flac",
+   "duration_s": 5.865,
+   "sample_rate": 16000,
+   "reference": "MY GRANDMOTHER ALWAYS SPOKE IN A VERY LOUD TONE TO FOREIGNERS AS IF THEY WERE DEAF"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2035-147960-0014",
+   "speaker_id": 2035,
+   "chapter_id": 147960,
+   "path": "dev-clean/2035/147960/2035-147960-0014.flac",
+   "duration_s": 4.4650625,
+   "sample_rate": 16000,
+   "reference": "HE COULD STAND RIGHT UP AND TALK TO YOU HE COULD DID HE FIGHT HARD"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2035-147961-0005",
+   "speaker_id": 2035,
+   "chapter_id": 147961,
+   "path": "dev-clean/2035/147961/2035-147961-0005.flac",
+   "duration_s": 9.42,
+   "sample_rate": 16000,
+   "reference": "THEY MADE ME THINK OF DEFEATED ARMIES RETREATING OR OF GHOSTS WHO WERE TRYING DESPERATELY TO GET IN FOR SHELTER AND THEN WENT MOANING ON"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2078-142845-0007",
+   "speaker_id": 2078,
+   "chapter_id": 142845,
+   "path": "dev-clean/2078/142845/2078-142845-0007.flac",
+   "duration_s": 20.74,
+   "sample_rate": 16000,
+   "reference": "THEN PLACE THE PAN ON A STRONG CHAIR OR DRESSER OR TABLE OF CONVENIENT HEIGHT POUR INTO THE SPONGE THE REMAINDER OF THE WARM MILK AND WATER STIR INTO IT AS MUCH OF THE FLOUR AS YOU CAN WITH THE SPOON THEN WIPE IT OUT CLEAN WITH YOUR FINGERS AND LAY IT ASIDE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2078-142845-0048",
+   "speaker_id": 2078,
+   "chapter_id": 142845,
+   "path": "dev-clean/2078/142845/2078-142845-0048.flac",
+   "duration_s": 2.2,
+   "sample_rate": 16000,
+   "reference": "SEVENTEEN THIRTY FOUR"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2086-149220-0012",
+   "speaker_id": 2086,
+   "chapter_id": 149220,
+   "path": "dev-clean/2086/149220/2086-149220-0012.flac",
+   "duration_s": 14.995,
+   "sample_rate": 16000,
+   "reference": "THE CHICKEN CREPT THROUGH THE PALES OF THE COOP AND RAN WITH SOME SHOW OF LIVELINESS TO HER FEET WHILE CHANTICLEER AND THE LADIES OF HIS HOUSEHOLD REGARDED HER WITH QUEER SIDELONG GLANCES AND THEN CROAKED ONE TO ANOTHER AS IF COMMUNICATING THEIR SAGE OPINIONS OF HER CHARACTER"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2086-149220-0036",
+   "speaker_id": 2086,
+   "chapter_id": 149220,
+   "path": "dev-clean/2086/149220/2086-149220-0036.flac",
+   "duration_s": 6.32,
+   "sample_rate": 16000,
+   "reference": "IT IS NONSENSE SAID PHOEBE A LITTLE IMPATIENTLY FOR US TO TALK ABOUT A PICTURE WHICH YOU HAVE NEVER SEEN"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2277-149896-0017",
+   "speaker_id": 2277,
+   "chapter_id": 149896,
+   "path": "dev-clean/2277/149896/2277-149896-0017.flac",
+   "duration_s": 4.985,
+   "sample_rate": 16000,
+   "reference": "AT ONE THIRTY HE WENT TO RECTOR'S FOR LUNCH AND WHEN HE RETURNED A MESSENGER WAS WAITING FOR HIM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2277-149896-0021",
+   "speaker_id": 2277,
+   "chapter_id": 149896,
+   "path": "dev-clean/2277/149896/2277-149896-0021.flac",
+   "duration_s": 3.37,
+   "sample_rate": 16000,
+   "reference": "WHAT WOULD SHE DO ABOUT THAT THE CONFOUNDED WRETCH"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2412-153948-0015",
+   "speaker_id": 2412,
+   "chapter_id": 153948,
+   "path": "dev-clean/2412/153948/2412-153948-0015.flac",
+   "duration_s": 3.465,
+   "sample_rate": 16000,
+   "reference": "I WOULD TRY THE NEARER RANGE AND SEE HOW FAR I COULD GO"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2412-153954-0008",
+   "speaker_id": 2412,
+   "chapter_id": 153954,
+   "path": "dev-clean/2412/153954/2412-153954-0008.flac",
+   "duration_s": 2.735,
+   "sample_rate": 16000,
+   "reference": "THE MEN WERE AS HANDSOME AS THE WOMEN BEAUTIFUL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2428-83699-0022",
+   "speaker_id": 2428,
+   "chapter_id": 83699,
+   "path": "dev-clean/2428/83699/2428-83699-0022.flac",
+   "duration_s": 1.975,
+   "sample_rate": 16000,
+   "reference": "I DID NOT KNOW WHAT HE MEANT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2428-83699-0025",
+   "speaker_id": 2428,
+   "chapter_id": 83699,
+   "path": "dev-clean/2428/83699/2428-83699-0025.flac",
+   "duration_s": 8.005,
+   "sample_rate": 16000,
+   "reference": "I HAD LONG BEEN WISHING THAT AN OLD FASHIONED CHRISTMAS HAD BEEN COMPLETELY EXTINCT BEFORE I HAD THOUGHT OF ADVENTURING IN QUEST OF ONE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2803-154328-0008",
+   "speaker_id": 2803,
+   "chapter_id": 154328,
+   "path": "dev-clean/2803/154328/2803-154328-0008.flac",
+   "duration_s": 7.37,
+   "sample_rate": 16000,
+   "reference": "I BELIEVE SAID JOHN THAT IN THE SIGHT OF GOD I HAVE A RIGHT TO FULFILL THAT PROMISE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2803-161169-0013",
+   "speaker_id": 2803,
+   "chapter_id": 161169,
+   "path": "dev-clean/2803/161169/2803-161169-0013.flac",
+   "duration_s": 11.51,
+   "sample_rate": 16000,
+   "reference": "THEN THE HILLS WERE PILED UP ON TOP OF IT ALL BUT HERE AND THERE SOME EDGE OF A COAL BED WAS TILTED UP AND APPEARED ABOVE THE GROUND"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2902-9008-0005",
+   "speaker_id": 2902,
+   "chapter_id": 9008,
+   "path": "dev-clean/2902/9008/2902-9008-0005.flac",
+   "duration_s": 5.21,
+   "sample_rate": 16000,
+   "reference": "IF THEY HAVE CAST OFF THE VULGAR HERD THEY HAVE NOT CAST OFF HYPATIA"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "2902-9008-0014",
+   "speaker_id": 2902,
+   "chapter_id": 9008,
+   "path": "dev-clean/2902/9008/2902-9008-0014.flac",
+   "duration_s": 13.49,
+   "sample_rate": 16000,
+   "reference": "AND HER VOICE TOOK A TONE WHICH MADE IT SOMEWHAT UNCERTAIN WHETHER IN SPITE OF ALL THE LOFTY IMPASSIBILITY WHICH SHE FELT BOUND TO POSSESS SHE DID NOT HATE PELAGIA WITH A MOST HUMAN AND MUNDANE HATRED"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3000-15664-0001",
+   "speaker_id": 3000,
+   "chapter_id": 15664,
+   "path": "dev-clean/3000/15664/3000-15664-0001.flac",
+   "duration_s": 20.86,
+   "sample_rate": 16000,
+   "reference": "ARCTIC BEAUTY AND DESOLATION WITH THEIR BLESSINGS AND DANGERS ALL MAY BE FOUND HERE TO TEST THE ENDURANCE AND SKILL OF ADVENTUROUS CLIMBERS BUT FAR BETTER THAN CLIMBING THE MOUNTAIN IS GOING AROUND ITS WARM FERTILE BASE ENJOYING ITS BOUNTIES LIKE A BEE CIRCLING AROUND A BANK OF FLOWERS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3000-15664-0024",
+   "speaker_id": 3000,
+   "chapter_id": 15664,
+   "path": "dev-clean/3000/15664/3000-15664-0024.flac",
+   "duration_s": 14.15,
+   "sample_rate": 16000,
+   "reference": "LARGE FLOCKS DWELL HERE FROM YEAR TO YEAR WINTER AND SUMMER DESCENDING OCCASIONALLY INTO THE ADJACENT SAGE PLAINS AND LAVA BEDS TO FEED BUT EVER READY TO TAKE REFUGE IN THE JAGGED CRAGS OF THEIR MOUNTAIN AT EVERY ALARM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3081-166546-0042",
+   "speaker_id": 3081,
+   "chapter_id": 166546,
+   "path": "dev-clean/3081/166546/3081-166546-0042.flac",
+   "duration_s": 5.195,
+   "sample_rate": 16000,
+   "reference": "I SHOULD LIKE TO SEE THE DESK YOU SPEAK OF AND THE SPOT WHERE SHE FELL"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3081-166546-0085",
+   "speaker_id": 3081,
+   "chapter_id": 166546,
+   "path": "dev-clean/3081/166546/3081-166546-0085.flac",
+   "duration_s": 11.285,
+   "sample_rate": 16000,
+   "reference": "BUT VIGOUR RETURNED TO HIM BEFORE HE HAD WELL REACHED THE DOOR AND HE SHOWED SOME OF HIS OLD SPIRIT AS HE THANKED MISS CLARKE AND TURNED TO TAKE THE ELEVATOR"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3576-138058-0001",
+   "speaker_id": 3576,
+   "chapter_id": 138058,
+   "path": "dev-clean/3576/138058/3576-138058-0001.flac",
+   "duration_s": 10.78,
+   "sample_rate": 16000,
+   "reference": "BUT DON QUIXOTE WHOM HIS THOUGHTS FAR MORE THAN HUNGER KEPT AWAKE COULD NOT CLOSE AN EYE AND ROAMED IN FANCY TO AND FRO THROUGH ALL SORTS OF PLACES"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3576-138058-0005",
+   "speaker_id": 3576,
+   "chapter_id": 138058,
+   "path": "dev-clean/3576/138058/3576-138058-0005.flac",
+   "duration_s": 16.655,
+   "sample_rate": 16000,
+   "reference": "SEEING THIS SANCHO GOT UP AND GRAPPLING WITH HIS MASTER HE GRIPPED HIM WITH ALL HIS MIGHT IN HIS ARMS GIVING HIM A TRIP WITH THE HEEL STRETCHED HIM ON THE GROUND ON HIS BACK AND PRESSING HIS RIGHT KNEE ON HIS CHEST HELD HIS HANDS IN HIS OWN SO THAT HE COULD NEITHER MOVE NOR BREATHE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3752-4944-0026",
+   "speaker_id": 3752,
+   "chapter_id": 4944,
+   "path": "dev-clean/3752/4944/3752-4944-0026.flac",
+   "duration_s": 2.55,
+   "sample_rate": 16000,
+   "reference": "OUR ROADS LIE TOGETHER DOCTOR"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3752-4944-0052",
+   "speaker_id": 3752,
+   "chapter_id": 4944,
+   "path": "dev-clean/3752/4944/3752-4944-0052.flac",
+   "duration_s": 7.925,
+   "sample_rate": 16000,
+   "reference": "NORTH KNEW WELL THAT HE WOULD NEVER DARE TO ATTEMPT ANY SUCH ACT OF VIOLENCE BUT THE INSULT STUNG HIM LIKE THE CUT OF A WHIP"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3853-163249-0012",
+   "speaker_id": 3853,
+   "chapter_id": 163249,
+   "path": "dev-clean/3853/163249/3853-163249-0012.flac",
+   "duration_s": 14.77,
+   "sample_rate": 16000,
+   "reference": "THEN THEY WENT BACK TO THEIR WORK LITTLE DREAMING AS THEY TIED ROSES AND TWINED SMILAX WREATHS HOW NEAR THAT OTHER CHANCE WAS HOW SOON THEY WERE TO BE CALLED UPON TO KEEP THEIR PROMISE AND HOW WELL EACH WAS TO PERFORM THE PART GIVEN THEM IN LIFE AND DEATH"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "3853-163249-0020",
+   "speaker_id": 3853,
+   "chapter_id": 163249,
+   "path": "dev-clean/3853/163249/3853-163249-0020.flac",
+   "duration_s": 6.07,
+   "sample_rate": 16000,
+   "reference": "HE'S A KIND NEIGHBORLY MAN AND HIS BOY WILL TAKE MY PLACE ABOUT THE HOUSE AND PROTECT YOU FAITHFULLY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5338-24640-0009",
+   "speaker_id": 5338,
+   "chapter_id": 24640,
+   "path": "dev-clean/5338/24640/5338-24640-0009.flac",
+   "duration_s": 12.125,
+   "sample_rate": 16000,
+   "reference": "SINCE THAT TIME THEIR NUMBERS HAVE GRADUALLY DIMINISHED BUT A GOOD MANY ARE STILL TO BE FOUND IN THE WESTERN COUNTIES AND SEVERAL WITH A BETTER TEMPER THAN IN SEVENTEEN O SEVEN HAVE NOW TAKEN ARMS FOR GOVERNMENT"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5338-284437-0026",
+   "speaker_id": 5338,
+   "chapter_id": 284437,
+   "path": "dev-clean/5338/284437/5338-284437-0026.flac",
+   "duration_s": 15.925,
+   "sample_rate": 16000,
+   "reference": "AFTER MY DEATH A PINK MARBLE STATUE OF ME WILL BE SET UP IN THE GRAND COURT WITH THE STATUES OF THE OTHER KINGS AND QUEENS WHO HAVE RULED THIS LAND AND ALL THE PINKIES IN AGES TO COME WILL THEN HONOR ME AS HAVING BEEN A JUST AND UPRIGHT QUEEN THAT IS MY REWARD"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5536-43358-0004",
+   "speaker_id": 5536,
+   "chapter_id": 43358,
+   "path": "dev-clean/5536/43358/5536-43358-0004.flac",
+   "duration_s": 5.825,
+   "sample_rate": 16000,
+   "reference": "AMONG US ALL MEN WERE CREATED SONS OF GOD AND STOOD ERECT AS CONSCIOUS OF THEIR DIVINITY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5536-43359-0016",
+   "speaker_id": 5536,
+   "chapter_id": 43359,
+   "path": "dev-clean/5536/43359/5536-43359-0016.flac",
+   "duration_s": 6.05,
+   "sample_rate": 16000,
+   "reference": "LOVE BETWEEN MAN AND WOMAN IS FOUNDED ON THE MATING INSTINCT AND IS NOT FREE FROM DESIRE AND SELF SEEKING"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5694-64025-0021",
+   "speaker_id": 5694,
+   "chapter_id": 64025,
+   "path": "dev-clean/5694/64025/5694-64025-0021.flac",
+   "duration_s": 7.61,
+   "sample_rate": 16000,
+   "reference": "SO HE GOT A LARGE TWO INCH ROPE TIED ONE END AROUND THE MULE'S NECK AND THE OTHER TO THE CAISSON AND ORDERED THE DRIVER TO WHIP UP"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5694-64038-0017",
+   "speaker_id": 5694,
+   "chapter_id": 64038,
+   "path": "dev-clean/5694/64038/5694-64038-0017.flac",
+   "duration_s": 15.33,
+   "sample_rate": 16000,
+   "reference": "HOW EVERY PULSE DID BEAT AND LEAP AND HOW EVERY HEART DID THROB WITH EMOTIONS OF JOY WHICH SEEMED NEARLY AKIN TO HEAVEN WHEN WE RECEIVED THE GLAD INTELLIGENCE OF OUR ONWARD MARCH TOWARD THE LAND OF PROMISE AND OF OUR LOVED ONES"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5895-34629-0002",
+   "speaker_id": 5895,
+   "chapter_id": 34629,
+   "path": "dev-clean/5895/34629/5895-34629-0002.flac",
+   "duration_s": 3.925,
+   "sample_rate": 16000,
+   "reference": "SAINT PAUL IS A SAINT ONLY WITH EXTENUATING CIRCUMSTANCES"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "5895-34629-0020",
+   "speaker_id": 5895,
+   "chapter_id": 34629,
+   "path": "dev-clean/5895/34629/5895-34629-0020.flac",
+   "duration_s": 2.255,
+   "sample_rate": 16000,
+   "reference": "THESE WERE REMARKABLE TALENTS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6241-61943-0024",
+   "speaker_id": 6241,
+   "chapter_id": 61943,
+   "path": "dev-clean/6241/61943/6241-61943-0024.flac",
+   "duration_s": 7.36,
+   "sample_rate": 16000,
+   "reference": "I HAVE NOT THE SLIGHTEST DOUBT THAT IN HIGH WINDS ITS RED TILES WERE BLOWN OUT TO THE GREAT ANNOYANCE OF THE PASTOR AND CONGREGATION"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6241-61943-0027",
+   "speaker_id": 6241,
+   "chapter_id": 61943,
+   "path": "dev-clean/6241/61943/6241-61943-0027.flac",
+   "duration_s": 17.87,
+   "sample_rate": 16000,
+   "reference": "THE MEN APPEARED ROBUST BUT HEAVY FAIR HAIRED LIKE GERMANS BUT OF PENSIVE MIEN EXILES OF A HIGHER SCALE IN THE LADDER OF HUMANITY THAN THE ESKIMOS BUT I THOUGHT MUCH MORE UNHAPPY SINCE WITH SUPERIOR PERCEPTIONS THEY ARE COMPELLED TO LIVE WITHIN THE LIMITS OF THE POLAR CIRCLE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6295-244435-0001",
+   "speaker_id": 6295,
+   "chapter_id": 244435,
+   "path": "dev-clean/6295/244435/6295-244435-0001.flac",
+   "duration_s": 7.885,
+   "sample_rate": 16000,
+   "reference": "COLONEL LEONIDAS TALBOT REGARDED THE WHITE FLAG WITH FEELINGS IN WHICH TRIUMPH AND SADNESS WERE MINGLED STRANGELY"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6295-244435-0023",
+   "speaker_id": 6295,
+   "chapter_id": 244435,
+   "path": "dev-clean/6295/244435/6295-244435-0023.flac",
+   "duration_s": 3.41,
+   "sample_rate": 16000,
+   "reference": "HE HAD SEEN GREAT THINGS AND HE HAD DONE HIS SHARE OF THEM"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6313-76958-0008",
+   "speaker_id": 6313,
+   "chapter_id": 76958,
+   "path": "dev-clean/6313/76958/6313-76958-0008.flac",
+   "duration_s": 2.345,
+   "sample_rate": 16000,
+   "reference": "HUMPH GRUNTED CURLEY ADAMS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6313-76958-0014",
+   "speaker_id": 6313,
+   "chapter_id": 76958,
+   "path": "dev-clean/6313/76958/6313-76958-0014.flac",
+   "duration_s": 7.515,
+   "sample_rate": 16000,
+   "reference": "IN SPITE OF THEIR HARD COUCHES THE PONY RIDERS SLEPT SOUNDLY EVEN PROFESSOR ZEPPLIN HIMSELF NEVER WAKING THE WHOLE NIGHT THROUGH"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6319-57405-0007",
+   "speaker_id": 6319,
+   "chapter_id": 57405,
+   "path": "dev-clean/6319/57405/6319-57405-0007.flac",
+   "duration_s": 3.505,
+   "sample_rate": 16000,
+   "reference": "IS THERE ANYTHING THAT YOU WISH HE ASKED"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6319-64726-0007",
+   "speaker_id": 6319,
+   "chapter_id": 64726,
+   "path": "dev-clean/6319/64726/6319-64726-0007.flac",
+   "duration_s": 16.725,
+   "sample_rate": 16000,
+   "reference": "ONE SAID IT WAS AN ENCHANTED CASTLE ANOTHER THAT WITCHES LIVED THERE BUT MOST BELIEVED THAT IT WAS OCCUPIED BY A GREAT OGRE WHICH CARRIED THITHER ALL THE CHILDREN HE COULD CATCH AND ATE THEM UP ONE AT A TIME FOR NOBODY COULD GET AT HIM THROUGH THE WOOD"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6345-64257-0001",
+   "speaker_id": 6345,
+   "chapter_id": 64257,
+   "path": "dev-clean/6345/64257/6345-64257-0001.flac",
+   "duration_s": 21.93,
+   "sample_rate": 16000,
+   "reference": "AT THE TIME MARY HAD NOTED NOTHING OF THESE THINGS NOW SHE SAW THEM ALL AS FOR THE FIRST TIME IN MINUTE DETAIL WHILE SLOWLY SHE WENT UP THE STAIR AND THROUGH THE NARROWED WAYS AND HEARD THE SAME WIND THAT RAVED ALIKE ABOUT THE NEW GRAVE AND THE OLD HOUSE INTO WHICH LATTER FOR ALL THE BALES BANKED AGAINST THE WALLS IT FOUND MANY A CHINK OF ENTRANCE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "6345-93302-0001",
+   "speaker_id": 6345,
+   "chapter_id": 93302,
+   "path": "dev-clean/6345/93302/6345-93302-0001.flac",
+   "duration_s": 8.625,
+   "sample_rate": 16000,
+   "reference": "HER HANDS SHOULD HAVE BEEN FULL OF BLUEBELLS AND SHE SHOULD HAVE HELD THEM UP TO HIS FACE IN MAIDENLY DEFENCE AS HE SPRANG FORWARD TO TAKE HER IN HIS ARMS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "7850-286674-0009",
+   "speaker_id": 7850,
+   "chapter_id": 286674,
+   "path": "dev-clean/7850/286674/7850-286674-0009.flac",
+   "duration_s": 7.19,
+   "sample_rate": 16000,
+   "reference": "THEY KNEW THAT WHENEVER THEY STUCK OUT THEIR LOWER LIPS AT THE SMALL FISHES AND BUGS THEY SWAM AWAY AS FAST AS THEY COULD"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "7850-73752-0013",
+   "speaker_id": 7850,
+   "chapter_id": 73752,
+   "path": "dev-clean/7850/73752/7850-73752-0013.flac",
+   "duration_s": 2.58,
+   "sample_rate": 16000,
+   "reference": "IT WAS INDEED DANCING ON A VOLCANO"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "7976-105575-0028",
+   "speaker_id": 7976,
+   "chapter_id": 105575,
+   "path": "dev-clean/7976/105575/7976-105575-0028.flac",
+   "duration_s": 3.87,
+   "sample_rate": 16000,
+   "reference": "FOR SOME REASON THE DEAD AT HATCHIE BRIDGE WERE NOT BURIED"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "7976-110124-0000",
+   "speaker_id": 7976,
+   "chapter_id": 110124,
+   "path": "dev-clean/7976/110124/7976-110124-0000.flac",
+   "duration_s": 3.5499375,
+   "sample_rate": 16000,
+   "reference": "LONG AGO THERE LIVED A MERCHANT WHO HAD THREE DAUGHTERS"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "8297-275154-0025",
+   "speaker_id": 8297,
+   "chapter_id": 275154,
+   "path": "dev-clean/8297/275154/8297-275154-0025.flac",
+   "duration_s": 4.88,
+   "sample_rate": 16000,
+   "reference": "SHE SHALL HAVE YOUR MESSAGE ALL THAT I CAN DO TO PERSUADE HER SHALL BE DONE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "8297-275155-0002",
+   "speaker_id": 8297,
+   "chapter_id": 275155,
+   "path": "dev-clean/8297/275155/8297-275155-0002.flac",
+   "duration_s": 8.85,
+   "sample_rate": 16000,
+   "reference": "AFTER READING ONE OR TWO OF THE POLITICAL ARTICLES HE ARRIVED AT THE COLUMNS SPECIALLY DEVOTED TO FASHIONABLE INTELLIGENCE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "8842-302201-0006",
+   "speaker_id": 8842,
+   "chapter_id": 302201,
+   "path": "dev-clean/8842/302201/8842-302201-0006.flac",
+   "duration_s": 9.865,
+   "sample_rate": 16000,
+   "reference": "WHATEVER HER SWEET EYES ARE TURNED UPON SPIRITS OF LOVE DO ISSUE THENCE IN FLAME WHICH THROUGH THEIR EYES WHO THEN MAY LOOK ON THEM PIERCE TO THE HEART'S DEEP CHAMBER EVERY ONE"
+  },
+  {
+   "subset": "dev-clean",
+   "utterance": "8842-304647-0010",
+   "speaker_id": 8842,
+   "chapter_id": 304647,
+   "path": "dev-clean/8842/304647/8842-304647-0010.flac",
+   "duration_s": 12.195,
+   "sample_rate": 16000,
+   "reference": "WELL TOO IF HE LIKE LOVE WOULD FILCH OUR HOARD WITH PLEASURE TO OURSELVES SLUICING OUR VEIN AND VIGOUR TO PERPETUATE THE STRAIN OF LIFE BY SPILTH OF LIFE WITHIN US STORED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "116-288047-0004",
+   "speaker_id": 116,
+   "chapter_id": 288047,
+   "path": "dev-other/116/288047/116-288047-0004.flac",
+   "duration_s": 5.82,
+   "sample_rate": 16000,
+   "reference": "THE MYTH OF A ONE EYED PEOPLE LIVING IN INDIA HAS BEEN REPLACED BY ACCURATE INFORMATION CONCERNING THE HINDOOS"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "116-288047-0014",
+   "speaker_id": 116,
+   "chapter_id": 288047,
+   "path": "dev-other/116/288047/116-288047-0014.flac",
+   "duration_s": 2.505,
+   "sample_rate": 16000,
+   "reference": "GROWN UP PEOPLE CREATE SCIENCE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "700-122867-0036",
+   "speaker_id": 700,
+   "chapter_id": 122867,
+   "path": "dev-other/700/122867/700-122867-0036.flac",
+   "duration_s": 2.45,
+   "sample_rate": 16000,
+   "reference": "OF COURSE IT'S BETTER TO BE GOOD"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "700-122867-0039",
+   "speaker_id": 700,
+   "chapter_id": 122867,
+   "path": "dev-other/700/122867/700-122867-0039.flac",
+   "duration_s": 3.655,
+   "sample_rate": 16000,
+   "reference": "I WILL CALL IT A SNOOD THAT SOUNDS SO ROMANTIC"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1255-138279-0018",
+   "speaker_id": 1255,
+   "chapter_id": 138279,
+   "path": "dev-other/1255/138279/1255-138279-0018.flac",
+   "duration_s": 2.2,
+   "sample_rate": 16000,
+   "reference": "WELL I SAID THAT YOU MIGHT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1255-90413-0025",
+   "speaker_id": 1255,
+   "chapter_id": 90413,
+   "path": "dev-other/1255/90413/1255-90413-0025.flac",
+   "duration_s": 6.6699375,
+   "sample_rate": 16000,
+   "reference": "HE HAD NOT BEEN APPOINTED TO TAKE HER ACROSS TO THE DINING ROOM BUT AT THE TABLE FOUND HER EXACTLY OPPOSITE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1585-131718-0023",
+   "speaker_id": 1585,
+   "chapter_id": 131718,
+   "path": "dev-other/1585/131718/1585-131718-0023.flac",
+   "duration_s": 4.775,
+   "sample_rate": 16000,
+   "reference": "WE SOLD THEM FOR FORTY CENTS BUT THERE WERE ONLY ABOUT TWENTY OR THIRTY THOUSAND OF THEM"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1585-157660-0016",
+   "speaker_id": 1585,
+   "chapter_id": 157660,
+   "path": "dev-other/1585/157660/1585-157660-0016.flac",
+   "duration_s": 8.335,
+   "sample_rate": 16000,
+   "reference": "JAMES BURBAGE GAZED FOR A MOMENT ON THE MANLY FORM OF WILLIAM AND BLURTED OUT IN HIS BLUFF MANNER WHAT DO YOU KNOW"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1630-96099-0005",
+   "speaker_id": 1630,
+   "chapter_id": 96099,
+   "path": "dev-other/1630/96099/1630-96099-0005.flac",
+   "duration_s": 5.18,
+   "sample_rate": 16000,
+   "reference": "YOU SHALL BE DISMISSED DISCHARGED FROM THIS HOUR YOU ARE A DISGRACE TO THE FORCE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1630-96099-0009",
+   "speaker_id": 1630,
+   "chapter_id": 96099,
+   "path": "dev-other/1630/96099/1630-96099-0009.flac",
+   "duration_s": 6.105,
+   "sample_rate": 16000,
+   "reference": "WE ENTERED THE FIRST RESTAURANT THAT OF THE REUNITED FRIENDS YOU KNOW IT PERHAPS MONSIEUR"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1650-167613-0027",
+   "speaker_id": 1650,
+   "chapter_id": 167613,
+   "path": "dev-other/1650/167613/1650-167613-0027.flac",
+   "duration_s": 2.43,
+   "sample_rate": 16000,
+   "reference": "BUT WHAT AWAITS US TOMORROW"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1650-167613-0040",
+   "speaker_id": 1650,
+   "chapter_id": 167613,
+   "path": "dev-other/1650/167613/1650-167613-0040.flac",
+   "duration_s": 3.74,
+   "sample_rate": 16000,
+   "reference": "TAKE NO PRISONERS BUT KILL AND BE KILLED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1651-136854-0005",
+   "speaker_id": 1651,
+   "chapter_id": 136854,
+   "path": "dev-other/1651/136854/1651-136854-0005.flac",
+   "duration_s": 5.825,
+   "sample_rate": 16000,
+   "reference": "WHEREAS JOHNSON'S ABBREVIATIONS ARE ALL DISTINCT AND APPLICABLE TO EACH SUBJECT OF WHICH THE HEAD IS MENTIONED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1651-136854-0009",
+   "speaker_id": 1651,
+   "chapter_id": 136854,
+   "path": "dev-other/1651/136854/1651-136854-0009.flac",
+   "duration_s": 4.74,
+   "sample_rate": 16000,
+   "reference": "YOUTH AMBITIOUS AS THINKING HONOURS EASY TO BE HAD"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1686-142278-0032",
+   "speaker_id": 1686,
+   "chapter_id": 142278,
+   "path": "dev-other/1686/142278/1686-142278-0032.flac",
+   "duration_s": 4.35,
+   "sample_rate": 16000,
+   "reference": "WHEN GOD WILL NOT USE THEE IN ONE KIND YET HE WILL IN ANOTHER"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1686-142278-0038",
+   "speaker_id": 1686,
+   "chapter_id": 142278,
+   "path": "dev-other/1686/142278/1686-142278-0038.flac",
+   "duration_s": 1.96,
+   "sample_rate": 16000,
+   "reference": "GOD FORGIVE ME"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1701-141759-0009",
+   "speaker_id": 1701,
+   "chapter_id": 141759,
+   "path": "dev-other/1701/141759/1701-141759-0009.flac",
+   "duration_s": 3.06,
+   "sample_rate": 16000,
+   "reference": "YOU ARE ALL BLUBBERERS AND UNDERSTAND NOTHING"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "1701-141760-0007",
+   "speaker_id": 1701,
+   "chapter_id": 141760,
+   "path": "dev-other/1701/141760/1701-141760-0007.flac",
+   "duration_s": 2.595,
+   "sample_rate": 16000,
+   "reference": "AT THAT MOMENT THE DOOR OPENED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "2506-11267-0009",
+   "speaker_id": 2506,
+   "chapter_id": 11267,
+   "path": "dev-other/2506/11267/2506-11267-0009.flac",
+   "duration_s": 4.19,
+   "sample_rate": 16000,
+   "reference": "LOOK AT HONEST NATHAN HOUNDSDITCH AND HIS LADY AND THEIR LITTLE SON"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "2506-11278-0006",
+   "speaker_id": 2506,
+   "chapter_id": 11278,
+   "path": "dev-other/2506/11278/2506-11278-0006.flac",
+   "duration_s": 5.935,
+   "sample_rate": 16000,
+   "reference": "HOW WOULD YOU ACCOUNT FOR THE PRODIGIOUS BENEVOLENCE EXERCISED TOWARDS THE INTERESTING YOUNG FRENCH LADY"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3660-172183-0004",
+   "speaker_id": 3660,
+   "chapter_id": 172183,
+   "path": "dev-other/3660/172183/3660-172183-0004.flac",
+   "duration_s": 3.575,
+   "sample_rate": 16000,
+   "reference": "AND THE TEARS SHE SHED AND THE WORDS SHE HAD SPOKEN AWOKE HIM"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3660-6517-0032",
+   "speaker_id": 3660,
+   "chapter_id": 6517,
+   "path": "dev-other/3660/6517/3660-6517-0032.flac",
+   "duration_s": 2.78,
+   "sample_rate": 16000,
+   "reference": "THE BILGE PUMP IS DEPENDENT ON THE MAIN ENGINE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3663-172528-0011",
+   "speaker_id": 3663,
+   "chapter_id": 172528,
+   "path": "dev-other/3663/172528/3663-172528-0011.flac",
+   "duration_s": 4.34,
+   "sample_rate": 16000,
+   "reference": "SHE KNOWS WHAT SHE REQUIRES AND THE PHYSICIANS KNOW NOTHING"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3663-172528-0014",
+   "speaker_id": 3663,
+   "chapter_id": 172528,
+   "path": "dev-other/3663/172528/3663-172528-0014.flac",
+   "duration_s": 5.565,
+   "sample_rate": 16000,
+   "reference": "I ANSWERED NO BECAUSE I HAD ENTIRELY QUENCHED MY THIRST"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3915-57461-0029",
+   "speaker_id": 3915,
+   "chapter_id": 57461,
+   "path": "dev-other/3915/57461/3915-57461-0029.flac",
+   "duration_s": 5.54,
+   "sample_rate": 16000,
+   "reference": "BUT HOW YOU MANAGED TO ESCAPE AND ARE STILL ALIVE IS MORE THAN I CAN UNDERSTAND"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "3915-98647-0007",
+   "speaker_id": 3915,
+   "chapter_id": 98647,
+   "path": "dev-other/3915/98647/3915-98647-0007.flac",
+   "duration_s": 7.85,
+   "sample_rate": 16000,
+   "reference": "FOR THE GREATER EVENTS OF FAMILY LIFE THE HOME PROPHECIES ARE FELT TO BE TOO UNCERTAIN AND THE SERVICES OF THE FORTUNE TELLER MUST BE CALLED IN"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4153-186222-0012",
+   "speaker_id": 4153,
+   "chapter_id": 186222,
+   "path": "dev-other/4153/186222/4153-186222-0012.flac",
+   "duration_s": 7.43,
+   "sample_rate": 16000,
+   "reference": "MY FATHER TEACHES MUSIC AND MOTHER SCOLDS HIM CONTINUALLY FOR NOT BEING ABLE TO EARN ENOUGH MONEY TO KEEP OUT OF DEBT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4153-61735-0005",
+   "speaker_id": 4153,
+   "chapter_id": 61735,
+   "path": "dev-other/4153/61735/4153-61735-0005.flac",
+   "duration_s": 25.97,
+   "sample_rate": 16000,
+   "reference": "ON REACHING THE COPSE HE DISMOUNTED LED HIS HORSE IN AMONG THE UNDERWOOD HITCHED HIM BY LOOPING HIS BRIDLE REIN AROUND THE TOPMOST TWIGS OF AN ELASTIC BOUGH THEN DETACHING A LONG ROPE OF TWISTED HORSEHAIR FROM THE HORN OF HIS SADDLE AND INSERTING HIS ARM INTO ITS COIL HE GLIDED OUT TO THE EDGE OF THE ISLAND ON THAT SIDE THAT LAY TOWARDS THE HACIENDA"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4323-18416-0015",
+   "speaker_id": 4323,
+   "chapter_id": 18416,
+   "path": "dev-other/4323/18416/4323-18416-0015.flac",
+   "duration_s": 4.935,
+   "sample_rate": 16000,
+   "reference": "WELL THEN PHRONSIE IF YOU WANT IT I SUPPOSE IT MUST BE SAID MISTER KING QUITE AS A MATTER OF COURSE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4323-18416-0020",
+   "speaker_id": 4323,
+   "chapter_id": 18416,
+   "path": "dev-other/4323/18416/4323-18416-0020.flac",
+   "duration_s": 8.76,
+   "sample_rate": 16000,
+   "reference": "IF MISSUS CHATTERTON WAS AUNT TO CHARLOTTE PERSISTED PHRONSIE SLOWLY IT SEEMS AS IF CHARLOTTE OUGHT TO HAVE SOME OF THE MONEY IT REALLY DOES GRANDPAPA"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4515-11057-0040",
+   "speaker_id": 4515,
+   "chapter_id": 11057,
+   "path": "dev-other/4515/11057/4515-11057-0040.flac",
+   "duration_s": 2.83,
+   "sample_rate": 16000,
+   "reference": "WELL I'LL GO BACK TO MY SCRIBBLING"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4515-11057-0075",
+   "speaker_id": 4515,
+   "chapter_id": 11057,
+   "path": "dev-other/4515/11057/4515-11057-0075.flac",
+   "duration_s": 2.645,
+   "sample_rate": 16000,
+   "reference": "WE MUST SEE EACH OTHER AGAIN MARIAN"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4570-102353-0000",
+   "speaker_id": 4570,
+   "chapter_id": 102353,
+   "path": "dev-other/4570/102353/4570-102353-0000.flac",
+   "duration_s": 10.015,
+   "sample_rate": 16000,
+   "reference": "WE HAD THEN BUT LITTLE OF THAT MINUTE AND ACCURATE KNOWLEDGE OF THE INTERIOR OF THE CONTINENT WHICH WAS REQUISITE FOR A DETERMINATION OF THE PROBLEM"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4570-14911-0007",
+   "speaker_id": 4570,
+   "chapter_id": 14911,
+   "path": "dev-other/4570/14911/4570-14911-0007.flac",
+   "duration_s": 16.58,
+   "sample_rate": 16000,
+   "reference": "THAT A GREAT MANY OF THE TRUE ORDER WERE BRED BECAME VERY MANIFEST AS SOON AS THE HARRIER AND BEAGLE ASSOCIATION WAS FORMED AND MORE PARTICULARLY WHEN A SECTION OF THE PETERBOROUGH HOUND SHOW WAS RESERVED FOR THEM"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4572-112375-0000",
+   "speaker_id": 4572,
+   "chapter_id": 112375,
+   "path": "dev-other/4572/112375/4572-112375-0000.flac",
+   "duration_s": 6.92,
+   "sample_rate": 16000,
+   "reference": "HE HEARD THE PRINCE'S FURIOUS TREAD HE SAW HIS EYES GLOW FIERCELY RED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4572-112381-0018",
+   "speaker_id": 4572,
+   "chapter_id": 112381,
+   "path": "dev-other/4572/112381/4572-112381-0018.flac",
+   "duration_s": 6.62,
+   "sample_rate": 16000,
+   "reference": "BUT LAKSHMAN'S ARM A SHOWER WILL SEND OF DEADLY SHAFTS THOSE WALLS TO REND"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4831-25894-0030",
+   "speaker_id": 4831,
+   "chapter_id": 25894,
+   "path": "dev-other/4831/25894/4831-25894-0030.flac",
+   "duration_s": 11.25,
+   "sample_rate": 16000,
+   "reference": "FOUR SOCKS INSTEAD OF THREE AND BY THE FOURTH PINNED OUT QUITE ELEGANTLY WAS A LITTLE DRESS EVIDENTLY MEANT FOR HER A WARM WOOLLEN DRESS ALL MADE AND ACTUALLY WITH BRIGHT BUTTONS ON IT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "4831-25894-0035",
+   "speaker_id": 4831,
+   "chapter_id": 25894,
+   "path": "dev-other/4831/25894/4831-25894-0035.flac",
+   "duration_s": 9.805,
+   "sample_rate": 16000,
+   "reference": "BEFORE THEY WENT HOME THE KIND MAMMA TOLD TESSA SHE SHOULD BE HER FRIEND AND GAVE HER A MOTHERLY KISS WHICH WARMED THE CHILD'S HEART AND SEEMED TO SET A SEAL UPON THAT PROMISE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "5543-27761-0039",
+   "speaker_id": 5543,
+   "chapter_id": 27761,
+   "path": "dev-other/5543/27761/5543-27761-0039.flac",
+   "duration_s": 5.665,
+   "sample_rate": 16000,
+   "reference": "THIS EXPRESSION OF CURIOSITY GAVE HER FACE THE LOOK OF A WOODEN ROUGHLY PAINTED DOLL"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "5543-27761-0040",
+   "speaker_id": 5543,
+   "chapter_id": 27761,
+   "path": "dev-other/5543/27761/5543-27761-0040.flac",
+   "duration_s": 6.11,
+   "sample_rate": 16000,
+   "reference": "YES THAT'S BAD REPEATED AGATHYA WITH CONVICTION TERRIBLY BAD WELL"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "5849-50962-0001",
+   "speaker_id": 5849,
+   "chapter_id": 50962,
+   "path": "dev-other/5849/50962/5849-50962-0001.flac",
+   "duration_s": 5.645,
+   "sample_rate": 16000,
+   "reference": "IT'S A SCHOONER SAID MISTER BINGHAM TO MISTER MINTURN AND SHE HAS A VERY HEAVY CARGO"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "5849-50964-0003",
+   "speaker_id": 5849,
+   "chapter_id": 50964,
+   "path": "dev-other/5849/50964/5849-50964-0003.flac",
+   "duration_s": 4.72,
+   "sample_rate": 16000,
+   "reference": "AND DOROTHY WENT UP AND DOWN THE ROOM LIKE THE PICTURES OF CINDERELLA'S PROUD SISTERS"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6123-59150-0042",
+   "speaker_id": 6123,
+   "chapter_id": 59150,
+   "path": "dev-other/6123/59150/6123-59150-0042.flac",
+   "duration_s": 6.91,
+   "sample_rate": 16000,
+   "reference": "AS TO THE MAN HIMSELF THE VICOMTE DE VOGUEE DESCRIBED HIM AS HE SAW HIM IN THE LAST YEARS OF HIS LIFE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6123-59186-0032",
+   "speaker_id": 6123,
+   "chapter_id": 59186,
+   "path": "dev-other/6123/59186/6123-59186-0032.flac",
+   "duration_s": 7.885,
+   "sample_rate": 16000,
+   "reference": "THE REAL WORLD TO MISTER HARDY IS THE WORLD OF ANCIENT HUMAN THINGS IN WHICH WAR HAS COME TO BE A HIDEOUS IRRELEVANCE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6267-65525-0021",
+   "speaker_id": 6267,
+   "chapter_id": 65525,
+   "path": "dev-other/6267/65525/6267-65525-0021.flac",
+   "duration_s": 23.845,
+   "sample_rate": 16000,
+   "reference": "JOHN LINCOLN WROTE BREEZY ACCOUNTS OF RANCH LIFE AND ADVENTURES ON THE FAR WESTERN PLAINS SO ALIEN AND REMOTE FROM SNUG HUMDRUM PLAINFIELD LIFE THAT SIDNEY ALWAYS HAD THE SENSATION OF CROSSING A GULF WHEN SHE OPENED A LETTER FROM THE BAR N AS FOR SIDNEY'S OWN LETTER THIS IS THE WAY IT READ AS SHE WROTE IT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6267-65525-0033",
+   "speaker_id": 6267,
+   "chapter_id": 65525,
+   "path": "dev-other/6267/65525/6267-65525-0033.flac",
+   "duration_s": 7.85,
+   "sample_rate": 16000,
+   "reference": "SIDNEY TROD THE WAY OF THE TRANSGRESSOR AND FOUND THAT ITS THORNS PIERCED TO BONE AND MARROW"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6455-67803-0013",
+   "speaker_id": 6455,
+   "chapter_id": 67803,
+   "path": "dev-other/6455/67803/6455-67803-0013.flac",
+   "duration_s": 4.055,
+   "sample_rate": 16000,
+   "reference": "THAT IS ONE OF THE REASONS WHY SHE LOATHES ME SO SHE ADDED"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6455-67804-0019",
+   "speaker_id": 6455,
+   "chapter_id": 67804,
+   "path": "dev-other/6455/67804/6455-67804-0019.flac",
+   "duration_s": 2.285,
+   "sample_rate": 16000,
+   "reference": "PERHAPS WE OWE THIS TO LORD LANSDOWNE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6467-56885-0005",
+   "speaker_id": 6467,
+   "chapter_id": 56885,
+   "path": "dev-other/6467/56885/6467-56885-0005.flac",
+   "duration_s": 2.665,
+   "sample_rate": 16000,
+   "reference": "KANTI WENT ON CLEANING HIS GUN"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6467-94831-0013",
+   "speaker_id": 6467,
+   "chapter_id": 94831,
+   "path": "dev-other/6467/94831/6467-94831-0013.flac",
+   "duration_s": 7.12,
+   "sample_rate": 16000,
+   "reference": "MISSUS GREEN WAS VERY TENDER HEARTED IN SPITE OF HER SOMEWHAT FREE TONGUE AND SHE WAS ALL SYMPATHY IMMEDIATELY"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6599-38590-0006",
+   "speaker_id": 6599,
+   "chapter_id": 38590,
+   "path": "dev-other/6599/38590/6599-38590-0006.flac",
+   "duration_s": 2.86,
+   "sample_rate": 16000,
+   "reference": "GIVE IT ME OR RETURN AS THOU HAST COME"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6599-38590-0007",
+   "speaker_id": 6599,
+   "chapter_id": 38590,
+   "path": "dev-other/6599/38590/6599-38590-0007.flac",
+   "duration_s": 3.755,
+   "sample_rate": 16000,
+   "reference": "I AM QUITE WILLING SAID THE KING LET HIM HAVE IT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6841-88291-0046",
+   "speaker_id": 6841,
+   "chapter_id": 88291,
+   "path": "dev-other/6841/88291/6841-88291-0046.flac",
+   "duration_s": 5.525,
+   "sample_rate": 16000,
+   "reference": "IF LUCK ATTENDED HIS FIRST EFFORT HIS SARCASM WAS PROFOUND THERE'S YORE LITTLE CALF SAID HE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "6841-88294-0045",
+   "speaker_id": 6841,
+   "chapter_id": 88294,
+   "path": "dev-other/6841/88294/6841-88294-0045.flac",
+   "duration_s": 6.26,
+   "sample_rate": 16000,
+   "reference": "HOWEVER I DIDN'T PAY MUCH ATTENTION TO THAT BEING AT THE TIME ALMIGHTY BUSY HOLDING DOWN MY CARD GAMES"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7601-101619-0002",
+   "speaker_id": 7601,
+   "chapter_id": 101619,
+   "path": "dev-other/7601/101619/7601-101619-0002.flac",
+   "duration_s": 20.81,
+   "sample_rate": 16000,
+   "reference": "SOCRATES SAYS THAT SOME GOD TRIED TO MIX IN ONE MASS AND TO CONFOUND PAIN AND PLEASURE BUT NOT BEING ABLE TO DO IT HE BETHOUGHT HIM AT LEAST TO COUPLE THEM BY THE TAIL METRODORUS SAID THAT IN SORROW THERE IS SOME MIXTURE OF PLEASURE"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7601-175351-0026",
+   "speaker_id": 7601,
+   "chapter_id": 175351,
+   "path": "dev-other/7601/175351/7601-175351-0026.flac",
+   "duration_s": 18.77,
+   "sample_rate": 16000,
+   "reference": "PRINCE ALBERT LAND WHICH THE FORWARD WAS THEN COASTING BEARS ALSO THE NAME OF GRINNELL LAND AND THOUGH HATTERAS FROM HIS HATRED TO THE YANKEES WOULD NEVER CALL IT BY ITS AMERICAN NAME IT IS THE ONE IT GENERALLY GOES BY"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7641-96684-0026",
+   "speaker_id": 7641,
+   "chapter_id": 96684,
+   "path": "dev-other/7641/96684/7641-96684-0026.flac",
+   "duration_s": 7.805,
+   "sample_rate": 16000,
+   "reference": "AND AS FOR ADMETUS HE WENT WITHIN THE CHAMBER AND KNELT BESIDE THE BED ON WHICH ALCESTIS HAD LAIN AND THOUGHT OF HIS TERRIBLE LOSS"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7641-96684-0035",
+   "speaker_id": 7641,
+   "chapter_id": 96684,
+   "path": "dev-other/7641/96684/7641-96684-0035.flac",
+   "duration_s": 3.655,
+   "sample_rate": 16000,
+   "reference": "SHE WAS VEILED AND ADMETUS COULD NOT SEE HER FEATURES"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7697-105815-0006",
+   "speaker_id": 7697,
+   "chapter_id": 105815,
+   "path": "dev-other/7697/105815/7697-105815-0006.flac",
+   "duration_s": 8.35,
+   "sample_rate": 16000,
+   "reference": "THEN HE TOOK HIM TO A LARGE ROOM THAT WAS FULL OF DUST FOR IT HAD NOT BEEN SWEPT AND INTERPRETER TOLD HIS MAN TO SWEEP IT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "7697-245712-0004",
+   "speaker_id": 7697,
+   "chapter_id": 245712,
+   "path": "dev-other/7697/245712/7697-245712-0004.flac",
+   "duration_s": 4.055,
+   "sample_rate": 16000,
+   "reference": "THIRDLY THIS IS PROVED FROM A PROPERTY OF MAN AND OF OTHER ANIMALS"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8173-294714-0008",
+   "speaker_id": 8173,
+   "chapter_id": 294714,
+   "path": "dev-other/8173/294714/8173-294714-0008.flac",
+   "duration_s": 7.1,
+   "sample_rate": 16000,
+   "reference": "YOU KNOW TO MY SHAME I CONFESSED IT TO YOU THE LAST TIME WE MET YOU KNOW THAT MY HEART IN SECRET IS ALL YOURS"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8173-294714-0042",
+   "speaker_id": 8173,
+   "chapter_id": 294714,
+   "path": "dev-other/8173/294714/8173-294714-0042.flac",
+   "duration_s": 6.95,
+   "sample_rate": 16000,
+   "reference": "UNHAPPILY HE RETURNED TO TELL ME OF HIS GOOD FORTUNE AND THE SAME DAY HE WAS ARRESTED FOR DEBT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8254-115543-0031",
+   "speaker_id": 8254,
+   "chapter_id": 115543,
+   "path": "dev-other/8254/115543/8254-115543-0031.flac",
+   "duration_s": 4.92,
+   "sample_rate": 16000,
+   "reference": "WHEN THE LITTER WAS PUT DOWN A YOUNG BOY STEPPED OUT LOOKING VERY PROUD AND HAUGHTY"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8254-84205-0075",
+   "speaker_id": 8254,
+   "chapter_id": 84205,
+   "path": "dev-other/8254/84205/8254-84205-0075.flac",
+   "duration_s": 2.79,
+   "sample_rate": 16000,
+   "reference": "BUT YOU'VE GOT TO TELL THE LOOKOUT WHAT'S COMING OFF"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8288-274162-0013",
+   "speaker_id": 8288,
+   "chapter_id": 274162,
+   "path": "dev-other/8288/274162/8288-274162-0013.flac",
+   "duration_s": 4.17,
+   "sample_rate": 16000,
+   "reference": "FORGIVE ME MY DEAR FRIEND I WAS GOING TO ASK YOU THAT"
+  },
+  {
+   "subset": "dev-other",
+   "utterance": "8288-274162-0025",
+   "speaker_id": 8288,
+   "chapter_id": 274162,
+   "path": "dev-other/8288/274162/8288-274162-0025.flac",
+   "duration_s": 3.26,
+   "sample_rate": 16000,
+   "reference": "NO IT IS NOT FROM CURIOSITY IT IS FROM LOVE"
+  }
+ ],
+ "selection_sha256": "94fee5a6bde157bc818ca50dbb933442eb5dfc64506a033f48763df387ea0aea"
+}

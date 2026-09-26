@@ -1,0 +1,14 @@
+{
+ "set": "pilot",
+ "created_utc": "2026-09-26T07:22:02.276775+00:00",
+ "n_utterances": 138,
+ "files": {
+  "asr_outputs.csv": "5b50495540f65495074d5107036f63c72667d556006b92efeb5d9f899700d0c2",
+  "audio_manifest.csv": "6d7fc29c38ba3f728c48b83e9da79bc21fb4858623d1adf57d64670a9b220e77",
+  "pooled_transfer.csv": "78b10d648ca6ee333f14c97926941cb04160214caf9288f7eeeb98fb2ff818fa",
+  "pooled_transfer_curves.csv": "bbb9c930e70c58042c9fe583391f1824d3d3b5d2d510955094ff6f93f2eedbd7",
+  "signal_metrics.csv": "7135b38527a6505a2936fbbab52777ef16e4295586d329c5bf5e4610ad51b158",
+  "utterance_metrics.csv": "803355dc0a43a9180598d2abbd78c6ba92da88ce8e374b7aeef9eef2fa2db7d7"
+ },
+ "outputs_sha256": "df65e8cbe2fa8be245b1e0520b930487923fd3f9996705973ba9330bcd0d6a3b"
+}

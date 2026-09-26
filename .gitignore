@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+compressed/
+.cache/
+
+# Windows download metadata (WSL)
+*:Zone.Identifier
+
+# Resumable Stage 3 decode checkpoints (not covered by any seal)
+results_paper/stage3_asr/raw/*/progress.jsonl
+
+# Rendered manuscript output (regenerate with manuscript/tools/render.sh)
+manuscript/build/

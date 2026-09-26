@@ -1,0 +1,8 @@
+gate,name,status,evidence
+1,forced 8 kbps WB reliable on every utterance,PASS,40/40 files 100% WB; 17442/17442 packets WB
+2,every packet of every cell in the requested bandwidth,PASS,opus_12k_wb: 1.0000; opus_12k_nb: 1.0000; opus_8k_wb: 1.0000; opus_8k_nb: 1.0000
+3,WB and NB measured bitrate comparable at each nominal rate (aggregate and median gap <= 5%),PASS,"12k measured: aggregate gap 1.05%, median |gap| 1.18%; 12k payload: aggregate gap 1.05%, median |gap| 1.18%; 8k measured: aggregate gap 4.14%, median |gap| 4.12%; 8k payload: aggregate gap 4.14%, median |gap| 4.12%"
+4,all cells decode through the frozen torchaudio.load path,PASS,decoded rate [np.int64(48000)]; Ogg packet round trip 160/160; TOC parsers agree 160/160
+5,"decoded length, trimming, alignment understood and reproducible",PASS,"decoded 48k length = 3N in 160/160; re-encode identical 160/160; pre-skip [np.int64(312)]; lags by cell opus_12k_wb {""0"": 40}; opus_12k_nb {""2"": 40}; opus_8k_wb {""0"": 40}; opus_8k_nb {""2"": 39, ""1"": 1}"
+6,WB vs NB spectral difference measurable,PASS,"12k: median WB-NB retained bandwidth 3438 Hz (40/40 utterances >= 2000), 4-8 kHz power 16.9 dB (40/40 >= 6); 8k: median WB-NB retained bandwidth 3438 Hz (40/40 utterances >= 2000), 4-8 kHz power 18.8 dB (40/40 >= 6)"
+7,no hidden encoder difference between cells except bitrate and bandwidth,PASS,differing settings/queries beyond bitrate and bandwidth: none; coding mode SILK in all packets of all cells: True; all packets single-frame without padding (payload = coded bits): True

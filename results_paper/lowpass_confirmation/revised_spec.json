@@ -1,0 +1,219 @@
+{
+ "stage": "2B revised Gate 5, confirmatory validation",
+ "created_utc": "2026-09-26T06:02:50.716156+00:00",
+ "frozen_filter": {
+  "path": "results_paper/lowpass_validation/frozen_filter.json",
+  "taps_sha256": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+  "num_taps": 1023
+ },
+ "original_specification": {
+  "tolerances": {
+   "g1_max_abs_lag_samples": 0,
+   "g3_lsd_0_3k_median_max_db": 0.5,
+   "g3_lsd_0_3k_p95_max_db": 1.0,
+   "g3_lsd_0_4k_ratio_to_opus8nb_max": 0.4,
+   "g3_min_coherence_up_to_hz": 3800.0,
+   "g3_min_coherence": 0.99,
+   "g4_coherent_bw_threshold_db": -20.0,
+   "g4_coherent_bw_vs_reference_max_hz": 62.5,
+   "g4_coherent_bw_vs_opus8nb_max_hz": 125.0,
+   "g4_retained_bw_median_range_hz": [
+    3950.0,
+    4200.0
+   ],
+   "g5_coherent_hf_vs_reference_max_db": 3.0,
+   "g5_coherent_hf_vs_opus8nb_max_db": 6.0,
+   "g6_h1_rms_band_hz": [
+    3000.0,
+    4200.0
+   ],
+   "g6_h1_rms_max_db": 1.5,
+   "g6_h1_abs_band_hz": [
+    3000.0,
+    4150.0
+   ],
+   "g6_h1_abs_max_db": 4.0,
+   "g6_stopband_from_hz": 4200.0,
+   "g6_stopband_max_db": -25.0
+  },
+  "tolerances_sha256": "bc91d298ac402bbed082dfd71de0ec4dc15d0c1419261a7fdac6ca6a88c49833",
+  "verdict": "FAIL (Gate 5 and Gate 7, results_paper/lowpass_validation)",
+  "files_sha256": {
+   "results_paper/lowpass_validation/calibration_curves.csv": "5899391a91bfd84780e57cce2af616ae51913e6b842eb7470a9b6985d0839388",
+   "results_paper/lowpass_validation/cell_summary.csv": "ee983710c491c7db94c4b8d659ad1fae4e80e4824f988966aa60a7536abe7a16",
+   "results_paper/lowpass_validation/dev-clean_utterance_rows.csv": "11abd3633284f5520c36ad8606f501c0636eac5e847b9da86c611894852a0a97",
+   "results_paper/lowpass_validation/dev-other_utterance_rows.csv": "cc359ae181c6b60d28e7826c21c3140d7967707abd7db2c24a0e37c121a22043",
+   "results_paper/lowpass_validation/environment.json": "099b938a92dd701502f83bd1e2c89903c58b2fb8133160c78b233db5143e3525",
+   "results_paper/lowpass_validation/frozen_filter.json": "c3b23b6e798f6bd7afb9e1d41985290d5c4d8867bff71eb5eb2dc4e9dcf88e10",
+   "results_paper/lowpass_validation/gates.csv": "f6491845e2c84a783b1eb36ac1302c653cd867e3b75700df9bc0b2011c34b2a5",
+   "results_paper/lowpass_validation/transfer_curves.csv": "ba952d4e348c70b77519ddb6dc67669ffc44d913db0c74f965eabbd8fcf33711",
+   "results_paper/lowpass_validation/validation_report.md": "b6271d82a493a178d3a6f7ca221f6a3a913a104ada437cce92aef6ab90561bc3",
+   "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+   "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb"
+  }
+ },
+ "revised_gate5": {
+  "name": "4-8 kHz attenuation matches SILK-NB's linear (bitrate-independent) response",
+  "criteria": [
+   "|coherent 4-8 kHz power (LP) - coherent 4-8 kHz power (SILK-NB linear reference, same utterances)| <= g5_coherent_hf_vs_reference_max_db (3.0 dB, unchanged)",
+   "median total 4-8 kHz power change (LP) <= median total 4-8 kHz power change (Opus8-NB) (unchanged)"
+  ],
+  "removed": "|coherent 4-8 kHz power (LP) - coherent 4-8 kHz power (Opus8-NB)| <= 6.0 dB; Opus8-NB coherent 4-8 kHz power is reported as information only",
+  "reason": "The control is defined as SILK-NB's linear band-limiting component only. Opus8-NB's coherent 4-8 kHz power additionally contains bitrate-dependent in-band coding droop across the 4 kHz edge (dev-clean: linear reference -25.3 dB, Opus12-NB -31.1 dB, Opus8-NB -34.6 dB; |H1| at 3.5-4.25 kHz 5-11 dB below the linear chain at 8 kbps), which the definition excludes."
+ },
+ "removed_tolerance_keys": [
+  "g5_coherent_hf_vs_opus8nb_max_db"
+ ],
+ "revised_tolerances": {
+  "g1_max_abs_lag_samples": 0,
+  "g3_lsd_0_3k_median_max_db": 0.5,
+  "g3_lsd_0_3k_p95_max_db": 1.0,
+  "g3_lsd_0_4k_ratio_to_opus8nb_max": 0.4,
+  "g3_min_coherence_up_to_hz": 3800.0,
+  "g3_min_coherence": 0.99,
+  "g4_coherent_bw_threshold_db": -20.0,
+  "g4_coherent_bw_vs_reference_max_hz": 62.5,
+  "g4_coherent_bw_vs_opus8nb_max_hz": 125.0,
+  "g4_retained_bw_median_range_hz": [
+   3950.0,
+   4200.0
+  ],
+  "g5_coherent_hf_vs_reference_max_db": 3.0,
+  "g6_h1_rms_band_hz": [
+   3000.0,
+   4200.0
+  ],
+  "g6_h1_rms_max_db": 1.5,
+  "g6_h1_abs_band_hz": [
+   3000.0,
+   4150.0
+  ],
+  "g6_h1_abs_max_db": 4.0,
+  "g6_stopband_from_hz": 4200.0,
+  "g6_stopband_max_db": -25.0
+ },
+ "unchanged": [
+  "filter taps (frozen_filter.json)",
+  "calibration procedure",
+  "encoder settings of every cell",
+  "gates 1, 2, 3, 4, 6 and their tolerances",
+  "Gate 5 reference tolerance (3.0 dB)"
+ ],
+ "encoder_settings": {
+  "opus_8k_nb": {
+   "bitrate_bps": 8000,
+   "bandwidth": "NB",
+   "max_bandwidth": "FB",
+   "sample_rate": 16000,
+   "channels": 1,
+   "application": "audio",
+   "vbr": true,
+   "vbr_constraint": false,
+   "complexity": 10,
+   "frame_ms": 20.0,
+   "signal": "auto",
+   "packet_loss_perc": 0,
+   "inband_fec": false,
+   "dtx": false,
+   "lsb_depth": 24,
+   "prediction_disabled": false,
+   "expert_frame_duration": "arg",
+   "force_channels": "auto"
+  },
+  "opus_12k_nb": {
+   "bitrate_bps": 12000,
+   "bandwidth": "NB",
+   "max_bandwidth": "FB",
+   "sample_rate": 16000,
+   "channels": 1,
+   "application": "audio",
+   "vbr": true,
+   "vbr_constraint": false,
+   "complexity": 10,
+   "frame_ms": 20.0,
+   "signal": "auto",
+   "packet_loss_perc": 0,
+   "inband_fec": false,
+   "dtx": false,
+   "lsb_depth": 24,
+   "prediction_disabled": false,
+   "expert_frame_duration": "arg",
+   "force_channels": "auto"
+  },
+  "silk_nb_linear_ref": {
+   "bitrate_bps": 40000,
+   "bandwidth": "NB",
+   "max_bandwidth": "FB",
+   "sample_rate": 16000,
+   "channels": 1,
+   "application": "audio",
+   "vbr": true,
+   "vbr_constraint": false,
+   "complexity": 10,
+   "frame_ms": 20.0,
+   "signal": "voice",
+   "packet_loss_perc": 0,
+   "inband_fec": false,
+   "dtx": false,
+   "lsb_depth": 24,
+   "prediction_disabled": false,
+   "expert_frame_duration": "arg",
+   "force_channels": "auto"
+  }
+ },
+ "confirmation_set": {
+  "subset": "train-clean-100",
+  "speaker_source": "data/LibriSpeech/SPEAKERS.TXT",
+  "speakers_file_sha256": "3350f093382f8baa1d589c9f5a5cee8ec3705e656f521d6eafbaa31a5fcd8f76",
+  "seed": 5305,
+  "speaker_rule": "random.Random(5305).sample of 20 female then 20 male speakers from the sorted train-clean-100 IDs in SPEAKERS.TXT",
+  "speakers_female": [
+   40,
+   103,
+   200,
+   248,
+   730,
+   1246,
+   1926,
+   2007,
+   2196,
+   2416,
+   2691,
+   4137,
+   4340,
+   4362,
+   4680,
+   5163,
+   6272,
+   6818,
+   7113,
+   7517
+  ],
+  "speakers_male": [
+   60,
+   118,
+   332,
+   1034,
+   1867,
+   2384,
+   2518,
+   2843,
+   3607,
+   3664,
+   4859,
+   5049,
+   5104,
+   5463,
+   5703,
+   6437,
+   6925,
+   8609,
+   8630,
+   8770
+  ],
+  "disjoint_from_dev_speakers": true,
+  "utterance_rule": "For each selected speaker in ascending numeric ID order, list every <speaker>/<chapter>/*.flac file of train-clean-100, sort the file names, and pick one with random.Random(5305).choice (one generator shared across speakers, in that order). File names only; no audio or transcript is read during selection."
+ },
+ "confirmation_gates": "Gates 1-4 and 6 (original), Gate 5 (revised) on the confirmation set; PASS only if all pass with the frozen filter",
+ "spec_sha256": "166f5672263373ece22a955baf3b2e1f3c7ac7c9ce14098f9daa65938d9055ff"
+}

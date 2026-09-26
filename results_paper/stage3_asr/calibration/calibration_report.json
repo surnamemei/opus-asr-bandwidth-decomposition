@@ -1,0 +1,102 @@
+{
+ "created_utc": "2026-09-26T07:16:51.203631+00:00",
+ "utterances": 20,
+ "purpose": "pipeline debugging / decoding sanity only; no condition comparison is computed",
+ "audio_by_condition": [
+  {
+   "condition": "REF",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 0,
+   "lag_max": 0,
+   "rms_change_db_median": 0.0,
+   "min_share_expected_packets": NaN
+  },
+  {
+   "condition": "LP",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 0,
+   "lag_max": 0,
+   "rms_change_db_median": -0.1108810741259254,
+   "min_share_expected_packets": NaN
+  },
+  {
+   "condition": "OPUS",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 2,
+   "lag_max": 2,
+   "rms_change_db_median": -0.7891666615430819,
+   "min_share_expected_packets": 1.0
+  },
+  {
+   "condition": "SILK",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 2,
+   "lag_max": 2,
+   "rms_change_db_median": -0.13426076512242335,
+   "min_share_expected_packets": 1.0
+  },
+  {
+   "condition": "NEG_LP",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 0,
+   "lag_max": 0,
+   "rms_change_db_median": -0.0029158457995514,
+   "min_share_expected_packets": NaN
+  },
+  {
+   "condition": "NEG_CODEC",
+   "length_equals_ref": true,
+   "nonfinite": 0,
+   "clipped_samples": 0,
+   "lag_min": 0,
+   "lag_max": 0,
+   "rms_change_db_median": -0.0006083656816244999,
+   "min_share_expected_packets": 1.0
+  }
+ ],
+ "empty_hypotheses_by_model_condition": {
+  "LP": {
+   "wav2vec2": 0,
+   "whisper": 0
+  },
+  "NEG_CODEC": {
+   "wav2vec2": 0,
+   "whisper": 0
+  },
+  "NEG_LP": {
+   "wav2vec2": 0,
+   "whisper": 0
+  },
+  "OPUS": {
+   "wav2vec2": 0,
+   "whisper": 0
+  },
+  "REF": {
+   "wav2vec2": 0,
+   "whisper": 0
+  },
+  "SILK": {
+   "wav2vec2": 0,
+   "whisper": 0
+  }
+ },
+ "ref_wer_pct_by_model": {
+  "wav2vec2": 2.2448979591836733,
+  "whisper": 1.0204081632653061
+ },
+ "determinism_first_two_utterances": {
+  "waveforms_identical": true,
+  "hypotheses_identical": true
+ },
+ "seconds_per_utterance": 1.31846125125885
+}

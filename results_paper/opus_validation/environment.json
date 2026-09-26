@@ -1,0 +1,88 @@
+{
+  "recorded_utc": "2026-09-26T05:30:00.012501+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "python_executable": "/home/mei/elec5305-project/.venv/bin/python",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "torch": "2.13.0",
+    "torchaudio": "2.11.0",
+    "torchcodec": "0.16.0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "jiwer": "4.0.0",
+    "soundfile": "0.14.0",
+    "tqdm": "4.70.0",
+    "matplotlib": "3.11.1",
+    "encodec": "0.1.1"
+  },
+  "cuda": {
+    "available": true,
+    "torch_cuda_version": "13.0",
+    "cudnn_version": 92000,
+    "device_used": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "compute_capability": "12.0",
+    "driver": "596.49"
+  },
+  "torch_flags": {
+    "cuda.matmul.allow_tf32": false,
+    "cudnn.allow_tf32": true,
+    "cudnn.benchmark": false,
+    "cudnn.deterministic": false,
+    "float32_matmul_precision": "highest"
+  },
+  "ffmpeg": {
+    "binary": "/usr/bin/ffmpeg",
+    "version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "libraries": [
+      "libavutil      58. 29.100 / 58. 29.100",
+      "libavcodec     60. 31.102 / 60. 31.102",
+      "libavformat    60. 16.100 / 60. 16.100",
+      "libavdevice    60.  3.100 / 60.  3.100",
+      "libavfilter     9. 12.100 /  9. 12.100",
+      "libswscale      7.  5.100 /  7.  5.100",
+      "libswresample   4. 12.100 /  4. 12.100",
+      "libpostproc    57.  3.100 / 57.  3.100"
+    ],
+    "dpkg": [
+      "ffmpeg 7:6.1.1-3ubuntu5",
+      "libopus0 1.4-1build1"
+    ]
+  },
+  "libopus_linked_by_ffmpeg": {
+    "path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+    "version": "libopus 1.4"
+  },
+  "torchcodec_ffmpeg_libraries": {
+    "libavfilter": "[9, 12, 100]",
+    "libavutil": "[58, 29, 100]",
+    "libavcodec": "[60, 31, 102]",
+    "libavformat": "[60, 16, 100]",
+    "ffmpeg_version": "6.1.1-3ubuntu5"
+  },
+  "wav2vec2_checkpoint": {
+    "path": "/home/mei/.cache/torch/hub/checkpoints/wav2vec2_fairseq_base_ls960_asr_ls960.pth",
+    "sha256": "488fd4f16de84438ffc945334278c1b9fb9b7159a806c1080b16111a958c945d"
+  },
+  "frozen_standardisation_sha256": "e64b41361b6461d248129b908f6498df8f76c33e5f95f250c577b20dbe7eda37",
+  "librispeech_root": "/home/mei/elec5305-project/data",
+  "git": {
+    "head": "8a77f412ee8ac779e5230d1d5a8df3cb0e027286",
+    "branch": "paper-extension",
+    "status": [
+      "?? paper/opus_direct.py",
+      "?? paper/run_opus_validation.py",
+      "?? paper/tests/test_opus_direct.py",
+      "?? results_paper/opus_validation/"
+    ]
+  },
+  "frozen_environment_note": "The environment that produced the frozen results was not recorded in the repository; equivalence is established by reproduction, not by version matching.",
+  "libopus_loaded_by_opus_direct": {
+    "path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+    "version": "libopus 1.4"
+  },
+  "dev_data": {
+    "subset": "dev-clean",
+    "root": "/home/mei/elec5305-project/data/LibriSpeech/dev-clean"
+  }
+}

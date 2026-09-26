@@ -1,0 +1,17 @@
+# Stage 3 reproduction (run from the repository root, in this order)
+# spec SHA-256 ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219
+# confirmation freeze SHA-256 7beca2163329d259ccf169293f3173115ec8da474e5c372e46f15b93dfaaf39b
+# environment: stage3_spec.json + requirements-lock.txt (transformers 5.17.0); the Stage 3 commit contains the frozen Stage 1/2 state (tag paper-stage2b-confirmed is its ancestor)
+# Re-running 'select' / 'freeze-spec' refuses to overwrite sealed files: use a clean output
+# directory to reproduce, then compare the sealed hashes.
+/home/mei/elec5305-project/.venv/bin/python -m pip install transformers==5.17.0
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py select
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py env-check
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py calibrate
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py freeze-spec
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py run --set pilot
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py pilot-decision
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py freeze-confirmation
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py run --set confirmation
+/home/mei/elec5305-project/.venv/bin/python paper/run_stage3.py analyze
+/home/mei/elec5305-project/.venv/bin/python -m unittest discover -s paper/tests -v

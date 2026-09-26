@@ -1,0 +1,98 @@
+{
+ "spec_sha256": "ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219",
+ "confirmation_freeze_sha256": "7beca2163329d259ccf169293f3173115ec8da474e5c372e46f15b93dfaaf39b",
+ "bootstrap_sha256": "aaa556b987e5c33b0f1c419561de78e81e1971c93e90c0cccc73db135b1a6644",
+ "decision": "GO",
+ "reason": "OPUS: residual CI > 0 in both architectures, estimate >= 0.5 pp in both, same direction as the pilot",
+ "cells": [
+  {
+   "model": "whisper",
+   "codec": "OPUS",
+   "estimate_pp": 0.6863670912315452,
+   "ci_lower_pp": 0.459526979636811,
+   "ci_upper_pp": 0.9379698403151301,
+   "robust_positive": true,
+   "robust_negative": false,
+   "large": true,
+   "pilot_estimate_pp": 0.34638032559750587,
+   "pilot_positive": true
+  },
+  {
+   "model": "whisper",
+   "codec": "SILK",
+   "estimate_pp": 0.018425962180712574,
+   "ci_lower_pp": -0.04280934023895979,
+   "ci_upper_pp": 0.08288672304378052,
+   "robust_positive": false,
+   "robust_negative": false,
+   "large": false,
+   "pilot_estimate_pp": 0.06927606511950117,
+   "pilot_positive": true
+  },
+  {
+   "model": "wav2vec2",
+   "codec": "OPUS",
+   "estimate_pp": 2.070617500057581,
+   "ci_lower_pp": 1.679111733009272,
+   "ci_upper_pp": 2.567087421302722,
+   "robust_positive": true,
+   "robust_negative": false,
+   "large": true,
+   "pilot_estimate_pp": 1.4894354000692764,
+   "pilot_positive": true
+  },
+  {
+   "model": "wav2vec2",
+   "codec": "SILK",
+   "estimate_pp": -0.08752332035838473,
+   "ci_lower_pp": -0.20182520846598376,
+   "ci_upper_pp": 0.023504922585975745,
+   "robust_positive": false,
+   "robust_negative": false,
+   "large": false,
+   "pilot_estimate_pp": -0.4156563907170077,
+   "pilot_positive": false
+  }
+ ],
+ "negative_controls": [
+  {
+   "model": "whisper",
+   "control": "neg_lp_minus_ref",
+   "estimate_pp": -0.07600709399543971,
+   "ci_lower_pp": -0.1505830466091907,
+   "ci_upper_pp": -0.00420495256346548,
+   "flagged": false
+  },
+  {
+   "model": "whisper",
+   "control": "neg_codec_minus_ref",
+   "estimate_pp": 0.0023032452725890717,
+   "ci_lower_pp": -0.045735560984942275,
+   "ci_upper_pp": 0.04914948146528605,
+   "flagged": false
+  },
+  {
+   "model": "wav2vec2",
+   "control": "neg_lp_minus_ref",
+   "estimate_pp": 0.10134279199391916,
+   "ci_lower_pp": 0.020366460549425067,
+   "ci_upper_pp": 0.19038283339809134,
+   "flagged": false
+  },
+  {
+   "model": "wav2vec2",
+   "control": "neg_codec_minus_ref",
+   "estimate_pp": 0.0023032452725890717,
+   "ci_lower_pp": -0.05697518750636404,
+   "ci_upper_pp": 0.06507318737798948,
+   "flagged": false
+  }
+ ],
+ "capped_by_negative_control": false,
+ "result_types": [
+  "TYPE 2 (OPUS): WER_REF <= WER_LP < WER_OPUS",
+  "TYPE 3: OPUS and SILK residuals differ (same direction in both models)"
+ ],
+ "residual_survives": true,
+ "decision_sha256": "608c919c33e135bb7ca236e2e07e1c9b1b567285a5b1d9d8caabedeb08cb3a41"
+}

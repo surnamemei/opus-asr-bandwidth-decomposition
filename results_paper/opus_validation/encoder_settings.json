@@ -1,0 +1,68 @@
+{
+  "common_settings": {
+    "max_bandwidth": "FB",
+    "sample_rate": 16000,
+    "channels": 1,
+    "application": "audio",
+    "vbr": true,
+    "vbr_constraint": false,
+    "complexity": 10,
+    "frame_ms": 20.0,
+    "signal": "auto",
+    "packet_loss_perc": 0,
+    "inband_fec": false,
+    "dtx": false,
+    "lsb_depth": 24,
+    "prediction_disabled": false,
+    "expert_frame_duration": "arg",
+    "force_channels": "auto"
+  },
+  "frame_samples": 320,
+  "ctl_order": [
+    "complexity",
+    "vbr",
+    "vbr_constraint",
+    "bitrate",
+    "max_bandwidth",
+    "bandwidth",
+    "signal",
+    "packet_loss_perc",
+    "inband_fec",
+    "dtx",
+    "lsb_depth",
+    "prediction_disabled",
+    "expert_frame_duration",
+    "force_channels"
+  ],
+  "input_format": "int16 PCM via opus_encode (exact; source is 16-bit FLAC)",
+  "cells": [
+    {
+      "cell": "opus_12k_wb",
+      "bitrate_bps": 12000,
+      "bandwidth": "WB"
+    },
+    {
+      "cell": "opus_12k_nb",
+      "bitrate_bps": 12000,
+      "bandwidth": "NB"
+    },
+    {
+      "cell": "opus_8k_wb",
+      "bitrate_bps": 8000,
+      "bandwidth": "WB"
+    },
+    {
+      "cell": "opus_8k_nb",
+      "bitrate_bps": 8000,
+      "bandwidth": "NB"
+    }
+  ],
+  "ogg": {
+    "serial": 1346457682,
+    "packets_per_page": 50,
+    "opus_tags_comments": [
+      "ENCODER=paper/opus_direct.py"
+    ]
+  },
+  "libopus": "libopus 1.4"
+}

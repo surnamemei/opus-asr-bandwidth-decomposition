@@ -1,0 +1,43 @@
+{
+ "created_utc": "2026-09-26T07:22:16.555674+00:00",
+ "spec_sha256": "ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219",
+ "bootstrap_sha256": "c51f6c5153b703b099531c066de1b3e76f34a4f3e9154b6991ff2ee62228236c",
+ "decision": "PROCEED_TO_CONFIRMATION",
+ "reason": "at least one codec residual has a 95% CI lower bound above 0",
+ "cells": [
+  {
+   "model": "whisper",
+   "codec": "OPUS",
+   "estimate_pp": 0.34638032559750587,
+   "ci_lower_pp": 0.07269490936102337,
+   "ci_upper_pp": 0.6393131148529166,
+   "clearly_positive": true
+  },
+  {
+   "model": "whisper",
+   "codec": "SILK",
+   "estimate_pp": 0.06927606511950117,
+   "ci_lower_pp": -0.20711438132354199,
+   "ci_upper_pp": 0.30406594975256895,
+   "clearly_positive": false
+  },
+  {
+   "model": "wav2vec2",
+   "codec": "OPUS",
+   "estimate_pp": 1.4894354000692764,
+   "ci_lower_pp": 0.73574043185441,
+   "ci_upper_pp": 2.250604880949966,
+   "clearly_positive": true
+  },
+  {
+   "model": "wav2vec2",
+   "codec": "SILK",
+   "estimate_pp": -0.4156563907170077,
+   "ci_lower_pp": -0.8400561476505758,
+   "ci_upper_pp": 0.03477233187789829,
+   "clearly_positive": false
+  }
+ ],
+ "rule": "PROCEED if any (model, codec) micro residual CI lower bound > 0; else STOP",
+ "decision_sha256": "fb63d2fa95e5998e67b66475a511af4461416b587475972cbf7b95168e16ea61"
+}

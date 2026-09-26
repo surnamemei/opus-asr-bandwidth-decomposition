@@ -1,0 +1,19 @@
+# Python dependencies for ELEC5305 project
+# Tested in Python 3.12 under WSL/Linux.
+#
+# System dependency (not installed by pip):
+#   FFmpeg with libmp3lame and libopus support
+#
+# For a fully locked copy of the current environment, run:
+#   pip freeze > requirements-lock.txt
+
+torch
+torchaudio
+torchcodec
+jiwer
+numpy
+pandas
+matplotlib
+soundfile
+tqdm
+encodec

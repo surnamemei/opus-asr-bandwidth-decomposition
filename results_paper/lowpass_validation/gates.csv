@@ -1,0 +1,14 @@
+subset,gate,name,status,evidence
+dev-clean,1,zero effective delay,PASS,"odd, exactly symmetric taps with (L-1)/2 = 511 samples removed: True; alignment lag 0 in 40/40"
+dev-clean,2,waveform length unchanged,PASS,40/40 utterances; deterministic 40/40
+dev-clean,3,low-band distortion small (bandwidth removal only),PASS,"LSD 0-3 kHz median 0.029 dB, p95 0.039 dB; LSD 0-4 kHz median 1.44 dB = 22.5% of Opus8-NB (6.39 dB); min coherence 0-3800 Hz 0.9991 (Opus8-NB 0.186)"
+dev-clean,4,bandwidth matches SILK-NB (coherent definition),PASS,"coherent bandwidth LP 4093.8 Hz, reference 4093.8 (+0.0), Opus8-NB 4031.2 (+62.5); power-based retained bandwidth median LP 4093.8 Hz (range 3950-4200; Opus8-NB 4562.5 includes the image)"
+dev-clean,5,4-8 kHz attenuation matches SILK-NB (coherent definition),FAIL,"coherent 4-8 kHz power LP -25.2 dB, reference -25.3 (+0.1), Opus8-NB -34.6 (+9.4); total 4-8 kHz power change median LP -24.9 dB <= Opus8-NB -17.1 dB (difference = image, mirror coherence 4.1-4.9 kHz Opus8-NB 0.23, LP 0.001)"
+dev-clean,6,transition shape matches SILK-NB linear response,PASS,"|H1| LP - reference: RMS 0.05 dB over [3000.0, 4200.0] Hz, max 0.16 dB over [3000.0, 4150.0] Hz; LP |H1| above 4200 Hz <= -26.8 dB"
+dev-other,1,zero effective delay,PASS,"odd, exactly symmetric taps with (L-1)/2 = 511 samples removed: True; alignment lag 0 in 33/33"
+dev-other,2,waveform length unchanged,PASS,33/33 utterances; deterministic 33/33
+dev-other,3,low-band distortion small (bandwidth removal only),PASS,"LSD 0-3 kHz median 0.029 dB, p95 0.037 dB; LSD 0-4 kHz median 1.40 dB = 22.2% of Opus8-NB (6.28 dB); min coherence 0-3800 Hz 0.9991 (Opus8-NB 0.161)"
+dev-other,4,bandwidth matches SILK-NB (coherent definition),PASS,"coherent bandwidth LP 4093.8 Hz, reference 4093.8 (+0.0), Opus8-NB 4031.2 (+62.5); power-based retained bandwidth median LP 4093.8 Hz (range 3950-4200; Opus8-NB 4656.2 includes the image)"
+dev-other,5,4-8 kHz attenuation matches SILK-NB (coherent definition),FAIL,"coherent 4-8 kHz power LP -25.2 dB, reference -25.7 (+0.5), Opus8-NB -33.9 (+8.7); total 4-8 kHz power change median LP -24.3 dB <= Opus8-NB -16.8 dB (difference = image, mirror coherence 4.1-4.9 kHz Opus8-NB 0.21, LP 0.001)"
+dev-other,6,transition shape matches SILK-NB linear response,PASS,"|H1| LP - reference: RMS 0.60 dB over [3000.0, 4200.0] Hz, max 1.04 dB over [3000.0, 4150.0] Hz; LP |H1| above 4200 Hz <= -26.5 dB"
+dev-other,7,same frozen filter passes gates 1-6 on held-out dev-other,FAIL,"taps SHA-256 583c66a169d31e27..., no retuning; 5/6 passed"

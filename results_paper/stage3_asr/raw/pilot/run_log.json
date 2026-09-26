@@ -1,0 +1,27 @@
+{
+ "set": "pilot",
+ "selection_sha256": "94fee5a6bde157bc818ca50dbb933442eb5dfc64506a033f48763df387ea0aea",
+ "sessions": [
+  {
+   "started_utc": "2026-09-26T07:18:13.904818+00:00",
+   "resumed_after": 0,
+   "chunks": 18,
+   "code_sha256": {
+    "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+    "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+    "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+    "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+    "paper/stage3_report.py": "46caf880d75ca892c0dceb8345ac975de6842e0be001a715fe0fa87f13274ca0",
+    "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+    "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+    "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+    "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+    "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+    "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+   },
+   "seconds": 219.57343077659607,
+   "finished_utc": "2026-09-26T07:22:02.274650+00:00",
+   "seconds_per_utterance": 1.5911118172217107
+  }
+ ]
+}

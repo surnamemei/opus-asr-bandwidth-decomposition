@@ -1,0 +1,2 @@
+subset,gate,name,status,evidence
+train-clean-100,"5 (original, information only)",4-8 kHz attenuation matches SILK-NB (coherent definition),FAIL,"coherent 4-8 kHz power LP -24.7 dB, reference -24.9 (+0.2), Opus8-NB -32.5 (+7.8); total 4-8 kHz power change median LP -24.6 dB <= Opus8-NB -16.6 dB (difference = image, mirror coherence 4.1-4.9 kHz Opus8-NB 0.23, LP 0.000)"

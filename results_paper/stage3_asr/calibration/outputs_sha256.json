@@ -1,0 +1,14 @@
+{
+ "set": "calibration",
+ "created_utc": "2026-09-26T07:16:49.513602+00:00",
+ "n_utterances": 20,
+ "files": {
+  "asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+  "audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f",
+  "pooled_transfer.csv": "0b1d54d21809e55c7769162adf2fbeefabe05bf18dd2948b8b04d7fc5dd51517",
+  "pooled_transfer_curves.csv": "a4633919b6045db487f16bd9352f423e220cc947e00ab002c14f851d7014e857",
+  "signal_metrics.csv": "dc09589c1ede66fb37ad2a1f98a8461e718d542d5ad9de7a847e286febad13c0",
+  "utterance_metrics.csv": "388af32fb7e569071919e8e189ba71f03af9f859072988779357aea3b2791c38"
+ },
+ "outputs_sha256": "3ae2f98149f483ee60bcf46516e2beec366d7a599738e53875fcc616f5a53100"
+}

@@ -1,0 +1,605 @@
+{
+ "stage": "Stage 3 - ASR decomposition",
+ "created_utc": "2026-09-26T07:17:48.839927+00:00",
+ "question": "After bandwidth is independently controlled with the frozen, independently validated linear low-pass (LP), is there still a reproducible codec-specific ASR penalty?",
+ "provenance": {
+  "stage1_commit": "8a77f412ee8ac779e5230d1d5a8df3cb0e027286",
+  "stage2_commit": "d70c9938481415d4016336fb4ad4bb58a5b9ee74",
+  "stage2_tag": "paper-stage2b-confirmed",
+  "stage2_tag_object": "ebcf06bab238a09ea891215de36483ac1ed3dce8",
+  "frozen_lp_taps_sha256": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+  "revised_gate5_spec_sha256": "166f5672263373ece22a955baf3b2e1f3c7ac7c9ce14098f9daa65938d9055ff",
+  "stage2b_confirmation_selection_sha256": "0dfc09813d018c3f5026da7723cec3222fe14c957289f126e6aa3108e9932212",
+  "head_at_freeze": "d70c9938481415d4016336fb4ad4bb58a5b9ee74",
+  "working_tree_status": [
+   "?? paper/run_stage3.py",
+   "?? paper/stage3_asr.py",
+   "?? paper/stage3_audio.py",
+   "?? paper/stage3_report.py",
+   "?? paper/stage3_stats.py",
+   "?? paper/tests/test_stage3.py",
+   "?? results_paper/stage3_asr/"
+  ]
+ },
+ "conditions": {
+  "primary": [
+   "REF",
+   "LP",
+   "OPUS",
+   "SILK"
+  ],
+  "controls": [
+   "NEG_LP",
+   "NEG_CODEC"
+  ],
+  "definitions": {
+   "REF": "original LibriSpeech waveform",
+   "LP": "frozen Stage 2B zero-phase low-pass (linear SILK-NB band-limiting only)",
+   "OPUS": "Opus 8 kbps, frozen prior-study settings (SILK-NB; packets identical to the ELEC5305 Opus 8k condition)",
+   "SILK": "SILK-NB at 40 kbps with signal=voice (the Stage 2B SILK-NB reference condition: SILK narrowband coding with minimal coding distortion)",
+   "NEG_LP": "negative control: same FIR design routine, flat to 7.0 kHz",
+   "NEG_CODEC": "negative control: Opus 64 kbps, frozen settings (CELT-WB), the prior study's transparent condition"
+  },
+  "encoder_settings": {
+   "OPUS": {
+    "bitrate_bps": 8000,
+    "bandwidth": "NB",
+    "max_bandwidth": "FB",
+    "sample_rate": 16000,
+    "channels": 1,
+    "application": "audio",
+    "vbr": true,
+    "vbr_constraint": false,
+    "complexity": 10,
+    "frame_ms": 20.0,
+    "signal": "auto",
+    "packet_loss_perc": 0,
+    "inband_fec": false,
+    "dtx": false,
+    "lsb_depth": 24,
+    "prediction_disabled": false,
+    "expert_frame_duration": "arg",
+    "force_channels": "auto"
+   },
+   "SILK": {
+    "bitrate_bps": 40000,
+    "bandwidth": "NB",
+    "max_bandwidth": "FB",
+    "sample_rate": 16000,
+    "channels": 1,
+    "application": "audio",
+    "vbr": true,
+    "vbr_constraint": false,
+    "complexity": 10,
+    "frame_ms": 20.0,
+    "signal": "voice",
+    "packet_loss_perc": 0,
+    "inband_fec": false,
+    "dtx": false,
+    "lsb_depth": 24,
+    "prediction_disabled": false,
+    "expert_frame_duration": "arg",
+    "force_channels": "auto"
+   },
+   "NEG_CODEC": {
+    "bitrate_bps": 64000,
+    "bandwidth": "AUTO",
+    "max_bandwidth": "FB",
+    "sample_rate": 16000,
+    "channels": 1,
+    "application": "audio",
+    "vbr": true,
+    "vbr_constraint": false,
+    "complexity": 10,
+    "frame_ms": 20.0,
+    "signal": "auto",
+    "packet_loss_perc": 0,
+    "inband_fec": false,
+    "dtx": false,
+    "lsb_depth": 24,
+    "prediction_disabled": false,
+    "expert_frame_duration": "arg",
+    "force_channels": "auto"
+   }
+  },
+  "expected_packet_configuration": {
+   "OPUS": "SILK-NB",
+   "SILK": "SILK-NB",
+   "NEG_CODEC": "CELT-WB"
+  },
+  "filter_sha256": {
+   "LP": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+   "NEG_LP": "6740aac541103376fe83da19417fe8728c31114e525bdd07c280f9b5bf0ebc0a"
+  },
+  "neg_lp_design": {
+   "passband_edge_hz": 7000.0,
+   "stopband_edge_hz": 7600.0,
+   "stopband_db": -80.0,
+   "num_taps": 1023,
+   "kaiser_beta": 8.0,
+   "design_grid": 16384
+  },
+  "naming_note": "OPUS and SILK are both Opus's SILK layer in narrowband mode; they differ in coding rate (8 vs 40 kbps), not in bandwidth. The prior study had no separate SILK codec.",
+  "level_policy": "no normalisation of any condition; physical output level",
+  "sample_rate_policy": "all conditions 16 kHz mono float32, length equal to REF; codec outputs decoded at 48 kHz by the frozen torchaudio.load path and resampled with torchaudio.functional.resample",
+  "alignment_policy": "no re-alignment before recognition (frozen convention); lags recorded"
+ },
+ "data": {
+  "selections": {
+   "calibration": {
+    "file": "selection_calibration.json",
+    "sha256": "f966a4399ec2ea68db9a11a68ef6942524acd2e6c184f85220cc87cf0af8c79b",
+    "n_utterances": 20,
+    "n_speakers": 4,
+    "subsets": {
+     "dev-clean": 20
+    }
+   },
+   "pilot": {
+    "file": "selection_pilot.json",
+    "sha256": "94fee5a6bde157bc818ca50dbb933442eb5dfc64506a033f48763df387ea0aea",
+    "n_utterances": 138,
+    "n_speakers": 69,
+    "subsets": {
+     "dev-clean": 72,
+     "dev-other": 66
+    }
+   },
+   "confirmation": {
+    "file": "selection_confirmation.json",
+    "sha256": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+    "n_utterances": 2174,
+    "n_speakers": 73,
+    "subsets": {
+     "test-clean": 1190,
+     "test-other": 984
+    }
+   }
+  },
+  "rules": {
+   "calibration": "dev-clean: 4 speakers (random.Random(53051).sample of sorted speaker IDs), 5 utterances each",
+   "pilot": "dev-clean speakers not used for calibration + all dev-other speakers, 2 utterances each (random.Random(53052))",
+   "confirmation": "test-clean + test-other, all speakers, up to 30 utterances each (random.Random(53053))",
+   "eligibility": "duration <= 30.0 s (Whisper window); non-empty normalised reference; not in the excluded set of the subset",
+   "exclusions": {
+    "dev-clean": "Stage 2A/2B signal-level development utterances (one per speaker)",
+    "dev-other": "Stage 2A/2B signal-level development utterances (one per speaker)",
+    "test-clean": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)",
+    "test-other": "frozen ELEC5305 prior-study selection (500 utterances, seed 5305)"
+   },
+   "selection_inputs": "file names, FLAC header durations, reference transcripts (for the non-empty rule only); no ASR output of any kind"
+  },
+  "speaker_disjoint": true,
+  "post_decoding_exclusions": "none: every selected utterance is scored in every condition and model; an empty or failed hypothesis counts as all deletions"
+ },
+ "asr_models": {
+  "whisper": {
+   "repository": "openai/whisper-large-v3",
+   "revision": "06f233fe06e710322aca913c1bc4249a0d71fce1",
+   "dtype": "torch.float16",
+   "batch_size": 16,
+   "generate_kwargs": {
+    "language": "en",
+    "task": "transcribe",
+    "num_beams": 1,
+    "do_sample": false,
+    "return_timestamps": false
+   },
+   "temperature_fallback": "none (temperature 0 only; no compression-ratio, log-prob or no-speech thresholds)",
+   "prompt": "none (forced decoder prefix: <|startoftranscript|><|en|><|transcribe|><|notimestamps|>)",
+   "vad": "none",
+   "attention_implementation": "sdpa",
+   "generation_config": {
+    "max_length": 448,
+    "max_new_tokens": null,
+    "min_length": null,
+    "min_new_tokens": null,
+    "early_stopping": null,
+    "max_time": null,
+    "stop_strings": null,
+    "do_sample": null,
+    "num_beams": null,
+    "use_mtp": null,
+    "use_cache": null,
+    "cache_implementation": null,
+    "cache_config": null,
+    "max_cache_len": null,
+    "temperature": null,
+    "top_k": null,
+    "top_p": null,
+    "min_p": null,
+    "top_h": null,
+    "typical_p": null,
+    "epsilon_cutoff": null,
+    "eta_cutoff": null,
+    "repetition_penalty": null,
+    "encoder_repetition_penalty": null,
+    "length_penalty": null,
+    "no_repeat_ngram_size": null,
+    "bad_words_ids": null,
+    "renormalize_logits": null,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": null,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": [
+     1,
+     2,
+     7,
+     8,
+     9,
+     10,
+     14,
+     25,
+     26,
+     27,
+     28,
+     29,
+     31,
+     58,
+     59,
+     60,
+     61,
+     62,
+     63,
+     90,
+     91,
+     92,
+     93,
+     359,
+     503,
+     522,
+     542,
+     873,
+     893,
+     902,
+     918,
+     922,
+     931,
+     1350,
+     1853,
+     1982,
+     2460,
+     2627,
+     3246,
+     3253,
+     3268,
+     3536,
+     3846,
+     3961,
+     4183,
+     4667,
+     6585,
+     6647,
+     7273,
+     9061,
+     9383,
+     10428,
+     10929,
+     11938,
+     12033,
+     12331,
+     12562,
+     13793,
+     14157,
+     14635,
+     15265,
+     15618,
+     16553,
+     16604,
+     18362,
+     18956,
+     20075,
+     21675,
+     22520,
+     26130,
+     26161,
+     26435,
+     28279,
+     29464,
+     31650,
+     32302,
+     32470,
+     36865,
+     42863,
+     47425,
+     49870,
+     50254,
+     50258,
+     50359,
+     50360,
+     50361,
+     50362,
+     50363
+    ],
+    "begin_suppress_tokens": [
+     220,
+     50257
+    ],
+    "sequence_bias": null,
+    "token_healing": null,
+    "guidance_scale": null,
+    "watermarking_config": null,
+    "num_return_sequences": null,
+    "output_attentions": null,
+    "output_hidden_states": null,
+    "output_scores": null,
+    "output_logits": null,
+    "return_dict_in_generate": null,
+    "pad_token_id": 50257,
+    "bos_token_id": 50257,
+    "eos_token_id": 50257,
+    "encoder_no_repeat_ngram_size": null,
+    "decoder_start_token_id": 50258,
+    "is_assistant": null,
+    "num_assistant_tokens": null,
+    "num_assistant_tokens_schedule": null,
+    "assistant_confidence_threshold": null,
+    "prompt_lookup_num_tokens": null,
+    "max_matching_ngram_size": null,
+    "assistant_early_exit": null,
+    "assistant_lookbehind": null,
+    "target_lookbehind": null,
+    "assistant_ensemble_weight": null,
+    "speculation_type": null,
+    "compile_config": null,
+    "disable_compile": null,
+    "continuous_batching_config": null,
+    "low_memory": null,
+    "penalty_alpha": null,
+    "dola_layers": null,
+    "diversity_penalty": null,
+    "num_beam_groups": null,
+    "constraints": null,
+    "force_words_ids": null,
+    "prefill_chunk_size": null,
+    "_from_model_config": null,
+    "transformers_version": "5.17.0",
+    "is_multilingual": true,
+    "max_initial_timestamp_index": 50,
+    "no_timestamps_token_id": 50364,
+    "prev_sot_token_id": 50362,
+    "return_timestamps": false
+   },
+   "feature_extractor": {
+    "feature_size": 128,
+    "sampling_rate": 16000,
+    "hop_length": 160,
+    "chunk_length": 30,
+    "n_fft": 400,
+    "n_samples": 480000,
+    "padding_value": 0.0
+   },
+   "weights_sha256": "a8e94b85976e5864ba3e9525c7e6c83b2a1eca42d4b797a0c7c24d778e40fd95",
+   "max_duration_s": 30.0
+  },
+  "wav2vec2": {
+   "bundle": "torchaudio.pipelines.WAV2VEC2_ASR_BASE_960H",
+   "checkpoint": "/home/mei/.cache/torch/hub/checkpoints/wav2vec2_fairseq_base_ls960_asr_ls960.pth",
+   "checkpoint_sha256": "488fd4f16de84438ffc945334278c1b9fb9b7159a806c1080b16111a958c945d",
+   "decoder": "greedy CTC, blank id 0, repeated tokens collapsed (paper/common.py decode(), verbatim from the frozen pipeline)",
+   "language_model": "none",
+   "device": "cuda",
+   "dtype": "float32",
+   "input_normalisation": "none (bundle does not normalise the waveform)"
+  }
+ },
+ "normalisation": {
+  "normaliser": "transformers WhisperTokenizer.normalize -> EnglishTextNormalizer",
+  "transformers_version": "5.17.0",
+  "tokenizer": "openai/whisper-large-v3@06f233fe06e710322aca913c1bc4249a0d71fce1",
+  "spelling_map_sha256": "bf1c507dc8724ca9cf9903640dacfb69dae2f00edee4f21ceba106a7392f26dd",
+  "spelling_map_entries": 1740
+ },
+ "metrics": {
+  "primary": "WER (word errors S+D+I over reference words, normalised text, jiwer)",
+  "recorded": [
+   "substitutions",
+   "deletions",
+   "insertions",
+   "n_words",
+   "CER (secondary)"
+  ],
+  "micro": "corpus WER from total edit counts (primary)",
+  "macro": "mean of per-utterance WER differences (secondary)"
+ },
+ "analysis": {
+  "contrasts": [
+   [
+    "delta_bw",
+    "LP",
+    "REF"
+   ],
+   [
+    "delta_opus_residual",
+    "OPUS",
+    "LP"
+   ],
+   [
+    "delta_silk_residual",
+    "SILK",
+    "LP"
+   ],
+   [
+    "opus_minus_silk",
+    "OPUS",
+    "SILK"
+   ],
+   [
+    "delta_opus_total",
+    "OPUS",
+    "REF"
+   ],
+   [
+    "delta_silk_total",
+    "SILK",
+    "REF"
+   ],
+   [
+    "neg_lp_minus_ref",
+    "NEG_LP",
+    "REF"
+   ],
+   [
+    "neg_codec_minus_ref",
+    "NEG_CODEC",
+    "REF"
+   ]
+  ],
+  "residuals": {
+   "OPUS": "delta_opus_residual",
+   "SILK": "delta_silk_residual"
+  },
+  "shares": [
+   [
+    "bw_share_of_opus_total",
+    "delta_bw",
+    "delta_opus_total"
+   ],
+   [
+    "bw_share_of_silk_total",
+    "delta_bw",
+    "delta_silk_total"
+   ]
+  ],
+  "bootstrap": {
+   "unit": "speaker",
+   "stratified_by": "LibriSpeech subset",
+   "replicates": 10000,
+   "seed": 5305,
+   "interval": "percentile 95%",
+   "paired": "all conditions and both models of an utterance together"
+  },
+  "pilot_rule": {
+   "proceed": "any (model, codec) micro residual 95% CI lower bound > 0",
+   "stop": "otherwise STOP/KILL; 'bounded small' if every residual CI upper bound < 1.0 pp"
+  },
+  "confirmation_rule": {
+   "KILL": "all four residual CIs (2 codecs x 2 models) include 0",
+   "GO": "for >= 1 codec: residual CI lower bound > 0 in both models, estimate >= 0.5 pp in both, pilot estimate > 0 in both",
+   "CONDITIONAL GO": "for >= 1 codec: residual CI lower bound > 0 in both models, GO size/pilot criteria not met",
+   "HOLD": "residual robust in only one model, or robustly negative, or other",
+   "negative_control_cap": "if NEG_LP-REF or NEG_CODEC-REF has a CI excluding 0 and |estimate| > 0.5 pp in either model, GO/CONDITIONAL GO is capped at HOLD",
+   "primary_scope": "pooled (clean + other, stratified); per-subset results secondary"
+  },
+  "conditional_analyses": "error-type breakdown (Step 11) and exploratory signal correlations (Step 12, Spearman, speaker bootstrap B=2000) only if a residual CI lower bound > 0 in at least one model on confirmation",
+  "not_run": "Step 14 (second bandwidth control): the LP shape is SILK-NB's measured linear response, not an arbitrary choice; deferred unless challenged"
+ },
+ "compute": {
+  "whisper_dtype": "float16",
+  "whisper_batch_size": 16,
+  "chunk_utterances": 8,
+  "decoding_rationale": "greedy decoding chosen before any evaluation decode: beam 5 measured at 2-7.5 s/utterance on the shared GPU"
+ },
+ "environment": {
+  "recorded_utc": "2026-09-26T07:17:48.089481+00:00",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "python_executable": "/home/mei/elec5305-project/.venv/bin/python",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+   "torch": "2.13.0",
+   "torchaudio": "2.11.0",
+   "torchcodec": "0.16.0",
+   "numpy": "2.5.2",
+   "pandas": "3.0.5",
+   "jiwer": "4.0.0",
+   "soundfile": "0.14.0",
+   "tqdm": "4.70.0",
+   "matplotlib": "3.11.1",
+   "encodec": "0.1.1",
+   "transformers": "5.17.0"
+  },
+  "cuda": {
+   "available": true,
+   "torch_cuda_version": "13.0",
+   "cudnn_version": 92000,
+   "device_used": "cuda",
+   "gpu": "NVIDIA GeForce RTX 5090",
+   "compute_capability": "12.0",
+   "driver": "596.49"
+  },
+  "torch_flags": {
+   "cuda.matmul.allow_tf32": false,
+   "cudnn.allow_tf32": true,
+   "cudnn.benchmark": false,
+   "cudnn.deterministic": false,
+   "float32_matmul_precision": "highest"
+  },
+  "ffmpeg": {
+   "binary": "/usr/bin/ffmpeg",
+   "version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+   "libraries": [
+    "libavutil      58. 29.100 / 58. 29.100",
+    "libavcodec     60. 31.102 / 60. 31.102",
+    "libavformat    60. 16.100 / 60. 16.100",
+    "libavdevice    60.  3.100 / 60.  3.100",
+    "libavfilter     9. 12.100 /  9. 12.100",
+    "libswscale      7.  5.100 /  7.  5.100",
+    "libswresample   4. 12.100 /  4. 12.100",
+    "libpostproc    57.  3.100 / 57.  3.100"
+   ],
+   "dpkg": [
+    "ffmpeg 7:6.1.1-3ubuntu5",
+    "libopus0 1.4-1build1"
+   ]
+  },
+  "libopus_linked_by_ffmpeg": {
+   "path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+   "version": "libopus 1.4"
+  },
+  "torchcodec_ffmpeg_libraries": {
+   "libavfilter": "[9, 12, 100]",
+   "libavutil": "[58, 29, 100]",
+   "libavcodec": "[60, 31, 102]",
+   "libavformat": "[60, 16, 100]",
+   "ffmpeg_version": "6.1.1-3ubuntu5"
+  },
+  "wav2vec2_checkpoint": {
+   "path": "/home/mei/.cache/torch/hub/checkpoints/wav2vec2_fairseq_base_ls960_asr_ls960.pth",
+   "sha256": "488fd4f16de84438ffc945334278c1b9fb9b7159a806c1080b16111a958c945d"
+  },
+  "frozen_standardisation_sha256": "e64b41361b6461d248129b908f6498df8f76c33e5f95f250c577b20dbe7eda37",
+  "librispeech_root": "/home/mei/elec5305-project/data",
+  "git": {
+   "head": "d70c9938481415d4016336fb4ad4bb58a5b9ee74",
+   "branch": "paper-extension",
+   "status": [
+    "?? paper/run_stage3.py",
+    "?? paper/stage3_asr.py",
+    "?? paper/stage3_audio.py",
+    "?? paper/stage3_report.py",
+    "?? paper/stage3_stats.py",
+    "?? paper/tests/test_stage3.py",
+    "?? results_paper/stage3_asr/"
+   ]
+  },
+  "frozen_environment_note": "The environment that produced the frozen results was not recorded in the repository; equivalence is established by reproduction, not by version matching."
+ },
+ "requirements_lock_sha256": "745b91dd04708e7226ac691191c33f4118b316248335f778ee0af0d87357d45f",
+ "env_check": {
+  "all_identical": true,
+  "file_sha256": "1fefe468e89cc7c1115fb068139ff00647a4b6c70ed270461b1570dfe268a317"
+ },
+ "calibration": {
+  "report_sha256": "ae6fdf58603b0888db1d13289098ffd924a48ee9bea465177de5ae7fc3b56c2a",
+  "determinism": {
+   "waveforms_identical": true,
+   "hypotheses_identical": true
+  },
+  "seconds_per_utterance": 1.31846125125885
+ },
+ "code_sha256": {
+  "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+  "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+  "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+  "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+  "paper/stage3_report.py": "46caf880d75ca892c0dceb8345ac975de6842e0be001a715fe0fa87f13274ca0",
+  "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+  "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+  "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+  "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+  "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+  "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+ },
+ "spec_sha256": "ac5a36a01f50e7643cc73bbbc2f75ce44fe34b0730ec828082084ba1643b5219"
+}

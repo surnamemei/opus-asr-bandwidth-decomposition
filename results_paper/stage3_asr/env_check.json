@@ -1,0 +1,160 @@
+{
+ "created_utc": "2026-09-26T07:15:49.930136+00:00",
+ "utterances_per_subset": 3,
+ "all_identical": true,
+ "checks": {
+  "test-clean/asr/prediction": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-clean/asr/wer": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-clean/asr/compressed_size_bytes": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-clean/signal/lsd_db": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/signal/retained_bandwidth_hz": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/signal/estimated_delay_samples": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_conv": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_1": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_2": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_3": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_4": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_5": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_6": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_7": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_8": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_9": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_10": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_11": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-clean/representation/sdrift_layer_12": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/asr/prediction": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-other/asr/wer": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-other/asr/compressed_size_bytes": {
+   "rows": 9,
+   "identical": true
+  },
+  "test-other/signal/lsd_db": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/signal/retained_bandwidth_hz": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/signal/estimated_delay_samples": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_conv": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_1": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_2": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_3": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_4": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_5": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_6": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_7": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_8": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_9": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_10": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_11": {
+   "rows": 6,
+   "identical": true
+  },
+  "test-other/representation/sdrift_layer_12": {
+   "rows": 6,
+   "identical": true
+  }
+ },
+ "note": "first 3 Stage 1 utterances per subset (prior-study utterances, excluded from every Stage 3 set) re-run through the frozen pipeline after installing transformers; compared with the committed Stage 1 rows"
+}
