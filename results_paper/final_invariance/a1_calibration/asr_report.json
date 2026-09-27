@@ -1,0 +1,36 @@
+{
+ "created_utc": "2026-09-27T18:19:47.712679+00:00",
+ "spec_sha256": "77da2190c2115548b654f6aeb2abd0dfa21b54fbabed7100f103aa91560d8edb",
+ "part": "asr calibration (Stage 3 calibration set; no WER compared)",
+ "gpu_at_start": {
+  "nvidia_smi": "NVIDIA GeForce RTX 5090, 396 MiB, 32607 MiB, 0 %",
+  "free_gib": 30.2021484375,
+  "total_gib": 31.84234619140625
+ },
+ "C3_environment": {
+  "audio_matched": 120,
+  "audio_frozen": 120,
+  "asr_matched": 240,
+  "asr_frozen": 240,
+  "waveform_mismatches": 0,
+  "ogg_mismatches": 0,
+  "hypothesis_mismatches": 0,
+  "pass": true
+ },
+ "C3_lin8_path": {
+  "repeat_hypotheses_identical": true,
+  "repeat_audio_identical": true,
+  "empty_hypotheses": 0,
+  "lengths_equal_ref": true,
+  "nonfinite": 0,
+  "pass": true
+ },
+ "seconds": 444.12371468544006,
+ "files": {
+  "c3_env_asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+  "c3_env_audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f",
+  "c3_lin8_asr_outputs.csv": "4cc6816068e604dcde2a19d268fd067e565cf13d222b5374a1eaa3a37d4aae38"
+ },
+ "pass": true,
+ "report_sha256": "7aa6112489ecaa1f1dfb5eb872886c8918878621f1df5c9d9a1fc9f70d5521be"
+}

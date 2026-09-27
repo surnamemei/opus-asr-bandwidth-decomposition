@@ -1,0 +1,913 @@
+{
+ "role": "A1 signal-only sets: no transcript is read and no ASR is run on them",
+ "subset": "train-clean-100",
+ "speaker_source": "data/LibriSpeech/SPEAKERS.TXT",
+ "speakers_file_sha256": "3350f093382f8baa1d589c9f5a5cee8ec3705e656f521d6eafbaa31a5fcd8f76",
+ "seed": 53056,
+ "speaker_rule": "for each sex, random.Random(53056).sample of 40 speakers from the sorted train-clean-100 IDs in SPEAKERS.TXT, excluding every speaker of earlier signal-control fits and validations (Stage 2B filter validation, R1/R2 signal validation); the first 20 of each sex drawn are the calibration set, the next 20 the validation set",
+ "utterance_rule": "for each selected speaker in ascending ID order, one file drawn by random.Random(53056).choice from the sorted <speaker>/<chapter>/*.flac names (one generator, calibration then validation); file names only",
+ "excluded": {
+  "stage2b_filter_validation": [
+   40,
+   60,
+   103,
+   118,
+   200,
+   248,
+   332,
+   730,
+   1034,
+   1246,
+   1867,
+   1926,
+   2007,
+   2196,
+   2384,
+   2416,
+   2518,
+   2691,
+   2843,
+   3607,
+   3664,
+   4137,
+   4340,
+   4362,
+   4680,
+   4859,
+   5049,
+   5104,
+   5163,
+   5463,
+   5703,
+   6272,
+   6437,
+   6818,
+   6925,
+   7113,
+   7517,
+   8609,
+   8630,
+   8770
+  ],
+  "r1_r2_signal_validation": [
+   32,
+   250,
+   328,
+   460,
+   839,
+   1098,
+   1363,
+   1455,
+   1624,
+   1898,
+   1963,
+   2136,
+   2764,
+   2910,
+   3486,
+   3699,
+   3830,
+   4441,
+   4788,
+   4853,
+   5022,
+   5390,
+   5456,
+   5561,
+   5808,
+   5867,
+   6078,
+   6147,
+   6181,
+   6415,
+   6836,
+   7059,
+   7067,
+   7148,
+   7226,
+   7312,
+   7780,
+   8095,
+   8108,
+   8465
+  ]
+ },
+ "calibration": {
+  "speakers_female": [
+   19,
+   39,
+   87,
+   226,
+   302,
+   322,
+   426,
+   1116,
+   2391,
+   3235,
+   3259,
+   3947,
+   4297,
+   5393,
+   5514,
+   6476,
+   6531,
+   7635,
+   7794,
+   7800
+  ],
+  "speakers_male": [
+   196,
+   201,
+   374,
+   405,
+   1235,
+   1594,
+   2289,
+   2436,
+   2514,
+   2893,
+   2952,
+   3242,
+   3857,
+   4813,
+   6019,
+   6529,
+   6563,
+   8226,
+   8425,
+   8838
+  ],
+  "utterances": [
+   {
+    "speaker_id": 19,
+    "chapter_id": 227,
+    "utterance_id": 29,
+    "utterance": "19-227-0029",
+    "path": "train-clean-100/19/227/19-227-0029.flac",
+    "sex": "F",
+    "candidates": 111
+   },
+   {
+    "speaker_id": 39,
+    "chapter_id": 121915,
+    "utterance_id": 30,
+    "utterance": "39-121915-0030",
+    "path": "train-clean-100/39/121915/39-121915-0030.flac",
+    "sex": "F",
+    "candidates": 123
+   },
+   {
+    "speaker_id": 87,
+    "chapter_id": 121553,
+    "utterance_id": 0,
+    "utterance": "87-121553-0000",
+    "path": "train-clean-100/87/121553/87-121553-0000.flac",
+    "sex": "F",
+    "candidates": 108
+   },
+   {
+    "speaker_id": 196,
+    "chapter_id": 122159,
+    "utterance_id": 10,
+    "utterance": "196-122159-0010",
+    "path": "train-clean-100/196/122159/196-122159-0010.flac",
+    "sex": "M",
+    "candidates": 108
+   },
+   {
+    "speaker_id": 201,
+    "chapter_id": 127786,
+    "utterance_id": 63,
+    "utterance": "201-127786-0063",
+    "path": "train-clean-100/201/127786/201-127786-0063.flac",
+    "sex": "M",
+    "candidates": 127
+   },
+   {
+    "speaker_id": 226,
+    "chapter_id": 122538,
+    "utterance_id": 15,
+    "utterance": "226-122538-0015",
+    "path": "train-clean-100/226/122538/226-122538-0015.flac",
+    "sex": "F",
+    "candidates": 107
+   },
+   {
+    "speaker_id": 302,
+    "chapter_id": 123516,
+    "utterance_id": 21,
+    "utterance": "302-123516-0021",
+    "path": "train-clean-100/302/123516/302-123516-0021.flac",
+    "sex": "F",
+    "candidates": 113
+   },
+   {
+    "speaker_id": 322,
+    "chapter_id": 124146,
+    "utterance_id": 9,
+    "utterance": "322-124146-0009",
+    "path": "train-clean-100/322/124146/322-124146-0009.flac",
+    "sex": "F",
+    "candidates": 122
+   },
+   {
+    "speaker_id": 374,
+    "chapter_id": 180299,
+    "utterance_id": 9,
+    "utterance": "374-180299-0009",
+    "path": "train-clean-100/374/180299/374-180299-0009.flac",
+    "sex": "M",
+    "candidates": 113
+   },
+   {
+    "speaker_id": 405,
+    "chapter_id": 130894,
+    "utterance_id": 58,
+    "utterance": "405-130894-0058",
+    "path": "train-clean-100/405/130894/405-130894-0058.flac",
+    "sex": "M",
+    "candidates": 117
+   },
+   {
+    "speaker_id": 426,
+    "chapter_id": 122821,
+    "utterance_id": 36,
+    "utterance": "426-122821-0036",
+    "path": "train-clean-100/426/122821/426-122821-0036.flac",
+    "sex": "F",
+    "candidates": 116
+   },
+   {
+    "speaker_id": 1116,
+    "chapter_id": 132851,
+    "utterance_id": 0,
+    "utterance": "1116-132851-0000",
+    "path": "train-clean-100/1116/132851/1116-132851-0000.flac",
+    "sex": "F",
+    "candidates": 126
+   },
+   {
+    "speaker_id": 1235,
+    "chapter_id": 135887,
+    "utterance_id": 9,
+    "utterance": "1235-135887-0009",
+    "path": "train-clean-100/1235/135887/1235-135887-0009.flac",
+    "sex": "M",
+    "candidates": 125
+   },
+   {
+    "speaker_id": 1594,
+    "chapter_id": 135914,
+    "utterance_id": 93,
+    "utterance": "1594-135914-0093",
+    "path": "train-clean-100/1594/135914/1594-135914-0093.flac",
+    "sex": "M",
+    "candidates": 129
+   },
+   {
+    "speaker_id": 2289,
+    "chapter_id": 152257,
+    "utterance_id": 23,
+    "utterance": "2289-152257-0023",
+    "path": "train-clean-100/2289/152257/2289-152257-0023.flac",
+    "sex": "M",
+    "candidates": 130
+   },
+   {
+    "speaker_id": 2391,
+    "chapter_id": 145015,
+    "utterance_id": 46,
+    "utterance": "2391-145015-0046",
+    "path": "train-clean-100/2391/145015/2391-145015-0046.flac",
+    "sex": "F",
+    "candidates": 123
+   },
+   {
+    "speaker_id": 2436,
+    "chapter_id": 2481,
+    "utterance_id": 6,
+    "utterance": "2436-2481-0006",
+    "path": "train-clean-100/2436/2481/2436-2481-0006.flac",
+    "sex": "M",
+    "candidates": 116
+   },
+   {
+    "speaker_id": 2514,
+    "chapter_id": 149482,
+    "utterance_id": 107,
+    "utterance": "2514-149482-0107",
+    "path": "train-clean-100/2514/149482/2514-149482-0107.flac",
+    "sex": "M",
+    "candidates": 108
+   },
+   {
+    "speaker_id": 2893,
+    "chapter_id": 139322,
+    "utterance_id": 49,
+    "utterance": "2893-139322-0049",
+    "path": "train-clean-100/2893/139322/2893-139322-0049.flac",
+    "sex": "M",
+    "candidates": 107
+   },
+   {
+    "speaker_id": 2952,
+    "chapter_id": 407,
+    "utterance_id": 23,
+    "utterance": "2952-407-0023",
+    "path": "train-clean-100/2952/407/2952-407-0023.flac",
+    "sex": "M",
+    "candidates": 119
+   },
+   {
+    "speaker_id": 3235,
+    "chapter_id": 28452,
+    "utterance_id": 3,
+    "utterance": "3235-28452-0003",
+    "path": "train-clean-100/3235/28452/3235-28452-0003.flac",
+    "sex": "F",
+    "candidates": 113
+   },
+   {
+    "speaker_id": 3242,
+    "chapter_id": 8112,
+    "utterance_id": 39,
+    "utterance": "3242-8112-0039",
+    "path": "train-clean-100/3242/8112/3242-8112-0039.flac",
+    "sex": "M",
+    "candidates": 123
+   },
+   {
+    "speaker_id": 3259,
+    "chapter_id": 158083,
+    "utterance_id": 12,
+    "utterance": "3259-158083-0012",
+    "path": "train-clean-100/3259/158083/3259-158083-0012.flac",
+    "sex": "F",
+    "candidates": 126
+   },
+   {
+    "speaker_id": 3857,
+    "chapter_id": 182315,
+    "utterance_id": 24,
+    "utterance": "3857-182315-0024",
+    "path": "train-clean-100/3857/182315/3857-182315-0024.flac",
+    "sex": "M",
+    "candidates": 110
+   },
+   {
+    "speaker_id": 3947,
+    "chapter_id": 13262,
+    "utterance_id": 24,
+    "utterance": "3947-13262-0024",
+    "path": "train-clean-100/3947/13262/3947-13262-0024.flac",
+    "sex": "F",
+    "candidates": 103
+   },
+   {
+    "speaker_id": 4297,
+    "chapter_id": 13009,
+    "utterance_id": 36,
+    "utterance": "4297-13009-0036",
+    "path": "train-clean-100/4297/13009/4297-13009-0036.flac",
+    "sex": "F",
+    "candidates": 111
+   },
+   {
+    "speaker_id": 4813,
+    "chapter_id": 248638,
+    "utterance_id": 13,
+    "utterance": "4813-248638-0013",
+    "path": "train-clean-100/4813/248638/4813-248638-0013.flac",
+    "sex": "M",
+    "candidates": 111
+   },
+   {
+    "speaker_id": 5393,
+    "chapter_id": 19219,
+    "utterance_id": 16,
+    "utterance": "5393-19219-0016",
+    "path": "train-clean-100/5393/19219/5393-19219-0016.flac",
+    "sex": "F",
+    "candidates": 125
+   },
+   {
+    "speaker_id": 5514,
+    "chapter_id": 19192,
+    "utterance_id": 3,
+    "utterance": "5514-19192-0003",
+    "path": "train-clean-100/5514/19192/5514-19192-0003.flac",
+    "sex": "F",
+    "candidates": 87
+   },
+   {
+    "speaker_id": 6019,
+    "chapter_id": 3185,
+    "utterance_id": 1,
+    "utterance": "6019-3185-0001",
+    "path": "train-clean-100/6019/3185/6019-3185-0001.flac",
+    "sex": "M",
+    "candidates": 112
+   },
+   {
+    "speaker_id": 6476,
+    "chapter_id": 57446,
+    "utterance_id": 70,
+    "utterance": "6476-57446-0070",
+    "path": "train-clean-100/6476/57446/6476-57446-0070.flac",
+    "sex": "F",
+    "candidates": 118
+   },
+   {
+    "speaker_id": 6529,
+    "chapter_id": 62554,
+    "utterance_id": 36,
+    "utterance": "6529-62554-0036",
+    "path": "train-clean-100/6529/62554/6529-62554-0036.flac",
+    "sex": "M",
+    "candidates": 107
+   },
+   {
+    "speaker_id": 6531,
+    "chapter_id": 61334,
+    "utterance_id": 41,
+    "utterance": "6531-61334-0041",
+    "path": "train-clean-100/6531/61334/6531-61334-0041.flac",
+    "sex": "F",
+    "candidates": 133
+   },
+   {
+    "speaker_id": 6563,
+    "chapter_id": 285357,
+    "utterance_id": 7,
+    "utterance": "6563-285357-0007",
+    "path": "train-clean-100/6563/285357/6563-285357-0007.flac",
+    "sex": "M",
+    "candidates": 92
+   },
+   {
+    "speaker_id": 7635,
+    "chapter_id": 105409,
+    "utterance_id": 57,
+    "utterance": "7635-105409-0057",
+    "path": "train-clean-100/7635/105409/7635-105409-0057.flac",
+    "sex": "F",
+    "candidates": 122
+   },
+   {
+    "speaker_id": 7794,
+    "chapter_id": 295948,
+    "utterance_id": 0,
+    "utterance": "7794-295948-0000",
+    "path": "train-clean-100/7794/295948/7794-295948-0000.flac",
+    "sex": "F",
+    "candidates": 106
+   },
+   {
+    "speaker_id": 7800,
+    "chapter_id": 283478,
+    "utterance_id": 33,
+    "utterance": "7800-283478-0033",
+    "path": "train-clean-100/7800/283478/7800-283478-0033.flac",
+    "sex": "F",
+    "candidates": 115
+   },
+   {
+    "speaker_id": 8226,
+    "chapter_id": 274369,
+    "utterance_id": 54,
+    "utterance": "8226-274369-0054",
+    "path": "train-clean-100/8226/274369/8226-274369-0054.flac",
+    "sex": "M",
+    "candidates": 118
+   },
+   {
+    "speaker_id": 8425,
+    "chapter_id": 292520,
+    "utterance_id": 28,
+    "utterance": "8425-292520-0028",
+    "path": "train-clean-100/8425/292520/8425-292520-0028.flac",
+    "sex": "M",
+    "candidates": 114
+   },
+   {
+    "speaker_id": 8838,
+    "chapter_id": 298546,
+    "utterance_id": 49,
+    "utterance": "8838-298546-0049",
+    "path": "train-clean-100/8838/298546/8838-298546-0049.flac",
+    "sex": "M",
+    "candidates": 107
+   }
+  ]
+ },
+ "validation": {
+  "speakers_female": [
+   89,
+   125,
+   198,
+   403,
+   441,
+   669,
+   887,
+   1502,
+   1553,
+   1578,
+   2182,
+   3526,
+   4160,
+   4195,
+   4481,
+   4640,
+   5652,
+   7078,
+   7302,
+   8312
+  ],
+  "speakers_male": [
+   229,
+   446,
+   458,
+   1081,
+   1334,
+   2002,
+   2911,
+   3168,
+   3214,
+   3723,
+   4018,
+   4397,
+   6081,
+   6367,
+   6454,
+   7278,
+   7367,
+   8419,
+   8580,
+   8629
+  ],
+  "utterances": [
+   {
+    "speaker_id": 89,
+    "chapter_id": 219,
+    "utterance_id": 53,
+    "utterance": "89-219-0053",
+    "path": "train-clean-100/89/219/89-219-0053.flac",
+    "sex": "F",
+    "candidates": 123
+   },
+   {
+    "speaker_id": 125,
+    "chapter_id": 121124,
+    "utterance_id": 59,
+    "utterance": "125-121124-0059",
+    "path": "train-clean-100/125/121124/125-121124-0059.flac",
+    "sex": "F",
+    "candidates": 138
+   },
+   {
+    "speaker_id": 198,
+    "chapter_id": 209,
+    "utterance_id": 17,
+    "utterance": "198-209-0017",
+    "path": "train-clean-100/198/209/198-209-0017.flac",
+    "sex": "F",
+    "candidates": 126
+   },
+   {
+    "speaker_id": 229,
+    "chapter_id": 130880,
+    "utterance_id": 33,
+    "utterance": "229-130880-0033",
+    "path": "train-clean-100/229/130880/229-130880-0033.flac",
+    "sex": "M",
+    "candidates": 94
+   },
+   {
+    "speaker_id": 403,
+    "chapter_id": 128339,
+    "utterance_id": 27,
+    "utterance": "403-128339-0027",
+    "path": "train-clean-100/403/128339/403-128339-0027.flac",
+    "sex": "F",
+    "candidates": 114
+   },
+   {
+    "speaker_id": 441,
+    "chapter_id": 130108,
+    "utterance_id": 30,
+    "utterance": "441-130108-0030",
+    "path": "train-clean-100/441/130108/441-130108-0030.flac",
+    "sex": "F",
+    "candidates": 115
+   },
+   {
+    "speaker_id": 446,
+    "chapter_id": 123502,
+    "utterance_id": 10,
+    "utterance": "446-123502-0010",
+    "path": "train-clean-100/446/123502/446-123502-0010.flac",
+    "sex": "M",
+    "candidates": 111
+   },
+   {
+    "speaker_id": 458,
+    "chapter_id": 126290,
+    "utterance_id": 10,
+    "utterance": "458-126290-0010",
+    "path": "train-clean-100/458/126290/458-126290-0010.flac",
+    "sex": "M",
+    "candidates": 82
+   },
+   {
+    "speaker_id": 669,
+    "chapter_id": 129061,
+    "utterance_id": 36,
+    "utterance": "669-129061-0036",
+    "path": "train-clean-100/669/129061/669-129061-0036.flac",
+    "sex": "F",
+    "candidates": 118
+   },
+   {
+    "speaker_id": 887,
+    "chapter_id": 123289,
+    "utterance_id": 8,
+    "utterance": "887-123289-0008",
+    "path": "train-clean-100/887/123289/887-123289-0008.flac",
+    "sex": "F",
+    "candidates": 115
+   },
+   {
+    "speaker_id": 1081,
+    "chapter_id": 125237,
+    "utterance_id": 108,
+    "utterance": "1081-125237-0108",
+    "path": "train-clean-100/1081/125237/1081-125237-0108.flac",
+    "sex": "M",
+    "candidates": 130
+   },
+   {
+    "speaker_id": 1334,
+    "chapter_id": 135589,
+    "utterance_id": 88,
+    "utterance": "1334-135589-0088",
+    "path": "train-clean-100/1334/135589/1334-135589-0088.flac",
+    "sex": "M",
+    "candidates": 107
+   },
+   {
+    "speaker_id": 1502,
+    "chapter_id": 122615,
+    "utterance_id": 8,
+    "utterance": "1502-122615-0008",
+    "path": "train-clean-100/1502/122615/1502-122615-0008.flac",
+    "sex": "F",
+    "candidates": 136
+   },
+   {
+    "speaker_id": 1553,
+    "chapter_id": 140047,
+    "utterance_id": 33,
+    "utterance": "1553-140047-0033",
+    "path": "train-clean-100/1553/140047/1553-140047-0033.flac",
+    "sex": "F",
+    "candidates": 102
+   },
+   {
+    "speaker_id": 1578,
+    "chapter_id": 140045,
+    "utterance_id": 5,
+    "utterance": "1578-140045-0005",
+    "path": "train-clean-100/1578/140045/1578-140045-0005.flac",
+    "sex": "F",
+    "candidates": 118
+   },
+   {
+    "speaker_id": 2002,
+    "chapter_id": 139469,
+    "utterance_id": 4,
+    "utterance": "2002-139469-0004",
+    "path": "train-clean-100/2002/139469/2002-139469-0004.flac",
+    "sex": "M",
+    "candidates": 116
+   },
+   {
+    "speaker_id": 2182,
+    "chapter_id": 181183,
+    "utterance_id": 11,
+    "utterance": "2182-181183-0011",
+    "path": "train-clean-100/2182/181183/2182-181183-0011.flac",
+    "sex": "F",
+    "candidates": 115
+   },
+   {
+    "speaker_id": 2911,
+    "chapter_id": 15045,
+    "utterance_id": 26,
+    "utterance": "2911-15045-0026",
+    "path": "train-clean-100/2911/15045/2911-15045-0026.flac",
+    "sex": "M",
+    "candidates": 122
+   },
+   {
+    "speaker_id": 3168,
+    "chapter_id": 173565,
+    "utterance_id": 36,
+    "utterance": "3168-173565-0036",
+    "path": "train-clean-100/3168/173565/3168-173565-0036.flac",
+    "sex": "M",
+    "candidates": 108
+   },
+   {
+    "speaker_id": 3214,
+    "chapter_id": 167602,
+    "utterance_id": 24,
+    "utterance": "3214-167602-0024",
+    "path": "train-clean-100/3214/167602/3214-167602-0024.flac",
+    "sex": "M",
+    "candidates": 116
+   },
+   {
+    "speaker_id": 3526,
+    "chapter_id": 176651,
+    "utterance_id": 10,
+    "utterance": "3526-176651-0010",
+    "path": "train-clean-100/3526/176651/3526-176651-0010.flac",
+    "sex": "F",
+    "candidates": 114
+   },
+   {
+    "speaker_id": 3723,
+    "chapter_id": 171631,
+    "utterance_id": 1,
+    "utterance": "3723-171631-0001",
+    "path": "train-clean-100/3723/171631/3723-171631-0001.flac",
+    "sex": "M",
+    "candidates": 119
+   },
+   {
+    "speaker_id": 4018,
+    "chapter_id": 103416,
+    "utterance_id": 35,
+    "utterance": "4018-103416-0035",
+    "path": "train-clean-100/4018/103416/4018-103416-0035.flac",
+    "sex": "M",
+    "candidates": 110
+   },
+   {
+    "speaker_id": 4160,
+    "chapter_id": 11549,
+    "utterance_id": 12,
+    "utterance": "4160-11549-0012",
+    "path": "train-clean-100/4160/11549/4160-11549-0012.flac",
+    "sex": "F",
+    "candidates": 108
+   },
+   {
+    "speaker_id": 4195,
+    "chapter_id": 186237,
+    "utterance_id": 5,
+    "utterance": "4195-186237-0005",
+    "path": "train-clean-100/4195/186237/4195-186237-0005.flac",
+    "sex": "F",
+    "candidates": 140
+   },
+   {
+    "speaker_id": 4397,
+    "chapter_id": 15678,
+    "utterance_id": 34,
+    "utterance": "4397-15678-0034",
+    "path": "train-clean-100/4397/15678/4397-15678-0034.flac",
+    "sex": "M",
+    "candidates": 111
+   },
+   {
+    "speaker_id": 4481,
+    "chapter_id": 17498,
+    "utterance_id": 37,
+    "utterance": "4481-17498-0037",
+    "path": "train-clean-100/4481/17498/4481-17498-0037.flac",
+    "sex": "F",
+    "candidates": 97
+   },
+   {
+    "speaker_id": 4640,
+    "chapter_id": 19189,
+    "utterance_id": 35,
+    "utterance": "4640-19189-0035",
+    "path": "train-clean-100/4640/19189/4640-19189-0035.flac",
+    "sex": "F",
+    "candidates": 128
+   },
+   {
+    "speaker_id": 5652,
+    "chapter_id": 19215,
+    "utterance_id": 48,
+    "utterance": "5652-19215-0048",
+    "path": "train-clean-100/5652/19215/5652-19215-0048.flac",
+    "sex": "F",
+    "candidates": 130
+   },
+   {
+    "speaker_id": 6081,
+    "chapter_id": 41997,
+    "utterance_id": 34,
+    "utterance": "6081-41997-0034",
+    "path": "train-clean-100/6081/41997/6081-41997-0034.flac",
+    "sex": "M",
+    "candidates": 121
+   },
+   {
+    "speaker_id": 6367,
+    "chapter_id": 74004,
+    "utterance_id": 1,
+    "utterance": "6367-74004-0001",
+    "path": "train-clean-100/6367/74004/6367-74004-0001.flac",
+    "sex": "M",
+    "candidates": 113
+   },
+   {
+    "speaker_id": 6454,
+    "chapter_id": 107462,
+    "utterance_id": 32,
+    "utterance": "6454-107462-0032",
+    "path": "train-clean-100/6454/107462/6454-107462-0032.flac",
+    "sex": "M",
+    "candidates": 110
+   },
+   {
+    "speaker_id": 7078,
+    "chapter_id": 271888,
+    "utterance_id": 74,
+    "utterance": "7078-271888-0074",
+    "path": "train-clean-100/7078/271888/7078-271888-0074.flac",
+    "sex": "F",
+    "candidates": 115
+   },
+   {
+    "speaker_id": 7278,
+    "chapter_id": 246956,
+    "utterance_id": 21,
+    "utterance": "7278-246956-0021",
+    "path": "train-clean-100/7278/246956/7278-246956-0021.flac",
+    "sex": "M",
+    "candidates": 121
+   },
+   {
+    "speaker_id": 7302,
+    "chapter_id": 86814,
+    "utterance_id": 23,
+    "utterance": "7302-86814-0023",
+    "path": "train-clean-100/7302/86814/7302-86814-0023.flac",
+    "sex": "F",
+    "candidates": 135
+   },
+   {
+    "speaker_id": 7367,
+    "chapter_id": 86737,
+    "utterance_id": 27,
+    "utterance": "7367-86737-0027",
+    "path": "train-clean-100/7367/86737/7367-86737-0027.flac",
+    "sex": "M",
+    "candidates": 119
+   },
+   {
+    "speaker_id": 8312,
+    "chapter_id": 279791,
+    "utterance_id": 13,
+    "utterance": "8312-279791-0013",
+    "path": "train-clean-100/8312/279791/8312-279791-0013.flac",
+    "sex": "F",
+    "candidates": 106
+   },
+   {
+    "speaker_id": 8419,
+    "chapter_id": 286676,
+    "utterance_id": 32,
+    "utterance": "8419-286676-0032",
+    "path": "train-clean-100/8419/286676/8419-286676-0032.flac",
+    "sex": "M",
+    "candidates": 112
+   },
+   {
+    "speaker_id": 8580,
+    "chapter_id": 287364,
+    "utterance_id": 44,
+    "utterance": "8580-287364-0044",
+    "path": "train-clean-100/8580/287364/8580-287364-0044.flac",
+    "sex": "M",
+    "candidates": 87
+   },
+   {
+    "speaker_id": 8629,
+    "chapter_id": 261139,
+    "utterance_id": 61,
+    "utterance": "8629-261139-0061",
+    "path": "train-clean-100/8629/261139/8629-261139-0061.flac",
+    "sex": "M",
+    "candidates": 128
+   }
+  ]
+ },
+ "note": "Stage 2B calibration and the Stage 3 sets are dev/test speakers, disjoint from train-clean-100",
+ "selection_sha256": "354439bd16ae73661c268b5557b7727845f6d81aba039d2e873966a427c8bcbe"
+}
