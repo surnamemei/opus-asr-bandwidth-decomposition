@@ -488,4 +488,83 @@ for c in SWC:
     out.append(row(c, [ci(*sw(m, f"wer_{c}"), signed=False) for m, _ in MODELS]))
 out.append("")
 
+# ================================================================ Reviewer-concern sensitivity analyses R1-R3 (sealed outputs)
+RV = ROOT / "results_paper" / "reviewer_sensitivity"
+R_DEC = sealed(RV / "analysis" / "reviewer_decision.json", "decision_sha256")
+R3_DEC = sealed(RV / "analysis" / "r3_decision.json", "decision_sha256")
+R3_DESC = sealed(RV / "analysis" / "r3_descriptives.json", "descriptives_sha256")
+R_VAL = sealed(RV / "validation" / "validation_report.json", "report_sha256")
+R_SWEEP = sealed(RV / "validation" / "sweep_report.json", "report_sha256")
+R_SIGNAL = sealed(RV / "validation" / "signal_report.json", "report_sha256")
+R_EXPL = sealed(RV / "exploratory" / "post_gate_diagnosis.json", "diagnosis_sha256")
+assert R_DEC["decisions"]["R3"] == R3_DEC["decision_sha256"] and R3_DESC["r3_decision_sha256"] == R3_DEC["decision_sha256"]
+assert file_sha256(RV / "analysis" / "sweep_bootstrap.csv") == R_DEC["bootstrap_sha256"]["sweep_bootstrap.csv"]
+assert R_VAL["parts"]["sweep"] == R_SWEEP["report_sha256"] and R_VAL["parts"]["signal"] == R_SIGNAL["report_sha256"]
+assert R_DEC["outcomes"]["R1"] == R_DEC["outcomes"]["R2"] == "STOPPED" and not R_VAL["R1"]["pass"] and not R_VAL["R2"]["pass"]
+assert R_VAL["R3"]["pass"] and R_EXPL["inputs"]["signal_report_sha256"] == R_SIGNAL["report_sha256"]
+R3_BOOT = load(RV / "analysis" / "sweep_bootstrap.csv")
+R3_OUT = {m: R3_DEC["cells"][m]["outcome"] for m, _ in MODELS}
+
+
+def r3(model, quantity, scope="pooled", kind="micro"):
+    return ub(R3_BOOT, model, quantity, scope, kind)
+
+
+# ---------------------------------------------------------------- Table S13: R3 WER and W
+out.append("TABLE S13 (R3: forced wideband vs forced narrowband at 8 kbit/s, practical counterfactual) [submission]")
+out.append("| Scope | Recogniser | WER NB8 (%) | WER WB8 (%) | WB8 − NB8 (pp) | Outcome (frozen rule) |")
+out.append("|---|---|---|---|---|---|")
+for scope in ["pooled", "test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(scope, [name, ci(*r3(m, "wer_NB8", scope), signed=False), ci(*r3(m, "wer_WB8", scope), signed=False),
+                               ci(*r3(m, "W", scope)), R3_OUT[m] if scope == "pooled" else "— (secondary)"]))
+out.append("")
+
+# ---------------------------------------------------------------- Table S14: R3 packets and descriptors
+R3_MED = R3_DESC["signal_descriptor_medians"]
+R3_POOL = R3_DESC["pooled_against_ref"]
+R3_HYP = R3_DESC["hypothesis_differences"]
+R3_PAY = R_SWEEP["median_payload_kbps"]
+out.append("TABLE S14 (R3: packets and signal descriptors; medians over utterances or pooled against REF) [submission]")
+out.append("| Descriptor | NB8 | WB8 |")
+out.append("|---|---|---|")
+out.append(row("Median payload bitrate (kbit/s)", [f"{R3_PAY['NB8']:.2f}", f"{R3_PAY['WB8']:.2f}"]))
+for label, key, dec in [("Coherence with REF, 0–3.5 kHz (median)", "coherence 0-3.5 kHz vs REF", 3),
+                        ("LSD vs REF, 0–3 kHz (dB, median)", "LSD 0-3 kHz vs REF (dB)", 2),
+                        ("4–8 kHz power change vs REF (dB, median)", "4-8 kHz power change vs REF (dB)", 2)]:
+    out.append(row(label, [cell(R3_MED["NB8"][key], dec), cell(R3_MED["WB8"][key], dec)]))
+for label, key, dec in [("Coherent bandwidth vs REF (Hz, pooled)", "coherent_bandwidth_hz", 0),
+                        ("Total 4–8 kHz power vs REF (dB, pooled)", "total_hf_power_db", 2)]:
+    out.append(row(label, [cell(R3_POOL["NB8"][key], dec), cell(R3_POOL["WB8"][key], dec)]))
+out.append(row("Raw hypotheses differing from NB8 (Whisper; wav2vec2)",
+               ["—", f"{R3_HYP['whisper']['nb8_vs_wb8_raw_hypothesis_differs']}; "
+                     f"{R3_HYP['wav2vec2']['nb8_vs_wb8_raw_hypothesis_differs']}"]))
+out.append("")
+
+# ---------------------------------------------------------------- R1 and R2: failed held-out criteria; exploratory diagnosis
+import re as _re
+R1_G6 = next(g for g in R_SIGNAL["R1-V"]["gates"] if g["gate"] == 6)
+assert R1_G6["status"] == "FAIL" and R_SIGNAL["R1-V"]["control"] == "LP_LIBOPUS"
+R1_RMS = float(_re.search(r"RMS ([\d.]+) dB over \[3000\.0, 4200\.0\] Hz", R1_G6["evidence"]).group(1))
+R1_TOL = sealed(ROOT / "results_paper" / "lowpass_confirmation" / "revised_spec.json", "spec_sha256")["revised_tolerances"]
+assert R1_TOL["g6_h1_rms_band_hz"] == [3000.0, 4200.0]     # R1-V: the revised Stage 2B tolerances, unchanged
+R2_V3 = R_SIGNAL["R2-V"]["gates"]["R2-V3"]
+assert not R2_V3["pass"]
+R2_TOL = {k: v["value"] for k, v in
+          sealed(ROOT / "paper" / "reviewer_sensitivity" / "reviewer_spec.json", "spec_sha256")["R2"]["tolerances"].items()}
+R_DELAY = R_EXPL["silk40_alignment_dependence"]["libopus_delay_samples_16k"]
+R_STAB = R_EXPL["silk40_alignment_dependence"]["max_abs_calibration_minus_validation_db_3000_4150"]
+out.append("R1 AND R2: STOPPED BEFORE ASR, FAILED HELD-OUT TRANSITION-SHAPE CRITERIA [submission]")
+out.append(f"R1-V gate 6 (LP_LIBOPUS vs libopus SILK40): RMS {R1_RMS:.2f} dB over "
+           f"{R1_TOL['g6_h1_rms_band_hz'][0] / 1000:.1f}–{R1_TOL['g6_h1_rms_band_hz'][1] / 1000:.1f} kHz, "
+           f"limit {R1_TOL['g6_h1_rms_max_db']:.1f} dB")
+out.append(f"R2-V3 (SURR8): RMS {R2_V3['rms_db']:.2f} dB, limit {R2_TOL['V3_rms_max_db']:.1f} dB; "
+           f"maximum {R2_V3['max_abs_db']:.2f} dB, limit {R2_TOL['V3_abs_max_db']:.1f} dB")
+out.append("EXPLORATORY POST-GATE DIAGNOSIS (post hoc; not part of any rule) [submission]")
+out.append(f"libopus delay, median samples at 16 kHz: calibration {R_DELAY['calibration']['median']:.2f}, "
+           f"validation {R_DELAY['validation']['median']:.2f}; largest calibration-validation |H1| difference "
+           f"(3.0-4.15 kHz): libopus, fixed alignment {R_STAB['libopus_fixed0']:.2f} dB; FFmpeg "
+           f"{R_STAB['ffmpeg_fixed2']:.2f} dB; libopus, frozen alignment {R_STAB['libopus_frozen']:.2f} dB")
+out.append("")
+
 print("\n".join(out))

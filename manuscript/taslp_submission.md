@@ -406,6 +406,27 @@ $0.5\,S^\ast$. Slopes on the rate rank and on the measured payload bitrate, adja
 contrasts, per-subset scopes and the descriptors of Section 3.8 are secondary or descriptive and
 do not enter the rule; the five residuals are not corrected for multiplicity.
 
+## 3.10 Forced-wideband counterfactual (sealed after the follow-up analyses)
+
+A later plan, specified after Additions A and B and sealed before any of its audio was encoded,
+added a practical counterfactual: at the same nominal 8 kbit/s, does spending the bits on
+wideband instead of narrowband change WER? It reuses the 1,665 utterances of Addition B, so it
+is again a fresh-utterance, not fresh-speaker, holdout. NB8 has the confirmatory OPUS settings
+(8 kbit/s, forced narrowband, `signal=auto`) and WB8 the same settings with wideband forced; the
+decoder and the resampler are unchanged. Before recognition, NB8 had to reproduce Addition B's
+SILK8 files byte for byte, every WB8 packet had to be SILK-only wideband with 20 ms frames,
+every encoder setting had to read back as requested, WB8's median payload bitrate had to lie
+within ±15 % of nominal and within ±10 % of NB8's, and WB8's pooled 4–8 kHz power relative to
+REF had to be at least −10 dB. The primary contrast is $W$ = WB8 − NB8 per recogniser, with 95 %
+speaker-bootstrap intervals (Addition B's seed on the same speakers). The outcome is WB_BETTER
+if the interval lies below zero, WB_WORSE if it lies above zero and NO_CLEAR_DIFFERENCE
+otherwise; no combined outcome is formed. Forcing wideband also changes SILK's internal sampling
+rate, its LPC order and the allocation of the bit budget, so this is a practical
+bandwidth-allocation counterfactual, not a factorial estimate of an interaction between
+bandwidth loss and coding distortion, and it does not enter the decomposition. The same plan
+included two attribution sensitivities that were stopped before recognition (Supplementary
+Section S7).
+
 # 4. Results
 
 ## 4.1 Pilot
@@ -613,6 +634,25 @@ mirror coherence rising from 0.245 to 0.970 at similar total power. The sweep th
 that the residual depends on the coding rate, but not which of these rate-dependent properties
 produces it.
 
+## 4.11 Forced-wideband counterfactual
+
+*Practical bandwidth-allocation counterfactual on the 1,665 utterances of Addition B (a
+fresh-utterance, not fresh-speaker, holdout); not a factorial interaction estimate.*
+
+All gates passed before recognition. NB8 reproduced Addition B's SILK8 files byte for byte and,
+after recognition, all of its hypotheses; every WB8 packet was SILK-only wideband with 20 ms
+frames; and the median payload bitrates were 7.36 (NB8) and 7.76 kbit/s (WB8). At approximately
+8 kbit/s, forced wideband reduced the WER of wav2vec2-base-960h relative to forced narrowband by
+0.98 pp [0.42, 1.57] (WB_BETTER).
+Whisper large-v3 showed no clear difference: +0.14 pp [−0.07, +0.36] (NO_CLEAR_DIFFERENCE).
+Wideband coding restored the energy above 4 kHz (pooled 4–8 kHz power relative to REF: +2.14 dB,
+against −16.54 dB for NB8) but worsened in-band fidelity: median coherence with REF over
+0–3.5 kHz fell from 0.623 to 0.559, and median LSD over 0–3 kHz rose from 6.19 to 6.77 dB.
+Coding therefore changed with the band, so the comparison does not isolate a bandwidth × coding
+interaction and does not change the decomposition. The result was recogniser-dependent and does
+not show a general advantage of wideband coding at this rate (per-subset results and
+descriptors: Supplementary Section S7, Tables S13 and S14).
+
 # 5. Discussion
 
 **Bandwidth explains a minority of the low-rate Opus penalty.** In both recognisers, removing
@@ -670,8 +710,11 @@ restoring the missing band alone would not target the residual beyond the contro
 the larger component in both recognisers. Decoder-side enhancement of low-rate SILK, which
 currently targets wideband operation [@buethe2024nolace], or higher coding rates, target the
 larger component. The bitrate sweep bears on the second: at 24 kbit/s and above, forced SILK
-narrowband left no detectable residual beyond the control on these data. Restoring the band and
-decoder-side enhancement were not tested.
+narrowband left no detectable residual beyond the control on these data. At the same nominal
+8 kbit/s, forcing wideband instead of narrowband lowered the WER of wav2vec2-base-960h but not
+detectably that of Whisper large-v3 (Section 4.11), so whether a wideband allocation helps
+depends on the recogniser. Restoring the band without changing the coding, as bandwidth
+extension would, and decoder-side enhancement were not tested.
 
 # 6. Limitations
 
@@ -686,7 +729,9 @@ does not isolate the in-band interpretation.
 
 **The decomposition.** The decomposition is sequential, so the residual includes any
 interaction between band limitation and coding. Estimating the interaction would need a
-factorial design, for example Opus forced to wideband at 8 kbit/s, which was not run. The
+factorial design. A forced-wideband 8 kbit/s counterfactual was tested, but changing bandwidth
+allocation also changes the coding-distortion budget, so the comparison does not identify a
+factorial interaction between bandwidth loss and coding distortion. The
 control was fitted to a reference measured at 40 kbit/s that had not fully converged: near the
 band edge the reference still rose by up to 0.83 dB between 32 and 40 kbit/s. The control was
 validated under a corrected criterion after the first criterion failed; the failed validation
@@ -733,7 +778,9 @@ the Opus signal to the control did not remove it. In a bitrate sweep on fresh ut
 same speakers, specified and sealed before decoding, the residual of forced SILK narrowband decreased with bitrate
 and was not detectable at 24 kbit/s and above. These results support, but do not isolate, the
 interpretation of the residual as low-rate in-band coding distortion rather than band
-limitation alone. Future work includes:
+limitation alone. At the same nominal 8 kbit/s, forcing wideband lowered WER for
+wav2vec2-base-960h but not detectably for Whisper large-v3; this practical, recogniser-dependent
+result does not estimate a bandwidth × coding interaction. Future work includes:
 
 - a manipulation that changes in-band coding distortion with level and image held fixed;
 - a fresh-speaker holdout on another corpus;
@@ -752,9 +799,15 @@ validation gates; the low-pass control's original failure, the corrected criteri
 independent confirmation are all retained. The two follow-up analyses were specified after the
 confirmation and sealed before any of their audio was encoded. Their code was frozen after a
 calibration check, one amendment was sealed before that freeze, each analysis was decoded once,
-and each decision record was sealed. Supplementary material gives the tables and figures moved
-out of this paper (Tables S1–S12, Figs. S1–S3), the level-matching and bitrate-sweep
-diagnostics, and the amendments and deviations. Code, sealed selections, per-utterance outputs and all
+and each decision record was sealed. A later plan, sealed before any of its audio was encoded,
+added the forced-wideband counterfactual (Section 4.11); its code was frozen after a
+calibration step, the counterfactual was decoded once, and its decision record was sealed. Two
+additional attribution sensitivities were prospectively gated but stopped before ASR because
+their signal-domain controls failed held-out validation. Supplementary material gives the
+tables and figures moved out of this paper and the counterfactual's details (Tables S1–S14,
+Figs. S1–S3), the level-matching, bitrate-sweep and sensitivity-analysis diagnostics (Sections
+S4, S5 and S7), and the amendments and deviations.
+Code, sealed selections, per-utterance outputs and all
 intermediate reports are in the project repository (link withheld for review).
 LibriSpeech, the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are
 public.

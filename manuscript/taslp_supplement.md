@@ -265,3 +265,80 @@ and the failed calibration record is retained. The amendment changed no estimand
 decision threshold, condition, selection or rule, and no code changed after the freeze. The
 three Whisper hypotheses that differed when Addition A decoded the confirmation audio again are
 reported in Section S4 (main paper, Section 4.9).
+
+# S7. Forced-wideband counterfactual and stopped sensitivity analyses
+
+A later plan was specified after Additions A and B and sealed before any of its audio was
+encoded. For each of its three analyses it fixed the selection, the checks to be passed before
+recognition, the estimands, the bootstrap and the outcome rule; its code was frozen after a
+calibration step.
+
+**Forced-wideband counterfactual (main paper, Sections 3.10 and 4.11).** NB8's Ogg files and raw
+hypotheses were identical to those of Addition B's SILK8 for all 1,665 utterances in both
+recognisers. Every WB8 packet was SILK-only wideband with 20 ms frames, every encoder setting
+read back as requested, and WB8 restored the 4–8 kHz band (Table S14). The per-subset contrasts
+are secondary and not corrected for multiplicity (Table S13); among them, the interval for Whisper
+large-v3 on test-clean lay above zero (+0.27 pp [+0.03, +0.54]), and that for wav2vec2-base-960h on
+test-other below zero (−1.70 pp [−2.75, −0.65]).
+
+| Scope | Recogniser | WER NB8 (%) | WER WB8 (%) | WB8 − NB8 (pp) | Outcome (frozen rule) |
+|---|---|---|---|---|---|
+| pooled | Whisper large-v3 | 3.40 [2.97, 3.87] | 3.54 [3.06, 4.06] | +0.14 [−0.07, +0.36] | NO_CLEAR_DIFFERENCE |
+| pooled | wav2vec2-base-960h | 9.68 [8.44, 11.09] | 8.70 [7.62, 9.94] | −0.98 [−1.57, −0.42] | WB_BETTER |
+| test-clean | Whisper large-v3 | 2.20 [1.77, 2.67] | 2.47 [2.02, 2.94] | +0.27 [+0.03, +0.54] | — (secondary) |
+| test-clean | wav2vec2-base-960h | 4.49 [3.77, 5.29] | 4.31 [3.60, 5.06] | −0.19 [−0.43, +0.06] | — (secondary) |
+| test-other | Whisper large-v3 | 4.48 [3.77, 5.27] | 4.51 [3.69, 5.42] | +0.03 [−0.30, +0.36] | — (secondary) |
+| test-other | wav2vec2-base-960h | 14.39 [12.15, 16.88] | 12.69 [10.71, 15.02] | −1.70 [−2.75, −0.65] | — (secondary) |
+
+: Forced-wideband counterfactual at 8 kbit/s on the 1,665 utterances of Addition B (a fresh-utterance, not fresh-speaker, holdout): corpus WER (%) and WB8 − NB8 (pp) with 95 % speaker-bootstrap intervals, and the outcome of the frozen rule (pooled only; per-subset rows are secondary). A practical bandwidth-allocation counterfactual, not a factorial interaction estimate.
+
+| Descriptor | NB8 | WB8 |
+|---|---|---|
+| Median payload bitrate (kbit/s) | 7.36 | 7.76 |
+| Coherence with REF, 0–3.5 kHz (median) | 0.623 | 0.559 |
+| LSD vs REF, 0–3 kHz (dB, median) | 6.19 | 6.77 |
+| 4–8 kHz power change vs REF (dB, median) | −17.19 | 1.72 |
+| Coherent bandwidth vs REF (Hz, pooled) | 4000 | 8000 |
+| Total 4–8 kHz power vs REF (dB, pooled) | −16.54 | 2.14 |
+| Raw hypotheses differing from NB8 (Whisper; wav2vec2) | — | 782; 999 |
+
+: Forced-wideband counterfactual: payload bitrate and signal descriptors of NB8 and WB8 (medians over utterances, or pooled cross-spectral measures, against REF), and the number of raw hypotheses (of 1,665) that differ from NB8. Descriptive only.
+
+**Stopped attribution sensitivities.** Two additional attribution sensitivities were prospectively
+gated but stopped before ASR because their signal-domain controls failed held-out validation.
+Both controls were validated on a new signal-only subset of 40 train-clean-100 speakers (20
+female, 20 male, one utterance each), disjoint from the calibration and filter-validation
+speakers; no transcript was read and no recognition was run.
+
+- *Decoding with the libopus reference decoder.* The frozen control failed a pre-specified
+  control-reuse gate against the libopus-decoded SILK narrowband response, so a decoder-matched
+  control was fitted by the control's unchanged procedure (main paper, Section 3.4). The
+  decoder-matched control failed held-out transition-shape validation: RMS difference 2.07 dB
+  over 3.0–4.2 kHz (limit 1.5 dB).
+- *An 8-kbit/s effective coherent-linear surrogate*: a filter fitted to the same-frequency
+  coherent response of Opus at 8 kbit/s, for an alternative attribution under a more inclusive
+  definition of linear loss (not a bandwidth control). The 8-kbit/s effective coherent-linear
+  surrogate failed held-out transition-shape validation: RMS difference from its target 2.04 dB
+  (limit 1.5 dB), maximum 8.91 dB (limit 4.0 dB).
+
+Neither control was redesigned or refitted, and neither analysis reached recognition. The primary
+control, the decomposition and the decoder limitation of the main paper are unchanged.
+
+*Post hoc and exploratory, not part of any rule.* After both analyses had stopped, a diagnosis
+indicated that the libopus-decoded chain has a sub-sample, content-dependent delay (median 0.44
+and 0.47 samples at 16 kHz on the calibration and validation sets). The frozen per-utterance
+integer alignment then makes the measured linear response depend on the speaker set: the largest
+calibration–validation difference over 3.0–4.15 kHz was 3.61 dB with the frozen alignment,
+against 0.92 dB with one fixed alignment for every utterance and 0.94 dB for the FFmpeg-decoded
+chain. This fractional-delay diagnosis is post hoc and exploratory; no successor analysis has
+been run.
+
+**Deviations.** None changed a gate, tolerance, rule, selection or outcome. The code freeze was
+sealed before the held-out signal validation, to keep the plan's order. The validation report was
+sealed in three parts with a combined report, and the pre-recognition checks of the decoder
+analysis were completed after it had stopped, because the frozen runner needs every part. Three
+pre-specified descriptive items of the counterfactual (the differing-hypothesis counts, the
+reproduction check and the in-band descriptors of Table S14) were not computed by the frozen
+analysis; a separate script computed them afterwards from sealed outputs, and the in-band
+descriptors were sealed with the recognition outputs rather than before recognition. Before the
+code freeze, the pipeline was dry-run on 3 calibration utterances and the outputs were discarded.

@@ -285,6 +285,51 @@ if SUBMISSION:
     for m in (W, V):
         e, lo, hi = b("confirmation", m, "bw_share_of_opus_total", kind="ratio")
         primary.append(f"{round(100*e):.0f} % [{round(100*lo):.0f}, {round(100*hi):.0f}]")
+    # forced-wideband counterfactual (sealed R3 outputs), in the main paper as a practical
+    # bandwidth-allocation counterfactual; the two attribution sensitivities that stopped before
+    # ASR (R1, R2) get one sentence in the main paper and their failed criteria in the supplement
+    assert T.R3_OUT == {W: "NO_CLEAR_DIFFERENCE", V: "WB_BETTER"}
+    assert all(T.R3_HYP[m]["nb8_vs_b_silk8_raw_hypothesis_differs"] == 0 for m in (W, V))
+    R3W = {m: T.r3(m, "W") for m in (W, V)}
+    r3med = {c: T.R3_MED[c] for c in ("NB8", "WB8")}
+    stopped = ("Two additional attribution sensitivities were prospectively gated but stopped before ASR "
+               "because their signal-domain controls failed held-out validation.")
+    primary += [
+        f"At approximately 8 kbit/s, forced wideband reduced the WER of wav2vec2-base-960h relative to forced "
+        f"narrowband by {abs(R3W[V][0]):.2f} pp [{abs(R3W[V][2]):.2f}, {abs(R3W[V][1]):.2f}] (WB_BETTER)",
+        f"Whisper large-v3 showed no clear difference: {up(*R3W[W])} (NO_CLEAR_DIFFERENCE)",
+        f"{T.R3_PAY['NB8']:.2f} (NB8) and {T.R3_PAY['WB8']:.2f} kbit/s (WB8)",
+        f"REF: {fmt(T.R3_POOL['WB8']['total_hf_power_db'], True)} dB, against "
+        f"{fmt(T.R3_POOL['NB8']['total_hf_power_db'], True)} dB for NB8",
+        f"fell from {T.cell(r3med['NB8']['coherence 0-3.5 kHz vs REF'], 3)} to "
+        f"{T.cell(r3med['WB8']['coherence 0-3.5 kHz vs REF'], 3)}",
+        f"rose from {T.cell(r3med['NB8']['LSD 0-3 kHz vs REF (dB)'], 2)} to "
+        f"{T.cell(r3med['WB8']['LSD 0-3 kHz vs REF (dB)'], 2)} dB",
+        "does not isolate a bandwidth × coding interaction and does not change the decomposition",
+        "recogniser-dependent and does not show a general advantage of wideband coding at this rate",
+        "Estimating the interaction would need a factorial design.",     # kept (frozen plan, R3 in every outcome)
+        "A forced-wideband 8 kbit/s counterfactual was tested, but changing bandwidth allocation also changes the "
+        "coding-distortion budget, so the comparison does not identify a factorial interaction between bandwidth "
+        "loss and coding distortion.",
+        stopped,
+    ]
+    if " ".join(stopped.split()) not in " ".join(TEXTS["taslp_supplement.md"].split()):
+        fails.append(f"MISSING in the supplement: {stopped}")
+    need(f"NB8's Ogg files and raw hypotheses were identical to those of Addition B's SILK8 for all "
+         f"{T.R3_HYP[W]['utterances']:,} utterances in both recognisers", "R3 reproduction (S7)")
+    need(f"decoder-matched control failed held-out transition-shape validation: RMS difference {T.R1_RMS:.2f} dB "
+         f"over 3.0–4.2 kHz (limit {T.R1_TOL['g6_h1_rms_max_db']:.1f} dB)", "R1-V gate 6 (S7)")
+    need(f"8-kbit/s effective coherent-linear surrogate failed held-out transition-shape validation: RMS difference "
+         f"from its target {T.R2_V3['rms_db']:.2f} dB (limit {T.R2_TOL['V3_rms_max_db']:.1f} dB), maximum "
+         f"{T.R2_V3['max_abs_db']:.2f} dB (limit {T.R2_TOL['V3_abs_max_db']:.1f} dB)", "R2-V3 (S7)")
+    need(f"(median {T.R_DELAY['calibration']['median']:.2f} and {T.R_DELAY['validation']['median']:.2f} samples "
+         f"at 16 kHz", "exploratory delay (S7)")
+    need(f"{T.R_STAB['libopus_frozen']:.2f} dB with the frozen alignment, against {T.R_STAB['libopus_fixed0']:.2f} dB "
+         f"with one fixed alignment for every utterance and {T.R_STAB['ffmpeg_fixed2']:.2f} dB for the "
+         f"FFmpeg-decoded chain", "exploratory stability (S7)")
+    need("This fractional-delay diagnosis is post hoc and exploratory", "exploratory label (S7)")
+    need(f"Whisper large-v3 on test-clean lay above zero ({up(*T.r3(W, 'W', 'test-clean'))})", "R3 secondary (S7)")
+    need(f"wav2vec2-base-960h on test-other below zero ({up(*T.r3(V, 'W', 'test-other'))})", "R3 secondary (S7)")
     for tok in primary:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
@@ -309,7 +354,9 @@ for f, text in TEXTS.items():
 FORBIDDEN = [r"\b(the |be )?first (to|study|studies|work|paper|time|demonstrat\w*|decomposition|systematic|attempt)\b",
              r"\bwe are the first\b", r"\bnovel\b", r"for the first time", r"unprecedented", r"no prior work",
              r"statistically indistinguishable", r"\bequivalent\b", r"caused by (in-band )?coding",
-             r"byte-identical to the prior study\b", r"\bproves?\b"]
+             r"byte-identical to the prior study\b", r"\bproves?\b",
+             r"\bwideband (coding )?(is|was) (generally |universally |always )?(better|superior)\b",
+             r"\buniversally superior\b"]
 body = re.sub(r"<!--.*?-->", "", MS, flags=re.S)
 for pat in FORBIDDEN:
     for mt in re.finditer(pat, body, flags=re.I):
