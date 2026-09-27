@@ -1,0 +1,74 @@
+{
+ "created_utc": "2026-09-27T15:26:25.815515+00:00",
+ "spec_sha256": "1e3f95ecf87719d1f014a72aa82eb15f7718ccd3b7946a9953601dc81224aabc",
+ "code_freeze_sha256": "ae16b7e4963cbb3937bd3f5d2d544c7e6f479b833a78682595fbf0398fa9e0f6",
+ "outputs_sha256": "2e145d03b26366bdd9dfc94b9f448175e2d0db9ec2cfbe391c2a44dde1ad413b",
+ "anchor_reproduction": {
+  "max_abs_difference_pp": 1.7763568394002505e-15,
+  "tolerance_pp": 1e-09,
+  "pass": true,
+  "cells": {
+   "whisper/pooled/wer_REF": 0.0,
+   "whisper/pooled/wer_OPUS_FFMPEG": 4.440892098500626e-16,
+   "whisper/pooled/T_ffmpeg": 0.0,
+   "whisper/test-clean/wer_REF": 0.0,
+   "whisper/test-clean/wer_OPUS_FFMPEG": 2.220446049250313e-16,
+   "whisper/test-clean/T_ffmpeg": 6.938893903907228e-17,
+   "whisper/test-other/wer_REF": 4.440892098500626e-16,
+   "whisper/test-other/wer_OPUS_FFMPEG": 0.0,
+   "whisper/test-other/T_ffmpeg": 0.0,
+   "wav2vec2/pooled/wer_REF": 0.0,
+   "wav2vec2/pooled/wer_OPUS_FFMPEG": 0.0,
+   "wav2vec2/pooled/T_ffmpeg": 0.0,
+   "wav2vec2/test-clean/wer_REF": 0.0,
+   "wav2vec2/test-clean/wer_OPUS_FFMPEG": 0.0,
+   "wav2vec2/test-clean/T_ffmpeg": 0.0,
+   "wav2vec2/test-other/wer_REF": 0.0,
+   "wav2vec2/test-other/wer_OPUS_FFMPEG": 1.7763568394002505e-15,
+   "wav2vec2/test-other/T_ffmpeg": 0.0
+  }
+ },
+ "analysis": "R4: reference-decoder total-penalty sensitivity (post-confirmation sensitivity analysis; total penalty only; not a decomposition)",
+ "cells": {
+  "whisper": {
+   "T_ffmpeg": [
+    0.8268650528594789,
+    0.5741181416861005,
+    1.102322079849063
+   ],
+   "T_libopus": [
+    0.7209157703203816,
+    0.48944110832284426,
+    0.9709641078067801
+   ],
+   "D": [
+    -0.1059492825390973,
+    -0.17454890184046903,
+    -0.038708860548903296
+   ],
+   "outcome": "DECODER_LOWER_PENALTY"
+  },
+  "wav2vec2": {
+   "T_ffmpeg": [
+    3.4755971163369184,
+    2.7320382456995875,
+    4.452608987427618
+   ],
+   "T_libopus": [
+    3.560817191422714,
+    2.7936852859055534,
+    4.538443673920156
+   ],
+   "D": [
+    0.08522007508579565,
+    -0.03548405769525697,
+    0.2077550065607998
+   ],
+   "outcome": "NO_CLEAR_DECODER_DIFFERENCE"
+  }
+ },
+ "outcome": null,
+ "note": "per recogniser only; no combined outcome",
+ "bootstrap_sha256": "2deb3c690c134d43f2c0e094e84415017ff33b3507f7f7f71966e6ce22ed79ce",
+ "decision_sha256": "dd3e53b30d95e68deeb167068ede6cd2863a1fea1a3bb3b245ca59d18b3c1fea"
+}

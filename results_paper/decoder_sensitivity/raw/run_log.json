@@ -1,0 +1,35 @@
+{
+ "set": "confirmation",
+ "selection_sha256": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+ "sessions": [
+  {
+   "started_utc": "2026-09-27T15:14:41.550540+00:00",
+   "resumed_after": 0,
+   "chunks": 272,
+   "code_sha256": {
+    "paper/decoder_sensitivity/r4_design.py": "ae3c8391bea7c00d7d5a4f3c2e54a6be0dce6689cd8006785014a56013732929",
+    "paper/decoder_sensitivity/run_r4.py": "2f752e39628364add5a92d99de27b319724eafafaaa39ddb46fb0001473723bd",
+    "paper/decoder_sensitivity/tests/test_r4.py": "ff5afededdb6029872213994e48ddbf7fa19ab8f2644ea5e003d99f7785ca972",
+    "paper/reviewer_sensitivity/reviewer_pipeline.py": "ec018b09c3f91954b683635bf5275ecc4143f5034afcc02ecc4b454fa380d40a",
+    "paper/reviewer_sensitivity/reviewer_design.py": "492441cca5769af2b3eb3ddd3bfa40229a7376d5a5e064c206db9519bcdb01be",
+    "paper/taslp_upgrade/upgrade_design.py": "333302d6774c478f939d5a39bc9acbd7b5b2e54fe7b044ea757a340c77bcc3fe",
+    "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe",
+    "paper/taslp_upgrade/upgrade_pipeline.py": "26a8fb5907e69fdbfe92cc8bc12ff80218a76856e5b47d2c8e7ec23ba5fc47e2",
+    "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+    "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+    "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+    "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+    "paper/stage3_report.py": "92240a89d1239bc406a4c782ff0bb630295106f3be250ba8cb9adbc7cec7000b",
+    "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+    "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+    "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+    "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+    "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+    "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+   },
+   "seconds": 675.3165078163147,
+   "finished_utc": "2026-09-27T15:25:56.869681+00:00",
+   "seconds_per_utterance": 0.310633168268774
+  }
+ ]
+}

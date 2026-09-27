@@ -1,0 +1,45 @@
+{
+ "created_utc": "2026-09-27T15:26:38.428659+00:00",
+ "label": "descriptive; requested by the author at the approval of R4; not pre-specified in the frozen plan; computed by this reporting script outside the code freeze after RS5, from sealed outputs only; enters no gate and no outcome",
+ "r4_decision_sha256": "dd3e53b30d95e68deeb167068ede6cd2863a1fea1a3bb3b245ca59d18b3c1fea",
+ "r4_outputs_sha256": "2e145d03b26366bdd9dfc94b9f448175e2d0db9ec2cfbe391c2a44dde1ad413b",
+ "stage3_confirmation_outputs_sha256": "de82f749b6a1446ff45cfed187c59fdd7da0feb8aa459f035d1108b0893b8d17",
+ "comparison": "OPUS_LIBOPUS (R4 run) against OPUS_FFMPEG (Stage 3 confirmation run, label OPUS), per utterance and recogniser; raw and Whisper-normalised hypotheses",
+ "hypothesis_differences": {
+  "whisper": {
+   "utterances": 2174,
+   "raw_hypothesis_differs": 292,
+   "normalised_hypothesis_differs": 103,
+   "by_subset": {
+    "test-clean": {
+     "raw_hypothesis_differs": 143,
+     "normalised_hypothesis_differs": 30,
+     "utterances": 1190
+    },
+    "test-other": {
+     "raw_hypothesis_differs": 149,
+     "normalised_hypothesis_differs": 73,
+     "utterances": 984
+    }
+   }
+  },
+  "wav2vec2": {
+   "utterances": 2174,
+   "raw_hypothesis_differs": 801,
+   "normalised_hypothesis_differs": 797,
+   "by_subset": {
+    "test-clean": {
+     "raw_hypothesis_differs": 245,
+     "normalised_hypothesis_differs": 241,
+     "utterances": 1190
+    },
+    "test-other": {
+     "raw_hypothesis_differs": 556,
+     "normalised_hypothesis_differs": 556,
+     "utterances": 984
+    }
+   }
+  }
+ },
+ "descriptives_sha256": "f66108ac26e5723bf754ce9597ea03220c795e8029f456d7c7baa483fa34075a"
+}

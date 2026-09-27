@@ -1,0 +1,135 @@
+{
+ "created_utc": "2026-09-27T15:13:16.942839+00:00",
+ "spec_sha256": "1e3f95ecf87719d1f014a72aa82eb15f7718ccd3b7946a9953601dc81224aabc",
+ "code_freeze_sha256": "ae16b7e4963cbb3937bd3f5d2d544c7e6f479b833a78682595fbf0398fa9e0f6",
+ "n_utterances": 2174,
+ "gates": {
+  "G1": {
+   "pass": true,
+   "identical": 2174,
+   "of": 2174
+  },
+  "G2": {
+   "pass": true,
+   "decoded": 2174,
+   "decode_errors": [],
+   "packets_identical": 2174,
+   "of": 2174
+  },
+  "G3": {
+   "output_gain_zero": true,
+   "pre_skip_is_3x_lookahead": true,
+   "samples_per_packet": [
+    "960"
+   ],
+   "length_48k_follows_convention": true,
+   "length_48k_is_3x_ref": true,
+   "length_48k_equals_ffmpeg": true,
+   "length_16k_equals_ref": true,
+   "pass": true
+  },
+  "G4": {
+   "nonfinite_48k": 0,
+   "nonfinite_16k": 0,
+   "pass": true
+  },
+  "G5": {
+   "environment_differences": [],
+   "decoder": "libopus 1.4",
+   "decoder_path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+   "pass": true
+  },
+  "G7": {
+   "committed": {
+    "paper/decoder_sensitivity/r4_spec.json": "ec8deee39d444c1896e7075042c5c0d026629df4 2026-09-28T01:08:35+10:00",
+    "paper/decoder_sensitivity/00_R4_PLAN.md": "ec8deee39d444c1896e7075042c5c0d026629df4 2026-09-28T01:08:35+10:00",
+    "results_paper/decoder_sensitivity/code_freeze.json": "ec8deee39d444c1896e7075042c5c0d026629df4 2026-09-28T01:08:35+10:00"
+   },
+   "no_r4_recognition_outputs": true,
+   "pass": true
+  },
+  "G9": {
+   "max_abs_difference_pp": 1.7763568394002505e-15,
+   "tolerance_pp": 1e-09,
+   "pass": true,
+   "cells": {
+    "whisper/pooled/wer_REF": 0.0,
+    "whisper/pooled/wer_OPUS_FFMPEG": 4.440892098500626e-16,
+    "whisper/pooled/T_ffmpeg": 0.0,
+    "whisper/test-clean/wer_REF": 0.0,
+    "whisper/test-clean/wer_OPUS_FFMPEG": 2.220446049250313e-16,
+    "whisper/test-clean/T_ffmpeg": 6.938893903907228e-17,
+    "whisper/test-other/wer_REF": 4.440892098500626e-16,
+    "whisper/test-other/wer_OPUS_FFMPEG": 0.0,
+    "whisper/test-other/T_ffmpeg": 0.0,
+    "wav2vec2/pooled/wer_REF": 0.0,
+    "wav2vec2/pooled/wer_OPUS_FFMPEG": 0.0,
+    "wav2vec2/pooled/T_ffmpeg": 0.0,
+    "wav2vec2/test-clean/wer_REF": 0.0,
+    "wav2vec2/test-clean/wer_OPUS_FFMPEG": 0.0,
+    "wav2vec2/test-clean/T_ffmpeg": 0.0,
+    "wav2vec2/test-other/wer_REF": 0.0,
+    "wav2vec2/test-other/wer_OPUS_FFMPEG": 1.7763568394002505e-15,
+    "wav2vec2/test-other/T_ffmpeg": 0.0
+   }
+  }
+ },
+ "diagnostics": {
+  "OPUS_LIBOPUS": {
+   "lag_vs_ref_counts": {
+    "0": 1084,
+    "1": 1082,
+    "2": 8
+   },
+   "rms_change_db": {
+    "median": -0.6670439361778959,
+    "p05": -1.9836560637423,
+    "p95": -0.33436909574666074
+   },
+   "pooled_power_4000_5000_db": -13.850070062219226,
+   "pooled_total_hf_power_4000_8000_db": -17.262846907249457,
+   "pooled_mirror_coherence_4100_4900": 0.09751586452925932
+  },
+  "OPUS_FFMPEG": {
+   "lag_vs_ref_counts": {
+    "1": 12,
+    "2": 2162
+   },
+   "rms_change_db": {
+    "median": -0.6752381294041018,
+    "p05": -2.094345632405995,
+    "p95": -0.3377166170183483
+   },
+   "pooled_power_4000_5000_db": -13.329433917617328,
+   "pooled_total_hf_power_4000_8000_db": -16.74181704571786,
+   "pooled_mirror_coherence_4100_4900": 0.22716287007191632
+  },
+  "decoder_difference": {
+   "bit_identical": 0,
+   "snr_unaligned_db": {
+    "median": 10.130099723235546,
+    "min": 1.767654011229027
+   },
+   "snr_one_sample_db": {
+    "median": 17.95593105666608,
+    "min": 0.05641325092582667
+   },
+   "one_sample_shift_counts": {
+    "-1": 2173,
+    "1": 1
+   },
+   "max_abs_difference": 0.8253550231456757
+  },
+  "reproduction": {
+   "ffmpeg_identical_to_stage3": 2174,
+   "libopus_identical_to_r1_refdec": 2174,
+   "r1_refdec_available": 2174,
+   "of": 2174
+  }
+ },
+ "seconds_per_utterance": 0.12108712834618787,
+ "rows_sha256": "0ed925a9dea38fe20f58019407df53dab200a40dd7e5f47082f129228a31cd70",
+ "pass": true,
+ "status": "PASS: RS4 may run",
+ "report_sha256": "a973064de3218eccaa69f485303bff8dd10ff4ffc1e63d20199c8fe53a38657e"
+}
