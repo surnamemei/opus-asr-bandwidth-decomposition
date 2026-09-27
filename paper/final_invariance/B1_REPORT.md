@@ -4,7 +4,7 @@
 `OPUS_APPLICATION_VOIP` in place of `OPUS_APPLICATION_AUDIO`, and every other setting unchanged,
 the total 8 kbit/s penalty remained positive and of similar size:
 
-- **Whisper large-v3.** V = +0.71 pp [+0.48, +0.95] against A = +0.83 [+0.57, +1.10]. The
+- **Whisper large-v3.** V = +0.70 pp [+0.48, +0.95] against A = +0.83 [+0.57, +1.10]. The
   difference D_app = −0.12 pp [−0.25, 0.00] has an upper bound of exactly zero, so it does not
   exclude zero.
 - **wav2vec2-base-960h.** V = +3.44 pp [+2.71, +4.37] against +3.48 [+2.73, +4.45], with
@@ -149,7 +149,7 @@ Observations:
 
 1. **Is the total 8-kbit/s penalty application-mode sensitive?**
    - No clear application difference was established for either recogniser under the frozen rule.
-   - The total penalty persisted under the VOIP application: +0.71 and +3.44 pp.
+   - The total penalty persisted under the VOIP application: +0.70 and +3.44 pp.
    - For Whisper the point estimate is 0.12 pp lower under VOIP, with an interval that just
      reaches zero. Two secondary cells exclude zero. A small Whisper sensitivity cannot be excluded.
    - This is not an equivalence result: no margin was pre-declared.

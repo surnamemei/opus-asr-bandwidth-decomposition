@@ -36,7 +36,7 @@ Everything below holds for both recognisers.
 - **Bitrate** (Addition B, fresh utterances): the residual declines with rate.
 - **The total penalty** persists:
   - under the libopus reference decoder (R4): +0.72 and +3.56 pp;
-  - under the VoIP application mode (B1): +0.71 and +3.44 pp.
+  - under the VoIP application mode (B1): +0.70 and +3.44 pp.
 - **Frozen records.** Every sealed record verifies (`verify_frozen.py`: 69 self-sealed records
   and 9 output manifests, PASS). That is the 52 records and 7 manifests of the baseline plus the
   new A1/B1/C1 records. No sealed file was edited.
