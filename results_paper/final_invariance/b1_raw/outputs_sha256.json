@@ -1,0 +1,12 @@
+{
+ "set": "confirmation",
+ "created_utc": "2026-09-27T19:40:08.425324+00:00",
+ "n_utterances": 2174,
+ "selection_sha256": "f41dcc20bd6e94a83444d632f19a186c564233906c7d252c24e79d4de6355da5",
+ "files": {
+  "asr_outputs.csv": "66cacff875e6a98fc81cf8b8b681730b49c1071479b26720061381295d58c537",
+  "audio_manifest.csv": "c2498b6e034d2c10c6b3244654d5b1816390acbe38ce4223873e5afb6372d909",
+  "utterance_metrics.csv": "eb0168f48127731c5b1d607a8a348a56cd5482463a4e68c256fce35af0546357"
+ },
+ "outputs_sha256": "cf0a5030223b844e7b2b05adcaeeb9aa2eae92bcb2b156cc1142476a908c5f95"
+}

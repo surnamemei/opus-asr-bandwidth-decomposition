@@ -1,0 +1,147 @@
+{
+ "created_utc": "2026-09-27T19:40:19.089634+00:00",
+ "spec_sha256": "42504ce4bb2675c26693d91d6cc4f0c4c3c1de5c9778e0e7c9530ca2a587b4aa",
+ "code_freeze_sha256": "b811a4a380feb6e841e0523e7c1d3bbb172c0d06dad806ed34d46fec6c00bb93",
+ "validation_report_sha256": "211bb0a1a1807ea5fd80b0fb4ad22be8ae5652932c3741d711618f1ba447ab92",
+ "outputs_sha256": "cf0a5030223b844e7b2b05adcaeeb9aa2eae92bcb2b156cc1142476a908c5f95",
+ "anchor_reproduction": {
+  "max_abs_difference_pp": 1.7763568394002505e-15,
+  "tolerance_pp": 1e-09,
+  "pass": true,
+  "cells": {
+   "whisper/pooled/wer_REF": 0.0,
+   "whisper/pooled/wer_OPUS_AUDIO8": 4.440892098500626e-16,
+   "whisper/pooled/A": 0.0,
+   "whisper/test-clean/wer_REF": 0.0,
+   "whisper/test-clean/wer_OPUS_AUDIO8": 2.220446049250313e-16,
+   "whisper/test-clean/A": 6.938893903907228e-17,
+   "whisper/test-other/wer_REF": 4.440892098500626e-16,
+   "whisper/test-other/wer_OPUS_AUDIO8": 0.0,
+   "whisper/test-other/A": 0.0,
+   "wav2vec2/pooled/wer_REF": 0.0,
+   "wav2vec2/pooled/wer_OPUS_AUDIO8": 0.0,
+   "wav2vec2/pooled/A": 0.0,
+   "wav2vec2/test-clean/wer_REF": 0.0,
+   "wav2vec2/test-clean/wer_OPUS_AUDIO8": 0.0,
+   "wav2vec2/test-clean/A": 0.0,
+   "wav2vec2/test-other/wer_REF": 0.0,
+   "wav2vec2/test-other/wer_OPUS_AUDIO8": 1.7763568394002505e-15,
+   "wav2vec2/test-other/A": 0.0
+  }
+ },
+ "analysis": "B1: 8-kbit/s application-mode sensitivity of the total penalty (post-confirmation configuration sensitivity; not a decomposition; no equivalence claim; no VOIP share)",
+ "cells": {
+  "whisper": {
+   "A": [
+    0.8268650528594789,
+    0.5741181416861005,
+    1.102322079849063
+   ],
+   "V": [
+    0.7047930534122581,
+    0.4839042806039093,
+    0.9506159070825712
+   ],
+   "D_app": [
+    -0.1220719994472208,
+    -0.25314913889539664,
+    0.0
+   ],
+   "per_subset": {
+    "test-clean": {
+     "A": [
+      0.26486876956417044,
+      0.11766989799484406,
+      0.4332407255695719
+     ],
+     "V": [
+      0.26085560638895583,
+      0.1279926412638742,
+      0.4129002605649492
+     ],
+     "D_app": [
+      -0.004013163175214593,
+      -0.1031506375368739,
+      0.08716962604020129
+     ]
+    },
+    "test-other": {
+     "A": [
+      1.5838693983458565,
+      1.0359497635892687,
+      2.1975226242721706
+     ],
+     "V": [
+      1.302773122871507,
+      0.8385836979419873,
+      1.8361310144035976
+     ],
+     "D_app": [
+      -0.2810962754743497,
+      -0.5611208531023545,
+      -0.020147970558833918
+     ]
+    }
+   },
+   "outcome": "NO_CLEAR_APPLICATION_DIFFERENCE"
+  },
+  "wav2vec2": {
+   "A": [
+    3.4755971163369184,
+    2.7320382456995875,
+    4.452608987427618
+   ],
+   "V": [
+    3.441048437248082,
+    2.7081887127552156,
+    4.369881877086526
+   ],
+   "D_app": [
+    -0.034548679088836076,
+    -0.22730308644435218,
+    0.1539744630166578
+   ],
+   "per_subset": {
+    "test-clean": {
+     "A": [
+      1.3444096636969265,
+      0.9661956173957365,
+      1.7700538552218488
+     ],
+     "V": [
+      1.2721727265430618,
+      0.9247474152729691,
+      1.646720115068222
+     ],
+     "D_app": [
+      -0.07223693715386476,
+      -0.27757360746854476,
+      0.13091185825808924
+     ]
+    },
+    "test-other": {
+     "A": [
+      6.346288988593978,
+      4.761892519245461,
+      8.54168143788996
+     ],
+     "V": [
+      6.362506081409807,
+      4.793352915388064,
+      8.483276350991892
+     ],
+     "D_app": [
+      0.01621709281582895,
+      -0.3304708779666813,
+      0.3754591487590161
+     ]
+    }
+   },
+   "outcome": "NO_CLEAR_APPLICATION_DIFFERENCE"
+  }
+ },
+ "outcome": null,
+ "note": "per recogniser only; no combined outcome",
+ "bootstrap_sha256": "bce9f5778908f7a049083243c944dbd9c99ca7c20826b5e553ac1b8c7eaf9e8d",
+ "decision_sha256": "863e9c9108a26f752532ea9b6e9606d447b57db3869ffbec5eecdc922eb966c2"
+}
