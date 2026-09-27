@@ -1,0 +1,140 @@
+{
+ "created_utc": "2026-09-27T16:29:38.663916+00:00",
+ "analysis": "C1 metric and weighting robustness audit (no new ASR)",
+ "inputs": {
+  "stage3_confirmation_outputs_sha256": "de82f749b6a1446ff45cfed187c59fdd7da0feb8aa459f035d1108b0893b8d17",
+  "stage3_bootstrap_csv_sha256": "aaa556b987e5c33b0f1c419561de78e81e1971c93e90c0cccc73db135b1a6644"
+ },
+ "bootstrap": "Stage 3 paired speaker-cluster bootstrap, 10,000 replicates, seed 5305",
+ "stage3_reproduction_max_abs_difference_pp": 4.440892098500626e-16,
+ "classification_rules": "- Sign and ordering statements (\"B > 0\", \"R > 0\", \"R > B\"), per recogniser. A statement holds in a\n  (metric, scope) cell if the 95 % interval of B, R or R - B lies above zero.\n  - METRIC_ROBUST: it holds for all four pooled weightings (micro, macro, speaker, CER) and in both\n    test subsets (micro).\n  - WEIGHTING_SENSITIVE: it holds for pooled micro but not for at least one other pooled weighting.\n  - SUBSET_DEPENDENT: it holds for pooled micro but not in at least one test subset (micro).\n  - A statement can be both WEIGHTING_SENSITIVE and SUBSET_DEPENDENT. NOT_SUPPORTED means it does\n    not hold even for pooled micro.\n- Ratio statements (the sequential share B / T), per recogniser. RATIO_UNSTABLE applies if any of:\n  - a pooled replicate has T <= 0 (denominator not bounded away from zero);\n  - the pooled micro interval has lower bound <= 0 or upper/lower > 2;\n  - the pooled point estimates across the four weightings differ by more than a factor of 1.5.\n  Otherwise the statement is METRIC_ROBUST.",
+ "classifications": {
+  "whisper: bandwidth component B > 0": {
+   "classes": [
+    "SUBSET_DEPENDENT"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": false,
+    "test-other": true
+   }
+  },
+  "whisper: residual R > 0": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": true,
+    "test-other": true
+   }
+  },
+  "whisper: ordering R > B": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": true,
+    "test-other": true
+   }
+  },
+  "whisper: sequential share B/T": {
+   "classes": [
+    "RATIO_UNSTABLE"
+   ],
+   "reasons": [
+    "wide micro interval [0.049, 0.287]",
+    "point estimates across weightings {\"micro\": 0.17, \"macro\": 0.258, \"speaker\": 0.187, \"cer\": 0.281}"
+   ],
+   "estimates": {
+    "micro": 0.16991643454038996,
+    "macro": 0.25795141319081566,
+    "speaker": 0.18664062173401835,
+    "cer": 0.280808080808081
+   },
+   "micro_interval": [
+    0.04901890150872989,
+    0.28736267927982945
+   ]
+  },
+  "wav2vec2: bandwidth component B > 0": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": true,
+    "test-other": true
+   }
+  },
+  "wav2vec2: residual R > 0": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": true,
+    "test-other": true
+   }
+  },
+  "wav2vec2: ordering R > B": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "pooled": {
+    "micro": true,
+    "macro": true,
+    "speaker": true,
+    "cer": true
+   },
+   "subsets_micro": {
+    "test-clean": true,
+    "test-other": true
+   }
+  },
+  "wav2vec2: sequential share B/T": {
+   "classes": [
+    "METRIC_ROBUST"
+   ],
+   "reasons": [],
+   "estimates": {
+    "micro": 0.40424121935056323,
+    "macro": 0.4213209736286516,
+    "speaker": 0.41380755538840713,
+    "cer": 0.35141448222164545
+   },
+   "micro_interval": [
+    0.3481568923749244,
+    0.4501501349341851
+   ]
+  }
+ },
+ "table_sha256": "043260f409e805abb014d22f856d5c8c3e6759b593857e31fc04bf2cf0cb891e",
+ "record_sha256": "0981f5af737194932118d3145fda7509b39494a20cc80301179227953a850b7b"
+}
