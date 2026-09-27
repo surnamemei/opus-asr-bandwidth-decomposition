@@ -1,0 +1,107 @@
+{
+ "created_utc": "2026-09-27T02:49:10.525405+00:00",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "code_freeze_sha256": "af54518c0aa92b4ee6135d8d6e6fdc17fb2526602490fc026fc9972160a7624f",
+ "outputs_sha256": "2586e2536e15102a50e85293a8dd68478b17d38f1edcfc616b3feb45ebc0839a",
+ "bootstrap_sha256": "b01de1045e3ec958f808eed6afdf82fadb8a861e495e553abbbadf31a708203e",
+ "label": "POST-CONFIRMATION SENSITIVITY ANALYSIS - NOT A SECOND CONFIRMATORY TEST",
+ "analysis": "A: post-confirmation sensitivity analysis (not a confirmatory test)",
+ "cells": {
+  "whisper": {
+   "L": [
+    0.7001865628670796,
+    0.4738970784666747,
+    0.9511146945900709
+   ],
+   "K": [
+    0.011516226362945359,
+    -0.00709920556785714,
+    0.03214957840912585
+   ],
+   "T_star": 0.6863670912315452,
+   "go_threshold_K_lower": -0.1715917728078863,
+   "falsify_threshold_K_upper": -0.3431835456157726,
+   "retained_fraction_L_over_T_star": 1.0201342281879193,
+   "outcome": "GO"
+  },
+  "wav2vec2": {
+   "L": [
+    2.0890434622382936,
+    1.7100818907692852,
+    2.568286069555605
+   ],
+   "K": [
+    0.018425962180712574,
+    -0.027695460921222412,
+    0.06221674502336308
+   ],
+   "T_star": 2.070617500057581,
+   "go_threshold_K_lower": -0.5176543750143953,
+   "falsify_threshold_K_upper": -1.0353087500287905,
+   "retained_fraction_L_over_T_star": 1.0088987764182424,
+   "outcome": "GO"
+  }
+ },
+ "outcome": "GO",
+ "hypotheses_changed_by_level_matching": {
+  "whisper": 42,
+  "wav2vec2": 188
+ },
+ "reproduction_check": [
+  {
+   "model": "wav2vec2",
+   "condition": "LP",
+   "n": 2174,
+   "identical": 2174,
+   "differing": 0
+  },
+  {
+   "model": "wav2vec2",
+   "condition": "OPUS",
+   "n": 2174,
+   "identical": 2174,
+   "differing": 0
+  },
+  {
+   "model": "whisper",
+   "condition": "LP",
+   "n": 2174,
+   "identical": 2172,
+   "differing": 2
+  },
+  {
+   "model": "whisper",
+   "condition": "OPUS",
+   "n": 2174,
+   "identical": 2173,
+   "differing": 1
+  }
+ ],
+ "stage3_residual_vs_same_run": {
+  "whisper": {
+   "estimate": 0.6863670912315452,
+   "ci": [
+    0.459526979636811,
+    0.93796984031513
+   ],
+   "same_run": [
+    0.6886703365041342,
+    0.46084779126575975,
+    0.9405217301529855
+   ]
+  },
+  "wav2vec2": {
+   "estimate": 2.070617500057581,
+   "ci": [
+    1.679111733009272,
+    2.567087421302722
+   ],
+   "same_run": [
+    2.070617500057581,
+    1.679111733009272,
+    2.567087421302722
+   ]
+  }
+ },
+ "decision_sha256": "1e7e8424a59b647f14ebb4a2328c7e60647b2ff4ec9766831cc456f1cc5451ba"
+}

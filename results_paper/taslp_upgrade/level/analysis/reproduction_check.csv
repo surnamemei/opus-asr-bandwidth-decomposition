@@ -1,0 +1,5 @@
+model,condition,n,identical,differing
+wav2vec2,LP,2174,2174,0
+wav2vec2,OPUS,2174,2174,0
+whisper,LP,2174,2172,2
+whisper,OPUS,2174,2173,1

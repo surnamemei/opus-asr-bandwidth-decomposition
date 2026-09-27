@@ -1,0 +1,29 @@
+{
+ "created_utc": "2026-09-27T02:36:41.372877+00:00",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "code_freeze_sha256": "af54518c0aa92b4ee6135d8d6e6fdc17fb2526602490fc026fc9972160a7624f",
+ "n_utterances": 2174,
+ "gates": {
+  "A1": true,
+  "A2": true,
+  "A3": true
+ },
+ "verdict": "PASS",
+ "mismatches": {
+  "lp_waveform": 0,
+  "opus_waveform": 0,
+  "opus_ogg": 0
+ },
+ "gain_db": {
+  "median": 0.5620025585358235,
+  "p05": 0.29004972825009434,
+  "p95": 1.0324521741991404,
+  "min": -0.07560605619102787,
+  "max": 2.3808607302567655
+ },
+ "max_abs_level_error_db": 1.631817525549195e-08,
+ "max_abs_gain_reproduction_error_db": 1.4099832412739488e-14,
+ "level_matched_samples_at_or_above_full_scale": 349,
+ "rows_sha256": "1280357c80942bf72f304021d145ede8337b3145268e30db2529be8b3cb97b10",
+ "report_sha256": "9a8ca647e479207b7a369dc4f103036a713e6f64d0953417e132b5bb53aaa4e5"
+}
