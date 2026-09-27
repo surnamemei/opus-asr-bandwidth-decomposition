@@ -284,4 +284,190 @@ for s in ["calibration", "pilot", "confirmation"]:
     out.append(f"selection {s}: {len(rs)} utts, {spk} speakers, {dur:.1f} s, "
                + ", ".join(f"{k}: {len(v)} spk / {sum(1 for r in rs if r['subset']==k)} utts" for k, v in subs.items()))
 
+# ================================================================ TASLP upgrade (sealed outputs)
+UP = ROOT / "results_paper" / "taslp_upgrade"
+
+
+def sealed(path, key):
+    """A sealed JSON record, refused if its body no longer matches its own hash."""
+    import hashlib
+    record = json.loads(Path(path).read_text())
+    body = json.dumps({k: v for k, v in record.items() if k != key}, sort_keys=True).encode()
+    assert hashlib.sha256(body).hexdigest() == record[key], f"{path} changed after sealing"
+    return record
+
+
+def file_sha256(path):
+    import hashlib
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+SPEC = sealed(ROOT / "paper" / "taslp_upgrade" / "upgrade_spec.json", "spec_sha256")
+A_DEC = sealed(UP / "level" / "analysis" / "level_decision.json", "decision_sha256")
+B_DEC = sealed(UP / "sweep" / "analysis" / "sweep_decision.json", "decision_sha256")
+A_REG = sealed(UP / "level" / "regeneration" / "regeneration_report.json", "report_sha256")
+B_VAL = sealed(UP / "sweep" / "validation" / "validation_report.json", "report_sha256")
+assert file_sha256(UP / "level" / "analysis" / "level_bootstrap.csv") == A_DEC["bootstrap_sha256"]
+assert file_sha256(UP / "sweep" / "analysis" / "sweep_bootstrap.csv") == B_DEC["bootstrap_sha256"]
+A_BOOT = load(UP / "level" / "analysis" / "level_bootstrap.csv")
+B_BOOT = load(UP / "sweep" / "analysis" / "sweep_bootstrap.csv")
+LM = "OPUS8_LEVEL_MATCHED"
+RATES = [8, 12, 16, 24, 40]
+
+
+def ub(boot, model, quantity, scope="pooled", kind="micro"):
+    rows = [r for r in boot if r["model"] == model and r["quantity"] == quantity
+            and r["scope"] == scope and r["kind"] == kind]
+    if len(rows) != 1:
+        raise KeyError((model, quantity, scope, kind, len(rows)))
+    num = lambda v: float(v) if v != "" else float("nan")    # descriptive rows have no interval
+    return num(rows[0]["estimate"]), num(rows[0]["ci_lower"]), num(rows[0]["ci_upper"])
+
+
+def a(model, quantity, scope="pooled", kind="micro"):
+    return ub(A_BOOT, model, quantity, scope, kind)
+
+
+def sw(model, quantity, scope="pooled", kind="micro"):
+    return ub(B_BOOT, model, quantity, scope, kind)
+
+
+def row(label, cells):
+    return f"| {label} | " + " | ".join(cells) + " |"
+
+
+# ---------------------------------------------------------------- Table 5: addition A
+LV_MAN = load(UP / "level" / "raw" / "audio_manifest.csv")
+REPRO = load(UP / "level" / "analysis" / "reproduction_check.csv")
+N_A = int(A_REG["n_utterances"])
+out.append("TABLE 5 (addition A: level-matched sensitivity, pooled, 95% CI)")
+out.append(row("Addition A (pooled)", [n for _, n in MODELS]))
+out.append("|---|---|---|")
+for c, label in [("LP", "Corpus WER, LP, same run (%)"), ("OPUS", "Corpus WER, OPUS, same run (%)"),
+                 (LM, "Corpus WER, OPUS8_LEVEL_MATCHED (%)")]:
+    out.append(row(label, [ci(*a(m, f"wer_{c}"), signed=False) for m, _ in MODELS]))
+out.append(row("OPUS8_LEVEL_MATCHED − LP (pp; primary)", [ci(*a(m, "L_level_matched_minus_lp")) for m, _ in MODELS]))
+out.append(row("OPUS8_LEVEL_MATCHED − OPUS (pp)", [ci(*a(m, "K_level_matched_minus_opus"), dec=3) for m, _ in MODELS]))
+out.append(row("OPUS − LP, same run (pp)", [ci(*a(m, "T_opus_minus_lp")) for m, _ in MODELS]))
+out.append(row("OPUS − LP, confirmatory run (pp)", [ci(SPEC["A"]["anchors"][m]["T_star"]["estimate"],
+                                               *SPEC["A"]["anchors"][m]["T_star"]["ci"]) for m, _ in MODELS]))
+out.append(row("Share of the confirmatory residual retained", [f"{A_DEC['cells'][m]['retained_fraction_L_over_T_star']:.2f}"
+                                                          for m, _ in MODELS]))
+out.append(row("GO: lower bound of OPUS8_LEVEL_MATCHED − OPUS above",
+               [fmt(A_DEC["cells"][m]["go_threshold_K_lower"], True, 3) for m, _ in MODELS]))
+out.append(row("FALSIFY: its upper bound below",
+               [fmt(A_DEC["cells"][m]["falsify_threshold_K_upper"], True, 3) for m, _ in MODELS]))
+out.append(row("Hypotheses changed by level matching",
+               [f"{A_DEC['hypotheses_changed_by_level_matching'][m]} of {N_A:,}" for m, _ in MODELS]))
+out.append(row("Outcome (frozen rule)", [A_DEC["cells"][m]["outcome"] for m, _ in MODELS]))
+out.append("")
+g = A_REG["gain_db"]
+out.append(f"A gates {A_REG['gates']} verdict {A_REG['verdict']}; gain median {g['median']:+.3f} dB, "
+           f"p05 {g['p05']:+.3f}, p95 {g['p95']:+.3f}, range {g['min']:+.3f} to {g['max']:+.3f} dB; "
+           f"max level error {A_REG['max_abs_level_error_db']:.1e} dB; max gain error "
+           f"{A_REG['max_abs_gain_reproduction_error_db']:.1e} dB; overall outcome {A_DEC['outcome']}")
+for c in ["LP", "OPUS", LM]:
+    rs = [r for r in LV_MAN if r["condition"] == c]
+    out.append(f"A {c}: full-scale samples {sum(int(r['clip_count']) for r in rs)} in "
+               f"{sum(int(r['clip_count']) > 0 for r in rs)} utterances; max peak {max(float(r['peak']) for r in rs):.3f}")
+out.append("A reproduction check: " + "; ".join(f"{r['model']} {r['condition']} {r['differing']} of {r['n']} differ"
+                                                for r in REPRO))
+for m, _ in MODELS:
+    for q, word in [("S", "substitutions"), ("D", "deletions"), ("I", "insertions")]:
+        e = a(m, f"L_level_matched_minus_lp_{q}", kind="micro_error_type")
+        out.append(f"A {m} L {word}: {ci(*e)}")
+out.append("")
+
+# ---------------------------------------------------------------- Tables 6-8: addition B
+# (manuscript order: Table 6 residuals, Table 7 trend and decision, Table 8 descriptors)
+SW_SIG = {r["condition"]: r for r in load(UP / "sweep" / "analysis" / "sweep_descriptors.csv")}
+SW_POOL = {(r["reference"], r["processed"]): r for r in load(UP / "sweep" / "analysis" / "sweep_pooled_transfer.csv")}
+SW_ROWS = load(UP / "sweep" / "validation" / "validation_rows.csv")
+SW_SEL = sealed(ROOT / "paper" / "taslp_upgrade" / "selection_sweep.json", "selection_sha256")
+payload = B_VAL["measured_median_payload_kbps"]
+out.append("TABLE 6 (addition B: residual beyond LP by rate, pooled, 95% CI)")
+out.append(row("Condition (addition B)", ["Median payload (kbit/s)"] + [n for _, n in MODELS]))
+out.append("|---|---|---|---|")
+out.append(row("LP, corpus WER (%)", ["—"] + [ci(*sw(m, "wer_LP"), signed=False) for m, _ in MODELS]))
+for rate, p in zip(RATES, payload):
+    out.append(row(f"SILK{rate} − LP", [f"{p:.2f}"] + [ci(*sw(m, f"R_{rate}")) for m, _ in MODELS]))
+out.append("")
+
+SWC = ["LP"] + [f"SILK{r}" for r in RATES]
+out.append("TABLE 8 (addition B: descriptors; per-utterance medians and pooled vs REF)")
+out.append(row("Descriptor (addition B)", SWC))
+out.append("|---|" + "---|" * len(SWC))
+
+
+def cell(v, dec):
+    if v in ("", None):
+        return "—"
+    v = float(v)
+    return (MINUS if v < 0 and float(f"{abs(v):.{dec}f}") != 0 else "") + f"{abs(v):.{dec}f}"
+
+
+for label, col, dec in [("LSD, 0–3 kHz, vs LP (dB)", "LSD 0-3 kHz vs LP (dB)", 2),
+                        ("Coherence, 0–3.5 kHz, vs LP", "coherence 0-3.5 kHz vs LP", 3),
+                        ("RMS level change vs REF (dB)", "rms_change_db vs REF", 2)]:
+    out.append(row(label, [cell(SW_SIG[c][col], dec) for c in SWC]))
+for label, col, dec in [("In-band gain $\\lvert H_1\\rvert$ vs REF, 0.5–2 kHz (dB)", "h1_level_db", 2),
+                        ("Mirror coherence vs REF, 4.1–4.9 kHz", "image_coherence_4100_4900", 3),
+                        ("Total 4–8 kHz power vs REF (dB)", "total_hf_power_db", 1)]:
+    out.append(row(label, [cell(SW_POOL[("REF", c)][col], dec) for c in SWC]))
+out.append("")
+
+out.append("TABLE 7 (addition B: trend, contrasts and decision, pooled, 95% CI)")
+out.append(row("Addition B (pooled)", [n for _, n in MODELS]))
+out.append("|---|---|---|")
+out.append(row("Slope on log2 bitrate (pp per doubling; primary)", [ci(*sw(m, "S_log2", kind="trend"), dec=3) for m, _ in MODELS]))
+out.append(row("Slope implied by the confirmation, S*", [fmt(B_DEC["cells"][m]["S_star"], True, 3) for m, _ in MODELS]))
+out.append(row("GO: lower bound of the slope at or below 0.5 S*",
+               [fmt(B_DEC["cells"][m]["meaningful_decline_threshold"], True, 3) for m, _ in MODELS]))
+out.append(row("Slope on rate rank (pp per step)", [ci(*sw(m, "S_rank", kind="trend"), dec=3) for m, _ in MODELS]))
+out.append(row("Slope on log2 measured payload (pp per doubling)",
+               [ci(*sw(m, "S_log2_measured", kind="trend"), dec=3) for m, _ in MODELS]))
+for x, y in zip(RATES, RATES[1:]):
+    out.append(row(f"SILK{x} − SILK{y}", [ci(*sw(m, f"D_{x}_{y}")) for m, _ in MODELS]))
+out.append(row("SILK8 − SILK40", [ci(*sw(m, "E_8_40")) for m, _ in MODELS]))
+out.append(row("Adjacent declines, point estimates", [f"{sw(m, 'n_adjacent_declines', kind='descriptive')[0]:.0f} of 4"
+                                                      for m, _ in MODELS]))
+out.append(row("Replicates with a monotone decline", [f"{sw(m, 'share_replicates_monotone_non_increasing', kind='descriptive')[0]:.2f}"
+                                                     for m, _ in MODELS]))
+out.append(row("Outcome (frozen rule)", [B_DEC["cells"][m]["outcome"] for m, _ in MODELS]))
+out.append("")
+out.append(f"B gates {B_VAL['gates']} verdict {B_VAL['verdict']}; container kbps "
+           + ", ".join(f"{v:.2f}" for v in B_VAL["median_container_kbps"])
+           + "; payload vs nominal " + ", ".join(f"{100*(p/r-1):+.1f} %" for p, r in zip(payload, RATES))
+           + "; adjacent ratios " + ", ".join(f"{v:.2f}" for v in B_VAL["adjacent_ratios"])
+           + f"; bridge share {B_VAL['bridge_share_silk8_identical_to_stage3_opus_settings']:.2f}; overall {B_DEC['outcome']}")
+coded = [r for r in SW_ROWS if r["condition"] != "LP"]
+out.append(f"B packets per rate {sum(int(float(r['num_packets'])) for r in coded if r['condition'] == 'SILK8'):,}; "
+           f"min share config 1 {min(float(r['share_expected_config']) for r in coded):.3f}")
+for m, _ in MODELS:
+    for q, word in [("S", "substitutions"), ("D", "deletions"), ("I", "insertions")]:
+        out.append(f"B {m} R_8 {word}: {ci(*sw(m, f'R_8_{q}', kind='micro_error_type'))}")
+out.append(f"B selection: {SW_SEL['n_utterances']:,} utts, {SW_SEL['n_speakers']} speakers "
+           f"{SW_SEL['speakers_by_subset']}, {SW_SEL['subsets']}, {SW_SEL['duration_hours']:.2f} h, "
+           f"{SW_SEL['normalised_reference_words']:,} words")
+out.append("")
+
+# ---------------------------------------------------------------- Table S5: upgrade per subset
+out.append("TABLE S5 (upgrade, per subset, secondary)")
+out.append("| Subset | Model | SILK8 − LP | Slope (pp per doubling) | OPUS8_LEVEL_MATCHED − LP | OPUS8_LEVEL_MATCHED − OPUS |")
+out.append("|---|---|---|---|---|---|")
+for s in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(s, [name, ci(*sw(m, "R_8", scope=s)), ci(*sw(m, "S_log2", scope=s, kind="trend"), dec=3),
+                           ci(*a(m, "L_level_matched_minus_lp", scope=s)),
+                           ci(*a(m, "K_level_matched_minus_opus", scope=s), dec=3)]))
+out.append("")
+
+# ---------------------------------------------------------------- Table S6: sweep WER by condition
+out.append("TABLE S6 (addition B: corpus WER by condition, %, 95% CI)")
+out.append(row("Condition (addition B, WER %)", [n for _, n in MODELS]))
+out.append("|---|---|---|")
+for c in SWC:
+    out.append(row(c, [ci(*sw(m, f"wer_{c}"), signed=False) for m, _ in MODELS]))
+out.append("")
+
 print("\n".join(out))

@@ -116,6 +116,91 @@ need(f"{int(ref_row['n_words']):,}", "reference words")
 need(f"{int(ref_row['n_utterances']):,} ", "utterances")
 need(f"{int(ref_row['n_speakers'])} speakers", "speakers")
 
+# ------------------------------------------------------------------ 2b. TASLP-upgrade prose (sealed outputs)
+# Addition A: level-matched sensitivity (post-confirmation); addition B: bitrate sweep (fresh utterances)
+W, V = "whisper", "wav2vec2"
+
+
+def up(est, lo, hi, dec=2, unit=" pp"):
+    return f"{fmt(est, True, dec)}{unit} [{fmt(lo, True, dec)}, {fmt(hi, True, dec)}]"
+
+
+L = {m: T.a(m, "L_level_matched_minus_lp") for m in (W, V)}
+K = {m: T.a(m, "K_level_matched_minus_opus") for m in (W, V)}
+for m in (W, V):
+    need(up(*L[m]), f"A level-matched residual {m}")
+    need(up(*K[m], dec=3), f"A effect of level matching {m}")
+    subs = T.a(m, "L_level_matched_minus_lp_S", kind="micro_error_type")
+    need(f"{fmt(subs[0], True)} substitutions [{fmt(subs[1], True)}, {fmt(subs[2], True)}]", f"A substitutions {m}")
+need(f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", "A abstract")
+cells = T.A_DEC["cells"]
+need(f"{cells[W]['retained_fraction_L_over_T_star']:.2f} and {cells[V]['retained_fraction_L_over_T_star']:.2f} times",
+     "A retained share")
+need(f"{fmt(cells[W]['go_threshold_K_lower'], True, 3)} and {fmt(cells[V]['go_threshold_K_lower'], True, 3)} pp",
+     "A GO thresholds")
+assert T.A_DEC["outcome"] == "GO" and all(c["outcome"] == "GO" for c in cells.values())
+changed = T.A_DEC["hypotheses_changed_by_level_matching"]
+need(f"changed {changed[W]} of the {T.N_A:,} Whisper hypotheses and {changed[V]} of the {T.N_A:,} wav2vec2", "A changed")
+g = T.A_REG["gain_db"]
+need(f"median of {fmt(g['median'], True, 3)} dB (5th–95th percentile {fmt(g['p05'], True, 3)} to "
+     f"{fmt(g['p95'], True, 3)} dB; range {fmt(g['min'], True, 3)} to\n{fmt(g['max'], True, 3)} dB)", "A gains")
+for key, tok in (("max_abs_level_error_db", "$1.6 \\times 10^{-8}$ dB"),
+                 ("max_abs_gain_reproduction_error_db", "$1.4 \\times 10^{-14}$ dB")):
+    need(tok, f"A {key}")
+assert f"{T.A_REG['max_abs_level_error_db']:.1e}" == "1.6e-08"
+assert f"{T.A_REG['max_abs_gain_reproduction_error_db']:.1e}" == "1.4e-14"
+clip = {c: [r for r in T.LV_MAN if r["condition"] == c] for c in ("OPUS", T.LM)}
+n = {c: (sum(int(r["clip_count"]) for r in rs), sum(int(r["clip_count"]) > 0 for r in rs)) for c, rs in clip.items()}
+need(f"from {n['OPUS'][0]} in {n['OPUS'][1]} utterances\n(OPUS) to {n[T.LM][0]} in {n[T.LM][1]} utterances", "A clipping")
+diff = {(r["model"], r["condition"]): int(r["differing"]) for r in T.REPRO}
+assert diff[(V, "LP")] == diff[(V, "OPUS")] == 0 and (diff[(W, "LP")], diff[(W, "OPUS")]) == (2, 1)
+need(f"{diff[(W, 'LP')] + diff[(W, 'OPUS')]} of {2 * T.N_A:,} hypotheses", "A reproduction")
+same_run = T.a(W, "T_opus_minus_lp")[0] - T.SPEC["A"]["anchors"][W]["T_star"]["estimate"]
+need(f"OPUS − LP by {same_run:.3f} pp", "A same-run shift")
+
+R8 = {m: T.sw(m, "R_8") for m in (W, V)}
+S_ = {m: T.sw(m, "S_log2", kind="trend") for m in (W, V)}
+for m in (W, V):
+    need(up(*R8[m]), f"B R_8 {m}")
+need(f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(S_[W][2], True, 3)}]", "B slope whisper")
+need(f"{fmt(S_[V][0], True, 3)}\n[{fmt(S_[V][1], True, 3)}, {fmt(S_[V][2], True, 3)}]", "B slope wav2vec2")
+need(f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling", "B abstract")
+thr = T.B_DEC["cells"]
+need(f"({fmt(thr[W]['meaningful_decline_threshold'], True, 3)} and {fmt(thr[V]['meaningful_decline_threshold'], True, 3)})",
+     "B thresholds")
+assert T.B_DEC["outcome"] == "GO" and all(c["outcome"] == "GO" for c in thr.values())
+for m in (W, V):   # no residual detectable at 24 and 40 kbit/s; detectable at 8
+    assert all(T.sw(m, f"R_{r}")[1] <= 0 <= T.sw(m, f"R_{r}")[2] for r in (24, 40)) and R8[m][1] > 0
+need(", ".join(f"{p:.2f}" for p in T.payload[:-1]) + f" and {T.payload[-1]:.2f} kbit/s", "B payload")
+dev = sorted(100 * (1 - p / r) for p, r in zip(T.payload, T.RATES))
+need(f"{dev[0]:.1f}–{dev[-1]:.1f} % below nominal", "B payload deviation")
+cont = T.B_VAL["median_container_kbps"]
+need(f"{cont[0]:.2f}–{cont[-1]:.2f} kbit/s", "B Ogg bitrates")
+need(f"{sum(int(float(r['num_packets'])) for r in T.SW_ROWS if r['condition'] == 'SILK8'):,} packets", "B packets")
+assert T.B_VAL["bridge_share_silk8_identical_to_stage3_opus_settings"] == 1.0
+need(f"for all {T.SW_SEL['n_utterances']:,} utterances", "B bridge")
+d812 = {m: T.sw(m, "D_8_12")[0] for m in (W, V)}
+need(f"({fmt(d812[W], True)} and\n{fmt(d812[V], True)} pp)", "B 8-12 step")
+mono = {m: T.sw(m, "share_replicates_monotone_non_increasing", kind="descriptive")[0] for m in (W, V)}
+need(f"{100 * mono[W]:.0f} % (Whisper) and {100 * mono[V]:.0f} % (wav2vec2)", "B monotone share")
+E = {m: T.sw(m, "E_8_40") for m in (W, V)}
+need(f"{up(*E[W])} and {fmt(E[V][0], True)} pp\n[{fmt(E[V][1], True)}, {fmt(E[V][2], True)}]", "B endpoint")
+need(up(*T.sw(W, "R_8", scope="test-other")), "B whisper test-other R_8")
+need(up(*T.sw(W, "R_8", scope="test-clean")), "B whisper test-clean R_8")
+sc = T.sw(W, "S_log2", scope="test-clean", kind="trend")
+need(f"({fmt(sc[0], True, 3)} [{fmt(sc[1], True, 3)}, {fmt(sc[2], True, 3)}])", "B whisper test-clean slope")
+sig = T.SW_SIG
+need(f"from {float(sig['SILK8']['LSD 0-3 kHz vs LP (dB)']):.2f} to {float(sig['SILK40']['LSD 0-3 kHz vs LP (dB)']):.2f} dB", "B LSD")
+need(f"from {float(sig['SILK8']['coherence 0-3.5 kHz vs LP']):.3f} to {float(sig['SILK40']['coherence 0-3.5 kHz vs LP']):.3f}", "B coherence")
+need(f"from {M}{abs(float(sig['SILK8']['rms_change_db vs REF'])):.2f} to {M}{abs(float(sig['SILK40']['rms_change_db vs REF'])):.2f} dB", "B RMS")
+pool = T.SW_POOL
+need(f"from {M}{abs(float(pool[('REF', 'SILK8')]['h1_level_db'])):.2f} to {M}{abs(float(pool[('REF', 'SILK40')]['h1_level_db'])):.2f} dB", "B in-band gain")
+need(f"from {float(pool[('REF', 'SILK8')]['image_coherence_4100_4900']):.3f} to {float(pool[('REF', 'SILK40')]['image_coherence_4100_4900']):.3f}", "B mirror coherence")
+sel = T.SW_SEL
+need(f"{sel['n_utterances']:,} utterances from {sel['n_speakers']} speakers ({sel['speakers_by_subset']['test-clean']} test-clean,\n"
+     f"{sel['speakers_by_subset']['test-other']} test-other; {sel['subsets']['test-clean']} and {sel['subsets']['test-other']} utterances; "
+     f"{sel['duration_hours']:.2f} h; {sel['normalised_reference_words']:,} reference words)", "B selection")
+
 # signal prose
 S = T.SUM
 need(f"{float(S['OPUS']['vs_lp_lsd_0_3k_db']):.2f} dB", "OPUS in-band LSD vs LP")

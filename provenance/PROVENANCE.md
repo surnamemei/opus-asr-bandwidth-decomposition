@@ -49,6 +49,8 @@ All development commits are on the development repository's paper branch.
 | Last development commit | Removal of outdated project documents | – | – | `051a96330c244804714c5e49faed997339ece987` |
 | TASLP upgrade (this repository) | Plan for two additions frozen; nothing decoded | Planned, not run | `paper/taslp_upgrade/` | this repository |
 | TASLP upgrade U1–U2 (this repository) | Calibration on the 20-utterance Stage 3 calibration set only: E1, E2 and supplementary checks (run 1 FAIL on the wav2vec2 level-invariance expectation alone, kept unchanged); amendment 01 corrects that expectation (section 3.5); checks re-run; code freeze | E1, E2 PASS; every freeze gate PASS; code frozen; no evaluation utterance decoded | `results_paper/taslp_upgrade/`, `paper/taslp_upgrade/amendments/` | this repository |
+| TASLP upgrade U3–U5, addition B (this repository) | Forced SILK-NB bitrate sweep on 1,665 fresh test utterances (70 speakers; a fresh-utterance, not fresh-speaker, holdout): validation V1–V5 (encode/decode only), ASR once, frozen analysis | V1–V5 PASS; decision GO in both recognisers | `results_paper/taslp_upgrade/sweep/` | this repository, commit `48f86d4` |
+| TASLP upgrade U6–U8, addition A (this repository) | Level-matched OPUS sensitivity on the 2,174 Stage 3 confirmation utterances, decoded a second time (a post-confirmation sensitivity analysis, not a second confirmatory test): gates A1–A3, ASR once, frozen analysis | A1–A3 PASS; decision GO in both recognisers | `results_paper/taslp_upgrade/level/` | this repository, commit `dfccc67` |
 
 ## 3. Frozen identifiers
 
@@ -71,6 +73,14 @@ the SHA-256 of their own body under the key shown: the hash of
 | Stage 3 paired bootstrap table | `aaa556b987e5c33b0f1c419561de78e81e1971c93e90c0cccc73db135b1a6644` | file hash of `stage3_asr/07_paired_bootstrap.csv`, recorded in the decision |
 | Stage 3 output manifests: calibration / pilot / confirmation | `3ae2f98149f483ee60bcf46516e2beec366d7a599738e53875fcc616f5a53100` / `df65e8cbe2fa8be245b1e0520b930487923fd3f9996705973ba9330bcd0d6a3b` / `de82f749b6a1446ff45cfed187c59fdd7da0feb8aa459f035d1108b0893b8d17` | `stage3_asr/{calibration,raw/pilot,raw/confirmation}/outputs_sha256.json` |
 | Stage 3 environment lock | `745b91dd04708e7226ac691191c33f4118b316248335f778ee0af0d87357d45f` | file hash of `stage3_asr/requirements-lock.txt` |
+| TASLP upgrade plan (specification) | `0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0` | `paper/taslp_upgrade/upgrade_spec.json` (`spec_sha256`) |
+| TASLP upgrade sweep selection (addition B) | `d3fb1487594ed35fde1ad6419ff694b9c2200656fa4aa11f4c6db48966b3f680` | `paper/taslp_upgrade/selection_sweep.json` (`selection_sha256`) |
+| Amendment 01 (section 3.5 wav2vec2 expectation) | `1fcf7bc1c3d4058e08005377927ac1944f195417d9c075f2f45f2805770be393` | `paper/taslp_upgrade/amendments/amendment_01_2026-09-26.json` (`amendment_sha256`) |
+| U1 calibration report (E1, E2) | `949b218ad4450f012355bfe76af67ab90d8db140a93b7f36ec6a2d52cda2cb48` | `taslp_upgrade/calibration/calibration_report.json` (`report_sha256`) |
+| U1 supplementary checks: run 1 (FAIL, kept) / run 2 (PASS) | `3552a7e5c240a645510dad8a72f3a141c71ffb78d8b8d47a7eb37d2d31f05a02` / `2365cc5d518aff5670ebdd0771a7ba7fba00f9c92c6c14a4a1875ecd0cbc20ea` | `taslp_upgrade/calibration/{checks,checks_after_amendment_01}/checks_report.json` (`report_sha256`) |
+| U2 code freeze / freeze manifest | `af54518c0aa92b4ee6135d8d6e6fdc17fb2526602490fc026fc9972160a7624f` / `f971700cfa7343418c79290b1708d8771c97573bbc16cd30e58707f5f5dada23` | `taslp_upgrade/code_freeze.json` (`freeze_sha256`), `freeze_manifest.json` (`manifest_sha256`) |
+| Addition B: validation / outputs / decision (GO) | `1ca6b91ba901cddea83298a3840eb52eb123fcaa2e1906c4aab4cdda0691c977` / `03da63e5835c3706ad9da6524a6e23e10c0978c08384e1a646de6ba1315d23d0` / `eb0ec2a2d9db98952c2dd14d39a8a0e6205d7110f615f5d1c1f0ee5dbdc2968d` | `taslp_upgrade/sweep/{validation/validation_report.json,raw/outputs_sha256.json,analysis/sweep_decision.json}` |
+| Addition A: regeneration / outputs / decision (GO) | `9a8ca647e479207b7a369dc4f103036a713e6f64d0953417e132b5bb53aaa4e5` / `2586e2536e15102a50e85293a8dd68478b17d38f1edcfc616b3feb45ebc0839a` / `1e7e8424a59b647f14ebb4a2328c7e60647b2ff4ec9766831cc456f1cc5451ba` | `taslp_upgrade/level/{regeneration/regeneration_report.json,raw/outputs_sha256.json,analysis/level_decision.json}` |
 
 `results_paper/reproduce/frozen_hashes.json` records the hashes of the development
 repository's coursework `src/` and `results/` trees before and after Stage 1. It shows that
@@ -110,6 +120,9 @@ the sorted file listing. Each source file is listed with its git blob and SHA-25
 | All used test utterances | 3,176 |
 
 The TASLP-upgrade bitrate sweep excludes all of them (see `paper/taslp_upgrade/00_UPGRADE_PLAN.md`).
+The sweep then decoded its own 1,665 test utterances (`paper/taslp_upgrade/selection_sweep.json`,
+addition B, 2026-09-27). They are now also used, and any later experiment must exclude them as
+well; `used_test_utterances.json` is sealed and is not edited.
 
 ## 6. Prior-study context numbers
 

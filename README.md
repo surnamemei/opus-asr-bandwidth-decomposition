@@ -39,8 +39,31 @@ How to read these results:
 - High-rate SILK narrowband showed no detectable pooled residual. No equivalence margin was
   pre-declared, so this is not a claim of equivalence.
 - The residual consisted mainly of substitutions. It is consistent with low-rate in-band coding
-  distortion; the mechanism was not tested.
+  distortion; the mechanism was not isolated.
 - All codec results are defined for libopus 1.4 decoded by FFmpeg 6.1.1.
+
+## TASLP upgrade results (sealed)
+
+Two additions were pre-registered after Stage 3 closed (`paper/taslp_upgrade/00_UPGRADE_PLAN.md`,
+with amendment 01) and run once each. Both pre-declared rules returned GO in both recognisers.
+The Stage 3 estimates and decision are unchanged.
+
+| Addition | Result (pp, 95 % speaker-bootstrap intervals) | Whisper large-v3 | wav2vec2-base-960h |
+|---|---|---|---|
+| A: level-matched OPUS | OPUS8_LEVEL_MATCHED − LP | +0.70 [+0.47, +0.95] | +2.09 [+1.71, +2.57] |
+| A: level-matched OPUS | OPUS8_LEVEL_MATCHED − OPUS | +0.012 [−0.007, +0.032] | +0.018 [−0.028, +0.062] |
+| B: SILK-NB bitrate sweep | Residual at 8 kbit/s, SILK8 − LP | +0.55 [+0.37, +0.74] | +2.07 [+1.65, +2.55] |
+| B: SILK-NB bitrate sweep | Residual at 40 kbit/s, SILK40 − LP | +0.03 [−0.05, +0.11] | −0.06 [−0.21, +0.09] |
+| B: SILK-NB bitrate sweep | Slope on log2 bitrate (pp per doubling) | −0.21 [−0.27, −0.15] | −0.85 [−1.07, −0.66] |
+
+- **A is a post-confirmation sensitivity analysis, not a second confirmatory test.** It decoded
+  the 2,174 Stage 3 confirmation utterances a second time. Matching the RMS level of the Opus
+  signal to the control did not remove the residual in either recogniser.
+- **B is a fresh-utterance, not fresh-speaker, holdout:** 1,665 test utterances never used
+  before, from 70 of the Stage 3 test speakers. Within forced SILK narrowband, the residual
+  decreased as the bitrate rose from 8 to 40 kbit/s. This supports, but does not isolate, the
+  low-rate in-band coding distortion interpretation: in-band distortion, level and the 4–5 kHz
+  image all change with the rate.
 
 **Positioning** (`manuscript/novelty_boundary.md`). Earlier studies separated band limitation
 from coding distortion for telephone channels, GSM, AMR and MP3. This work applies the same
@@ -51,20 +74,20 @@ priority claim.
 ## Status
 
 - **Stages 1–3:** complete. All outputs are sealed and unchanged.
-- **Manuscript:** complete draft (`manuscript/manuscript.md`). Every reported number is checked
-  against the frozen outputs.
-- **TASLP upgrade:** pre-run stage complete; evaluation not started. A plan for two additions is
-  frozen in `paper/taslp_upgrade/00_UPGRADE_PLAN.md`:
-  - A, a level-matched OPUS sensitivity analysis, run after the confirmation and not a second
-    confirmatory test;
-  - B, a forced SILK-NB bitrate sweep on fresh utterances. It is a fresh-utterance holdout, not
-    a fresh-speaker holdout.
-
-  Calibration (U1) ran on the 20-utterance Stage 3 calibration set only. Amendment 01
-  (`paper/taslp_upgrade/amendments/`) corrects the plan's wav2vec2 level-invariance expectation
-  (section 3.5); it changes no estimand, gate, threshold, condition, selection or rule. The code
-  is frozen (U2: `results_paper/taslp_upgrade/code_freeze.json`, `freeze_manifest.json`).
-- **No upgrade evaluation utterance has been encoded, decoded or recognised.**
+- **Manuscript:** revised draft (`manuscript/manuscript.md`) with both upgrade additions. Every
+  reported number is checked against the sealed outputs.
+- **TASLP upgrade:** complete and sealed. The plan (`paper/taslp_upgrade/00_UPGRADE_PLAN.md`)
+  and amendment 01 (`paper/taslp_upgrade/amendments/`, a correction of the plan's wav2vec2
+  level-invariance expectation that changes no estimand, gate, threshold, condition, selection
+  or rule) were fixed before any evaluation utterance was decoded. Every step ran once, in the
+  frozen order:
+  - U1–U2: calibration on the 20-utterance Stage 3 calibration set, then the code freeze
+    (`results_paper/taslp_upgrade/code_freeze.json`, `freeze_manifest.json`);
+  - U3–U5, addition B: validation gates V1–V5 passed, one ASR run, sealed decision GO
+    (`results_paper/taslp_upgrade/sweep/`);
+  - U6–U8, addition A: gates A1–A3 passed, one ASR run, sealed decision GO
+    (`results_paper/taslp_upgrade/level/`).
+- **No further experiment is planned or running.**
 
 ## Repository structure
 
@@ -74,10 +97,11 @@ manuscript/         manuscript.md, references.bib, figures/, tools/ (make_tables
 paper/              Stage 1-3 code and tests (unchanged since the Stage 3 freeze)
 paper/taslp_upgrade/  frozen upgrade plan (upgrade_spec.json, 00_UPGRADE_PLAN.md,
                     selection_sweep.json), amendments/, runners, statistics, pre-run checks
-                    and tests (evaluation not yet run)
+                    and tests (frozen; all steps run)
 results_paper/      sealed Stage 1-3 outputs (reproduce/, opus_validation/,
                     lowpass_validation/, lowpass_confirmation/, stage3_asr/, STAGE_STATUS.md);
-                    taslp_upgrade/ (U1 calibration, code freeze)
+                    taslp_upgrade/ (calibration/, code freeze, sweep/ for addition B,
+                    level/ for addition A; all sealed)
 provenance/         PROVENANCE.md, used_test_utterances.json (test utterances already used),
                     prior_study_context.json (two cited prior-study rows), derivation scripts
 ```

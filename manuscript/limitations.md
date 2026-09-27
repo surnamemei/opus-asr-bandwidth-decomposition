@@ -1,7 +1,9 @@
-# Limitations (draft 1, 2026-09-26)
+# Limitations (draft 2, 2026-09-27)
 
 Ordered roughly by how much each one qualifies the primary claim (OPUS − LP > 0 in both
-recognisers). Numbers are from `results_paper/stage3_asr/`.
+recognisers). Numbers are from `results_paper/stage3_asr/`; the follow-up analyses (TASLP
+upgrade, draft 2) are from `results_paper/taslp_upgrade/` (level/ = addition A, sweep/ =
+addition B).
 
 ## A. What the OPUS − LP contrast contains
 
@@ -16,13 +18,20 @@ recognisers). Numbers are from `results_paper/stage3_asr/`.
 
    High-rate SILK-NB shares the image, the lag and the decode path, and shows no pooled
    residual; NEG_CODEC ≈ REF. Both argue against those components explaining the residual,
-   but neither isolates in-band coding distortion. The level difference was not tested; it is
-   small relative to natural level variation across LibriSpeech utterances, but it is a
-   genuine uncontrolled difference.
+   but neither isolates in-band coding distortion. **Level (draft 2):** addition A, a
+   post-confirmation sensitivity analysis on the same utterances (not a second confirmatory
+   test), matched the broadband RMS level of OPUS to LP; the residual remained (W +0.70 pp
+   [+0.47, +0.95], V +2.09 pp [+1.71, +2.57]; effect of level matching W +0.012 [−0.007,
+   +0.032], V +0.018 [−0.028, +0.062]; GO in both). It did not equalise level per frequency
+   band.
 2. **Mechanism not established.** The signal evidence (in-band LSD 6.1 vs 1.4 dB, coherence
    0.62 vs 0.99) is *consistent with* in-band coding distortion. No condition manipulated
    in-band distortion while holding everything else fixed. Utterance-level correlations were
-   weak (|ρ| ≤ 0.09; 4 of 36 with CIs excluding 0; uncorrected).
+   weak (|ρ| ≤ 0.09; 4 of 36 with CIs excluding 0; uncorrected). **Rate (draft 2):** in
+   addition B the residual fell with bitrate (slope W −0.206 [−0.267, −0.146], V −0.854
+   [−1.074, −0.657] pp per doubling; GO in both), but in-band distortion, level and image
+   fidelity all changed with the rate, so the sweep supports but does not isolate the in-band
+   interpretation.
 3. **The LP reference is not fully converged.** The SILK-NB linear response was measured at
    40 kbps. Across 3.0–4.1 kHz it still rose by 0.24–0.83 dB (mean 0.46) between 32 and
    40 kbps (frozen calibration curves). The LP may therefore attenuate the band edge slightly
@@ -37,8 +46,11 @@ recognisers). Numbers are from `results_paper/stage3_asr/`.
 
 5. **Not a bitrate-only contrast.** SILK uses `signal=voice`, OPUS `signal=auto` (both
    produced 100 % SILK-NB packets). OPUS − SILK mixes bitrate with the signal-type hint and
-   any encoder decisions it conditions. There is one high-rate point (40 kbps) and one
-   low-rate point (8 kbps); no bitrate sweep was run.
+   any encoder decisions it conditions. **Draft 2:** addition B fixes the hint and varies the
+   rate (8, 12, 16, 24, 40 kbps), but on 1,665 other utterances of the same speakers: a
+   fresh-utterance, not fresh-speaker, holdout, without REF recognition (no bandwidth component
+   or share for its utterances). At 8 kbps its `signal=voice` files were byte-identical to the
+   OPUS settings' files for all 1,665 utterances.
 6. **"No residual" is pooled and is not an equivalence result.** No equivalence margin was
    pre-declared. The pooled CIs lie between −0.20 and +0.08 pp. Secondary: for wav2vec2 on
    test-other, SILK − LP = −0.24 pp [−0.50, −0.005]. If real, the image could slightly help

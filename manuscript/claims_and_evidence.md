@@ -1,4 +1,4 @@
-# Claims and evidence (draft 2, 2026-09-26; positioning frozen)
+# Claims and evidence (draft 3, 2026-09-27; positioning frozen; TASLP-upgrade claims C17–C20 added)
 
 All values are from the confirmation set (2,174 utterances, 73 speakers) unless marked.
 WER differences are micro (corpus) values in percentage points (pp). Intervals are 95 %
@@ -45,6 +45,10 @@ is reproduced by removing bandwidth alone.
 | C13 | Control | The codec decode path does not by itself change WER | NEG_CODEC − REF: W +0.002 [−0.046, +0.049]; V +0.002 [−0.057, +0.065] | `07` | Controls the Ogg container, the FFmpeg decoder and the 48 → 16 kHz resampling. NEG_CODEC is CELT-only, so by FFmpeg's source it does not pass through the SILK upsampling (swresample) step; that step is shared only by OPUS and SILK (inferred from source, not measured) |
 | C14 | Control | The filtering path produces at most ~0.1 pp effects | NEG_LP − REF: W −0.08 [−0.15, −0.004]; V +0.10 [+0.02, +0.19] | `07` | CIs exclude 0, but stay within the pre-declared ±0.5 pp margin; do not interpret effects of order 0.1 pp |
 | C15 | Validation | The LP control reproduces SILK-NB's linear band limitation on unseen speakers | Stage 2B confirmation (train-clean-100, 40 speakers): LSD 0–3 kHz 0.031 dB; coherent bandwidth 4093.8 vs reference 4125.0 Hz; coherent 4–8 kHz power −24.7 vs −24.9 dB; \|H1\| RMS difference 0.57 dB (3.0–4.2 kHz) | `results_paper/lowpass_confirmation/` | Corrected Gate 5 (the v1 FAIL is retained). The LP reference was measured at 40 kbps and is not fully converged: near the band edge it still rose by 0.24–0.83 dB between 32 and 40 kbps (`lowpass_validation/calibration_curves.csv`) |
+| C17 | Sensitivity (post-confirmation; not confirmatory) | Matching the RMS level of the Opus signal to the control did not remove the residual in either recogniser | Addition A, confirmation utterances decoded a second time: OPUS8_LEVEL_MATCHED − LP W +0.70 [+0.47, +0.95], V +2.09 [+1.71, +2.57]; OPUS8_LEVEL_MATCHED − OPUS W +0.012 [−0.007, +0.032], V +0.018 [−0.028, +0.062]; retained 1.02 / 1.01 of T*; rule GO in both | `results_paper/taslp_upgrade/level/analysis/level_decision.json` (`1e7e8424…`) | Broadband RMS only, not per band. Can qualify but not strengthen C2. The wav2vec2 result is informative (amendment 01: invariance only approximate; 188 of 2,174 wav2vec2 hypotheses changed) |
+| C18 | Supporting (fresh-utterance, not fresh-speaker, holdout) | Within forced SILK-NB, the residual beyond LP decreased with bitrate in both recognisers | Addition B, 1,665 unused test utterances, 70 speakers: slope on log2 bitrate W −0.206 [−0.267, −0.146], V −0.854 [−1.074, −0.657] pp per doubling; R_8 W +0.55 [+0.37, +0.74], V +2.07 [+1.65, +2.55]; R_24, R_40 CIs include 0; rule GO in both | `results_paper/taslp_upgrade/sweep/analysis/sweep_decision.json` (`eb0ec2a2…`) | Speakers are the confirmation speakers; no REF recognition. Supports, but does not isolate, C12: in-band distortion, level and image fidelity all vary with the rate (descriptors reported beside it) |
+| C19 | Supporting | At a fixed signal hint, 8 kbps SILK-NB has higher WER than 40 kbps SILK-NB | SILK8 − SILK40: W +0.52 [+0.36, +0.68]; V +2.13 [+1.65, +2.67] | addition B, `sweep_bootstrap.csv` (E_8_40) | Fresh utterances; a bitrate contrast at a fixed hint, which C8 is not |
+| C20 | Replication (descriptive) | The 8 kbps residual reappears on fresh utterances | R_8 (sweep) W +0.55, V +2.07 vs confirmatory T* W +0.69, V +2.07; SILK8 files byte-identical to the OPUS settings' files for all 1,665 sweep utterances | addition B | Agreement was not a pre-declared criterion; W subset pattern: test-clean R_8 +0.11 [−0.04, +0.27], test-other +0.95 [+0.65, +1.28] |
 | C16 | Provenance | The design and decision rules were fixed before any evaluation decoding | Spec `ac5a36a0…` sealed 07:17:48 UTC, commit `ef072e5`; pilot decoded from 07:18:13; confirmation freeze `7beca216…`, commit `a51ea54`; confirmation decoded 07:24:01–08:21:40 | `stage3_spec.json`, `confirmation_freeze.json`, `raw/*/run_log.json` | Internal pre-registration (sealed files and commits), not a public registry |
 
 ### Literature consistency (for the Discussion; directional only, not evidence for the claims above)
@@ -60,9 +64,11 @@ is reproduced by removing bandwidth alone.
 
 | Not claimed | Reason |
 |---|---|
-| In-band coding distortion *causes* the residual | The mechanism was not manipulated; the signal evidence is correlational/descriptive |
+| In-band coding distortion *causes* the residual | The mechanism was not manipulated; the signal evidence is correlational/descriptive. The bitrate sweep (C18) shows rate dependence, but in-band distortion, level and image fidelity co-vary with rate |
+| The level difference has no effect on recognition | Addition A (C17) matched broadband RMS only, and is a post-confirmation sensitivity analysis, not a confirmatory test |
+| The sweep generalises to new speakers | Addition B is a fresh-utterance, not fresh-speaker, holdout |
 | SILK is equivalent to, or statistically indistinguishable from, LP | No equivalence margin was pre-declared; the result is pooled only; V test-other differs |
-| OPUS − SILK is a bitrate effect | `signal=auto` vs `signal=voice` also differs |
+| OPUS − SILK is a bitrate effect | `signal=auto` vs `signal=voice` also differs (the fixed-hint bitrate contrast is C19, on other utterances) |
 | The 4–5 kHz image is stronger in SILK | Mirror coherence measures copy fidelity; the power is comparable |
 | OPUS is byte-identical to the prior study (unqualified) | Verified on 40 dev-clean utterances in Stage 2A only |
 | wav2vec2 is "3× / 10× more sensitive" (unqualified) | True only in absolute points; the relative residuals are similar |
