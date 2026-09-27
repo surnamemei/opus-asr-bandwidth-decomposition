@@ -452,7 +452,7 @@ out.append(f"B selection: {SW_SEL['n_utterances']:,} utts, {SW_SEL['n_speakers']
 out.append("")
 
 # ---------------------------------------------------------------- Table S5: upgrade per subset
-out.append("TABLE S5 (upgrade, per subset, secondary)")
+out.append("TABLE S5 (upgrade, per subset, secondary) [full manuscript]")
 out.append("| Subset | Model | SILK8 − LP | Slope (pp per doubling) | OPUS8_LEVEL_MATCHED − LP | OPUS8_LEVEL_MATCHED − OPUS |")
 out.append("|---|---|---|---|---|---|")
 for s in ["test-clean", "test-other"]:
@@ -460,6 +460,24 @@ for s in ["test-clean", "test-other"]:
         out.append(row(s, [name, ci(*sw(m, "R_8", scope=s)), ci(*sw(m, "S_log2", scope=s, kind="trend"), dec=3),
                            ci(*a(m, "L_level_matched_minus_lp", scope=s)),
                            ci(*a(m, "K_level_matched_minus_opus", scope=s), dec=3)]))
+out.append("")
+
+# ---------------------------------------------------------------- Table S5 split (submission supplement)
+# the same cells as Table S5, one table per addition, so that neither needs shrinking
+out.append("TABLE S5A (addition A, per subset, secondary) [submission]")
+out.append("| Subset | Model | OPUS8_LEVEL_MATCHED − LP | OPUS8_LEVEL_MATCHED − OPUS |")
+out.append("|---|---|---|---|")
+for s in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(s, [name, ci(*a(m, "L_level_matched_minus_lp", scope=s)),
+                           ci(*a(m, "K_level_matched_minus_opus", scope=s), dec=3)]))
+out.append("")
+out.append("TABLE S5B (addition B, per subset, secondary) [submission]")
+out.append("| Subset | Model | SILK8 − LP | Slope (pp per doubling) |")
+out.append("|---|---|---|---|")
+for s in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(s, [name, ci(*sw(m, "R_8", scope=s)), ci(*sw(m, "S_log2", scope=s, kind="trend"), dec=3)]))
 out.append("")
 
 # ---------------------------------------------------------------- Table S6: sweep WER by condition

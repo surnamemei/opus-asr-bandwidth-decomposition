@@ -87,7 +87,7 @@ for ax, (m, name, colour, marker) in zip(axes, F.MODELS):
 from matplotlib.lines import Line2D  # noqa: E402
 handles = [Line2D([], [], ls="none", marker="o", ms=5, color=F.TEXT2, label="Sweep, fresh utterances (95 % CI)"),
            Line2D([], [], color=F.TEXT2, lw=0.8, ls=(0, (4, 2)), label="Fitted log2-bitrate slope"),
-           Line2D([], [], ls="none", marker="o", ms=5, mfc=F.SURFACE, mec=F.NEUTRAL, label="Stage 3 confirmation")]
+           Line2D([], [], ls="none", marker="o", ms=5, mfc=F.SURFACE, mec=F.NEUTRAL, label="Confirmatory run")]
 fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False)
 fig.subplots_adjust(left=0.09, right=0.985, top=0.9, bottom=0.3, wspace=0.28)
 F.save(fig, "fig_sweep")

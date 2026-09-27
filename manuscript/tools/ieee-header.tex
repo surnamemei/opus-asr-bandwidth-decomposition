@@ -1,0 +1,129 @@
+% LaTeX preamble additions for tools/render_ieee.sh: IEEE journal layout (IEEEtran, 10 pt,
+% two columns) for a page-count and layout check of an IEEE/ACM TASLP submission.
+% Presentation only; the manuscript text is not changed.
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xurl}
+% Times text and maths (TeX Gyre Termes has Times metrics, as the IEEE templates use Times).
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmathfont{texgyretermes-math.otf}
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+% IEEE reference list: footnote size, ragged right (long hashes and URLs).
+\AddToHook{env/CSLReferences/begin}{\footnotesize\raggedright}
+\setlength{\emergencystretch}{2em}
+\extrafloats{100}
+
+% Hyperlink anchors: the supplementary tables restart the counter (S1, S2, ...).
+\AtBeginDocument{\renewcommand{\theHtable}{\thetable}}
+
+% ------------------------------------------------------------------ measured floats
+% A table float (tools/ieee.lua) is declared part by part and then placed:
+%   \ieeetableparts{n}
+%   \ieeedefpart{k}{complete tabular, wrappable columns of type P{share}}{its fixed columns only}
+%   \IEEEautotable{label}{caption}{smallest share of a wrappable column}{longest word}{its share}
+% It is measured at \footnotesize, the usual IEEE table size, and set
+%   single        in one column at natural width;
+%   single-wrap   in one column, long text columns wrapped (each at least 0.9 in wide);
+%   double        across both columns at natural width;
+%   double-wrap   across both columns, long text columns wrapped (each at least 0.9 in wide);
+%   double-shrunk across both columns, scaled down to the text width (text below 8 pt).
+% A figure (\IEEEautofigure{label}{file}{caption}) is set in one column when its natural
+% width fits the column and across both columns otherwise, never enlarged, and scaled down
+% only to the text width. Every decision is written to the log as an IEEE-FLOAT line.
+\makeatletter
+% float placement (IEEE: top of page); tools/ieee-supplement.tex also allows float pages
+\def\fps@table{!t}
+\def\fps@figure{!t}
+\newsavebox\ieeebox
+\newsavebox\ieeefixbox
+\newlength\ieeenat
+\newlength\ieeefix
+\newlength\ieeefinal
+\newlength\ieeeavail
+\newlength\ieeetarget
+\newcount\ieeenparts
+\newcount\ieeek
+\newcommand\ieeetableparts[1]{\ieeenparts=#1\relax}
+\newcommand\ieeedefpart[3]{%
+  \expandafter\def\csname ieee@part@#1\endcsname{#2}%
+  \expandafter\def\csname ieee@fix@#1\endcsname{#3}}
+\newcolumntype{P}[1]{l}
+\def\ieee@natural{\newcolumntype{P}[1]{l}}
+\def\ieee@wrapped{\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{\dimexpr##1\ieeeavail-2\tabcolsep\relax}}}
+% widest part (\ieeenat) and widest fixed-column share (\ieeefix) in the current column mode
+\def\ieee@measure{%
+  \setlength\ieeenat{0pt}\setlength\ieeefix{0pt}\ieeek=0
+  \loop\ifnum\ieeek<\ieeenparts \advance\ieeek\@ne
+    \sbox\ieeebox{\footnotesize\csname ieee@part@\the\ieeek\endcsname}%
+    \sbox\ieeefixbox{\footnotesize\csname ieee@fix@\the\ieeek\endcsname}%
+    \ifdim\wd\ieeebox>\ieeenat \setlength\ieeenat{\wd\ieeebox}\fi
+    \ifdim\wd\ieeefixbox>\ieeefix \setlength\ieeefix{\wd\ieeefixbox}\fi
+  \repeat}
+\def\ieee@parts{\ieeek=0
+  \loop\ifnum\ieeek<\ieeenparts \advance\ieeek\@ne
+    \ifnum\ieeek>\@ne\par\medskip\fi
+    {\footnotesize\csname ieee@part@\the\ieeek\endcsname}%
+  \repeat}
+% can the wrappable columns (smallest share #1) fit in #2? sets \ieeeavail. Each wrapped column
+% must be at least 0.9 in wide and wider than the longest unbreakable word of the most
+% constrained column (\ieee@word, in a column of share \ieee@wordshare).
+\newsavebox\ieeewordbox
+\def\ieee@canwrap#1#2{%
+  \setlength\ieeeavail{\dimexpr#2-\ieeefix-2\tabcolsep\relax}%
+  \ifdim#1\ieeeavail<0.9in \@tempswafalse\else\@tempswatrue\fi
+  \ifdim#1pt=0pt \@tempswafalse\fi
+  \sbox\ieeewordbox{\footnotesize\ieee@word}%
+  \ifdim\wd\ieeewordbox>\dimexpr\ieee@wordshare\ieeeavail-2\tabcolsep\relax \@tempswafalse\fi}
+\def\ieee@log#1#2{\typeout{IEEE-FLOAT kind=table label=#1 placement=#2 natural=\the\ieeenat\space
+  final=\the\ieeefinal\space fixed=\the\ieeefix\space column=\the\columnwidth\space text=\the\textwidth}}
+\newcommand\ieeecaption[2]{\if\relax\detokenize{#2}\relax\else\caption{#2}\fi\label{#1}}
+\newcommand\IEEEautotable[5]{%
+  \def\ieee@word{#4}\def\ieee@wordshare{#5}%
+  \ieee@natural\ieee@measure
+  \edef\ieee@naturalwidth{\the\ieeenat}%
+  \def\ieee@mode{single}\def\ieee@env{table}\setlength\ieeetarget{\columnwidth}%
+  \ifdim\ieeenat>\columnwidth
+    \ieee@canwrap{#3}{\columnwidth}%
+    \if@tempswa \def\ieee@mode{single-wrap}%
+    \else \def\ieee@env{table*}\setlength\ieeetarget{\textwidth}%
+      \ifdim\ieeenat>\textwidth
+        \ieee@canwrap{#3}{\textwidth}%
+        \if@tempswa \def\ieee@mode{double-wrap}\else\def\ieee@mode{double-shrunk}\fi
+      \else \def\ieee@mode{double}\fi
+    \fi
+  \fi
+  \def\ieee@test{single-wrap}\ifx\ieee@mode\ieee@test\ieee@wrapped\fi
+  \def\ieee@test{double-wrap}\ifx\ieee@mode\ieee@test\ieee@wrapped\fi
+  \ieee@measure \setlength\ieeefinal{\ieeenat}\setlength\ieeenat{\ieee@naturalwidth}%
+  \ifdim\ieeefinal>\dimexpr\ieeetarget+1pt\relax \def\ieee@mode{double-shrunk}\def\ieee@env{table*}%
+    \setlength\ieeetarget{\textwidth}\ieee@natural\fi
+  \ieee@log{#1}{\ieee@mode}%
+  \def\ieee@test{double-shrunk}%
+  \ifx\ieee@mode\ieee@test
+    \begin{table*}\centering\ieeecaption{#1}{#2}%
+      \resizebox{\textwidth}{!}{\parbox{\ieeenat}{\centering\ieee@parts}}\end{table*}%
+  \else\def\ieee@test{table}\ifx\ieee@env\ieee@test
+    \begin{table}\centering\ieeecaption{#1}{#2}\ieee@parts\end{table}%
+  \else
+    \begin{table*}\centering\ieeecaption{#1}{#2}\ieee@parts\end{table*}%
+  \fi\fi
+  \ieee@natural}
+\newcommand\IEEEautofigure[3]{%
+  \sbox\ieeebox{\includegraphics{#2}}%
+  \def\ieee@flog##1{\typeout{IEEE-FLOAT kind=figure label=#1 placement=##1 natural=\the\wd\ieeebox\space
+    height=\the\ht\ieeebox\space column=\the\columnwidth\space text=\the\textwidth}}%
+  \ifdim\wd\ieeebox>\columnwidth
+    \ifdim\wd\ieeebox>\textwidth
+      \ieee@flog{double-shrunk}%
+      \begin{figure*}\centering\includegraphics[width=\textwidth]{#2}\caption{#3}\label{#1}\end{figure*}%
+    \else
+      \ieee@flog{double}%
+      \begin{figure*}\centering\usebox\ieeebox\caption{#3}\label{#1}\end{figure*}%
+    \fi
+  \else
+    \ieee@flog{single}%
+    \begin{figure}\centering\usebox\ieeebox\caption{#3}\label{#1}\end{figure}%
+  \fi}
+\makeatother

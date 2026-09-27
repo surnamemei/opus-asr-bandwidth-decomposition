@@ -1,0 +1,15 @@
+% Extra preamble for rendering the supplementary material (tools/render_ieee.sh with
+% EXTRA_HEADER=tools/ieee-supplement.tex): a supplement is mostly tables and figures, so floats may
+% also form float pages, several to a page (presentation only).
+\makeatletter
+\def\fps@table{tp}
+\def\fps@figure{tp}
+\makeatother
+\setcounter{topnumber}{4}
+\setcounter{dbltopnumber}{4}
+\setcounter{totalnumber}{6}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.6}
+\renewcommand{\dblfloatpagefraction}{0.6}

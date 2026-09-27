@@ -14,7 +14,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-MS = (ROOT / "manuscript" / "manuscript.md").read_text(encoding="utf-8")
+# Default: the full manuscript. --submission: the TASLP submission version and its supplement,
+# checked together (every number may sit in either file); see section 5 for the extra rules.
+SUBMISSION = "--submission" in sys.argv[1:]
+FILES = (["taslp_submission.md", "taslp_supplement.md"] if SUBMISSION else ["manuscript.md"])
+TEXTS = {f: (ROOT / "manuscript" / f).read_text(encoding="utf-8") for f in FILES}
+MS = "\n\n".join(TEXTS.values())
+MSN = " ".join(MS.split())          # prose checks ignore line breaks
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
 import contextlib  # noqa: E402
@@ -26,7 +32,7 @@ fails = []
 
 
 def need(token, why):
-    if token not in MS:
+    if " ".join(token.split()) not in MSN:
         fails.append(f"MISSING [{why}]: {token}")
 
 
@@ -45,8 +51,12 @@ SKIP_FIRST = {"Condition", "Contrast", "Subset", "Model", "Descriptor", "", "Mea
               "RMS level change (dB)"}  # RMS levels are stated in Methods prose and checked below
 NORMALISE = {"0.000": "0.00"}  # manuscript prints LSD of NEG_LP as 0.00 (value 3e-5 dB)
 checked = 0
+skip_tag = "[full manuscript]" if SUBMISSION else "[submission]"   # tables that belong to the other document
+skipping = False
 for line in generated.splitlines():
-    if not line.startswith("|") or set(line.replace("|", "").strip()) <= set("-: "):
+    if line.startswith("TABLE"):
+        skipping = line.rstrip().endswith(skip_tag)
+    if skipping or not line.startswith("|") or set(line.replace("|", "").strip()) <= set("-: "):
         continue
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
     if cells[0] in SKIP_FIRST:
@@ -255,6 +265,46 @@ for tok in ("+0.27 dB", "0.3–0.7 dB", "48 kbit/s"):
     if tok in MS:
         fails.append(f"UNSEALED number still present: {tok}")
 
+# ------------------------------------------------------------------ 5. submission version
+if SUBMISSION:
+    # every table row of the submission files is a checked row: a generated row or a row of the
+    # checked full manuscript (its hand-made tables: conditions, control validation)
+    full = (ROOT / "manuscript" / "manuscript.md").read_text(encoding="utf-8")
+    known = {" ".join(l.split()) for l in (generated + "\n" + full).splitlines() if l.startswith("|")}
+    for f, text in TEXTS.items():
+        for line in text.splitlines():
+            if line.startswith("|") and " ".join(line.split()) not in known:
+                fails.append(f"UNCHECKED TABLE ROW in {f}: {line}")
+    main = " ".join(TEXTS["taslp_submission.md"].split())
+    primary = [pp("delta_bw", m, unsigned=True) for m in (W, V)] + \
+              [pp("delta_opus_residual", m, unsigned=True) for m in (W, V)] + \
+              [up(*L[m]) for m in (W, V)] + [up(*K[m], dec=3) for m in (W, V)] + \
+              [up(*R8[m]) for m in (W, V)] + [up(*E[m]) for m in (W,)] + \
+              [f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(S_[W][2], True, 3)}]",
+               f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling"]
+    for m in (W, V):
+        e, lo, hi = b("confirmation", m, "bw_share_of_opus_total", kind="ratio")
+        primary.append(f"{round(100*e):.0f} % [{round(100*lo):.0f}, {round(100*hi):.0f}]")
+    for tok in primary:
+        if " ".join(tok.split()) not in main:
+            fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
+    for f, text in TEXTS.items():
+        for mt in re.finditer(r"pre-?regist\w*", re.sub(r"<!--.*?-->", "", text, flags=re.S), flags=re.I):
+            fails.append(f"WORDING in {f}: '{mt.group(0)}' (use prospective specification / version sealing)")
+
+# ------------------------------------------------------------------ 6. table structure
+# A caption paragraph (": ...") must follow its table after one blank line; anything else would
+# let pandoc attach it to the next table instead.
+for f, text in TEXTS.items():
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith(": "):
+            prev = next((l for l in reversed(lines[:i]) if l.strip()), "")
+            if not prev.startswith("|"):
+                fails.append(f"CAPTION NOT AFTER A TABLE in {f}: {line[:70]}")
+        if line.startswith("|") and i + 1 < len(lines) and lines[i + 1].strip() and not lines[i + 1].startswith("|"):
+            fails.append(f"TEXT DIRECTLY AFTER A TABLE in {f}: {lines[i + 1][:70]}")
+
 # ------------------------------------------------------------------ 3. wording
 FORBIDDEN = [r"\b(the |be )?first (to|study|studies|work|paper|time|demonstrat\w*|decomposition|systematic|attempt)\b",
              r"\bwe are the first\b", r"\bnovel\b", r"for the first time", r"unprecedented", r"no prior work",
@@ -274,6 +324,7 @@ bib = set(re.findall(r"^@\w+\{([^,]+),", (ROOT / "manuscript" / "references.bib"
 for key in sorted(set(re.findall(r"@([A-Za-z0-9_]+)", body)) - bib):
     fails.append(f"CITATION missing in bib: {key}")
 
+print(f"files: {', '.join(FILES)}")
 print(f"table rows checked: {checked}")
 print("RESULT:", "PASS" if not fails else f"{len(fails)} problem(s)")
 for f in fails:
