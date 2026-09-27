@@ -1,0 +1,202 @@
+{
+ "created_utc": "2026-09-27T19:33:53.098263+00:00",
+ "spec_sha256": "42504ce4bb2675c26693d91d6cc4f0c4c3c1de5c9778e0e7c9530ca2a587b4aa",
+ "code_freeze_sha256": "b811a4a380feb6e841e0523e7c1d3bbb172c0d06dad806ed34d46fec6c00bb93",
+ "n_utterances": 2174,
+ "checks": {
+  "K1": {
+   "ogg_identical": 2174,
+   "waveform_identical": 2174,
+   "of": 2174,
+   "pass": true
+  },
+  "K2": {
+   "errors": [],
+   "encoded": 2174,
+   "of": 2174,
+   "length_equals_ref": 2174,
+   "nonfinite": 0,
+   "pass": true
+  },
+  "K3": {
+   "OPUS_AUDIO8": {
+    "utterances_with_mismatches": 0,
+    "queried_application": [
+     2049
+    ],
+    "expected_application": 2049
+   },
+   "OPUS_VOIP8": {
+    "utterances_with_mismatches": 0,
+    "queried_application": [
+     2048
+    ],
+    "expected_application": 2048
+   },
+   "pass": true
+  },
+  "K4": {
+   "OPUS_AUDIO8": {
+    "bandwidths": [
+     "NB"
+    ],
+    "frame_ms": [
+     "20.0"
+    ],
+    "any_stereo": false,
+    "packet_modes_reported": {
+     "SILK": 2174
+    },
+    "utterances_all_silk": 2174
+   },
+   "OPUS_VOIP8": {
+    "bandwidths": [
+     "NB"
+    ],
+    "frame_ms": [
+     "20.0"
+    ],
+    "any_stereo": false,
+    "packet_modes_reported": {
+     "SILK": 2174
+    },
+    "utterances_all_silk": 2174
+   },
+   "pass": true
+  },
+  "K5": {
+   "environment_differences": [],
+   "libopus": "libopus 1.4",
+   "libopus_path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+   "pass": true
+  },
+  "K8": {
+   "max_abs_difference_pp": 1.7763568394002505e-15,
+   "tolerance_pp": 1e-09,
+   "pass": true,
+   "cells": {
+    "whisper/pooled/wer_REF": 0.0,
+    "whisper/pooled/wer_OPUS_AUDIO8": 4.440892098500626e-16,
+    "whisper/pooled/A": 0.0,
+    "whisper/test-clean/wer_REF": 0.0,
+    "whisper/test-clean/wer_OPUS_AUDIO8": 2.220446049250313e-16,
+    "whisper/test-clean/A": 6.938893903907228e-17,
+    "whisper/test-other/wer_REF": 4.440892098500626e-16,
+    "whisper/test-other/wer_OPUS_AUDIO8": 0.0,
+    "whisper/test-other/A": 0.0,
+    "wav2vec2/pooled/wer_REF": 0.0,
+    "wav2vec2/pooled/wer_OPUS_AUDIO8": 0.0,
+    "wav2vec2/pooled/A": 0.0,
+    "wav2vec2/test-clean/wer_REF": 0.0,
+    "wav2vec2/test-clean/wer_OPUS_AUDIO8": 0.0,
+    "wav2vec2/test-clean/A": 0.0,
+    "wav2vec2/test-other/wer_REF": 0.0,
+    "wav2vec2/test-other/wer_OPUS_AUDIO8": 1.7763568394002505e-15,
+    "wav2vec2/test-other/A": 0.0
+   }
+  },
+  "K9": {
+   "committed": {
+    "paper/final_invariance/B1_SPEC.json": "25d81fa3db668696af1b60031a23312be78be75f 2026-09-28T05:08:19+10:00",
+    "paper/final_invariance/B1_PLAN.md": "25d81fa3db668696af1b60031a23312be78be75f 2026-09-28T05:08:19+10:00",
+    "paper/final_invariance/B1_CODE_FREEZE.json": "25d81fa3db668696af1b60031a23312be78be75f 2026-09-28T05:08:19+10:00"
+   },
+   "no_b1_recognition_outputs": true,
+   "pass": true
+  }
+ },
+ "descriptive": {
+  "OPUS_AUDIO8": {
+   "payload_kbps": {
+    "median": 7.34401072609168,
+    "p05": 6.726869611579415,
+    "p95": 7.712653018782088
+   },
+   "container_kbps": {
+    "median": 8.171434398891254,
+    "p05": 7.642524825049097,
+    "p95": 8.558657347976988
+   },
+   "clipped_samples_total": 113,
+   "utterances_with_clipping": 17,
+   "lag_vs_ref_counts": {
+    "1": 12,
+    "2": 2162
+   },
+   "rms_change_db": {
+    "median": -0.6752381294041018,
+    "p05": -2.094345632405995,
+    "p95": -0.3377166170183483
+   },
+   "lsd_0_3k_db_vs_ref": {
+    "median": 6.138346433639526,
+    "p05": 4.838369512557984,
+    "p95": 6.9443251371383665
+   },
+   "coherence_0_3500_vs_ref": {
+    "median": 0.6228335801037637,
+    "p05": 0.5128241763123209,
+    "p95": 0.7132825712932152
+   },
+   "pooled_power_4000_8000_db": -16.74181704571786,
+   "pooled_total_hf_power_db": -16.74181704571786,
+   "pooled_mirror_coherence_4100_4900": 0.22716287007191632,
+   "pooled_mean_coherence_0_3500": 0.6518040859431687,
+   "pooled_h1_level_db": -1.8285662994489313,
+   "pooled_coherent_bandwidth_hz": 4000.0
+  },
+  "OPUS_VOIP8": {
+   "payload_kbps": {
+    "median": 7.290995949384495,
+    "p05": 6.705795396265122,
+    "p95": 7.679874158297203
+   },
+   "container_kbps": {
+    "median": 8.128778424114225,
+    "p05": 7.617548673459094,
+    "p95": 8.522198796757175
+   },
+   "clipped_samples_total": 78,
+   "utterances_with_clipping": 19,
+   "lag_vs_ref_counts": {
+    "-4": 1,
+    "-3": 1,
+    "-2": 20,
+    "-1": 28,
+    "0": 213,
+    "1": 1625,
+    "2": 286
+   },
+   "rms_change_db": {
+    "median": -0.7183272077568226,
+    "p05": -2.388469474822086,
+    "p95": -0.3312478744584356
+   },
+   "lsd_0_3k_db_vs_ref": {
+    "median": 6.414294719696045,
+    "p05": 5.044054794311523,
+    "p95": 7.418953704833984
+   },
+   "coherence_0_3500_vs_ref": {
+    "median": 0.6139710517990089,
+    "p05": 0.5026383318732031,
+    "p95": 0.701394883866517
+   },
+   "pooled_power_4000_8000_db": -16.812537766801587,
+   "pooled_total_hf_power_db": -16.812537766801587,
+   "pooled_mirror_coherence_4100_4900": 0.09323721963586078,
+   "pooled_mean_coherence_0_3500": 0.5826544304172744,
+   "pooled_h1_level_db": -2.016992552142259,
+   "pooled_coherent_bandwidth_hz": 3968.75
+  },
+  "paired_payload_kbps_difference_voip_minus_audio": {
+   "median": -0.031756523517905144
+  },
+  "voip8_waveform_identical_to_audio8": 0
+ },
+ "seconds_per_utterance": 0.7001636662171757,
+ "rows_sha256": "e9bf739670e06145e417487a39b1007fa14d4825294a2bfb23f5e06850e5f4e9",
+ "pass": true,
+ "status": "PASS: recognition may run",
+ "report_sha256": "211bb0a1a1807ea5fd80b0fb4ad22be8ae5652932c3741d711618f1ba447ab92"
+}
