@@ -1,0 +1,344 @@
+{
+ "created_utc": "2026-09-27T05:36:42.512523+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "purpose": "RS1: environment reproduction (E1), R1 and R2 calibration on the Stage 2B calibration set, and pipeline sanity of every new condition (E2); no condition comparison is computed",
+ "E1": {
+  "rows": {
+   "audio_frozen": 120,
+   "audio_new": 120,
+   "audio_matched": 120,
+   "asr_frozen": 240,
+   "asr_new": 240,
+   "asr_matched": 240
+  },
+  "waveform_mismatches": 0,
+  "ogg_mismatches": 0,
+  "hypothesis_mismatches": 0,
+  "seconds_per_utterance": 2.8924559473991396,
+  "pass": true
+ },
+ "R1": {
+  "C1_pass": true,
+  "C1": {
+   "silk40_ffmpeg_max_abs_difference_db": 3.552713678800501e-15,
+   "lp_max_abs_difference_db": 3.552713678800501e-15,
+   "tolerance_db": 0.01,
+   "up_to_hz": 4150.0,
+   "pass": true
+  },
+  "REUSE_pass": false,
+  "control": "LP_LIBOPUS",
+  "lp_libopus_taps_sha256": "62376a666e1fe6550405c4f022e5c0bc075883478084e1b383393be71457892c",
+  "REUSE": {
+   "criteria": {
+    "a_coherent_bandwidth": {
+     "value_hz": 0.0,
+     "limit_hz": 62.5,
+     "pass": true
+    },
+    "b_coherent_hf_power": {
+     "value_db": 0.17721051506728003,
+     "limit_db": 3.0,
+     "pass": true
+    },
+    "c_shape": {
+     "rms_lib_db": 1.4979614387110967,
+     "rms_limit_db": 1.5,
+     "max_abs_lib_db": 2.8163606330600395,
+     "abs_limit_db": 4.0,
+     "pass": true
+    },
+    "d_no_worse_than_ffmpeg_fit": {
+     "rms_lib_db": 1.4979614387110967,
+     "rms_ff_db": 0.05204529952147841,
+     "margin_db": 0.5,
+     "pass": false
+    }
+   },
+   "pass": false
+  },
+  "silk40_ffmpeg": {
+   "coherent_bandwidth_hz": 4093.75,
+   "coherent_hf_power_db": -25.302799136402875,
+   "total_hf_power_db": -15.983244120326551,
+   "image_coherence_4100_4900": 0.9710242993066518,
+   "level_db": -0.06676127525214463
+  },
+  "silk40_libopus": {
+   "coherent_bandwidth_hz": 4093.75,
+   "coherent_hf_power_db": -25.403983913867986,
+   "total_hf_power_db": -16.84170687688575,
+   "image_coherence_4100_4900": 0.4888268489912578,
+   "level_db": -0.35761564828777437
+  },
+  "lp": {
+   "coherent_bandwidth_hz": 4093.75,
+   "coherent_hf_power_db": -25.226773398800706,
+   "total_hf_power_db": -25.05082560748763,
+   "image_coherence_4100_4900": 0.0006200271960985504,
+   "level_db": 2.6124131354887727e-07
+  },
+  "h1_rel_db_at": {
+   "1000": {
+    "silk40_ffmpeg": -0.016370588045986935,
+    "silk40_libopus": 0.1141827444768729,
+    "lp": -1.972319681016036e-09
+   },
+   "2000": {
+    "silk40_ffmpeg": -0.02184032436657567,
+    "silk40_libopus": -0.36340092879198127,
+    "lp": -8.286611572023058e-07
+   },
+   "2500": {
+    "silk40_ffmpeg": -0.2589878950223918,
+    "silk40_libopus": -0.9375964185723153,
+    "lp": 7.460684082430808e-07
+   },
+   "3000": {
+    "silk40_ffmpeg": -0.5340834397109194,
+    "silk40_libopus": -0.9382377467986847,
+    "lp": -0.5288711418756227
+   },
+   "3500": {
+    "silk40_ffmpeg": -2.1679079890223334,
+    "silk40_libopus": -2.0182081111801224,
+    "lp": -2.1695366942705494
+   },
+   "3812.5": {
+    "silk40_ffmpeg": -4.529645050847824,
+    "silk40_libopus": -2.4469629311215937,
+    "lp": -4.528004128749273
+   },
+   "4000": {
+    "silk40_ffmpeg": -10.673836060722985,
+    "silk40_libopus": -9.818548515598252,
+    "lp": -10.63361065107978
+   },
+   "4062.5": {
+    "silk40_ffmpeg": -15.542817442183058,
+    "silk40_libopus": -15.160772699533107,
+    "lp": -15.600326516729366
+   },
+   "4125": {
+    "silk40_ffmpeg": -20.824894061399256,
+    "silk40_libopus": -23.747177515970076,
+    "lp": -20.930816882910037
+   }
+  },
+  "max_abs_difference_libopus_vs_ffmpeg_db_up_to_4150": 2.9222834545708203,
+  "procedure_reproduction": {
+   "note": "descriptive: fit_stage2b_filter on the regenerated FFmpeg SILK40 curve must give the frozen LP",
+   "taps_sha256": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+   "equals_frozen_lp": true,
+   "max_abs_tap_difference": 0.0
+  },
+  "lp_libopus": {
+   "edge_hz": 2937.5,
+   "iterations": [
+    {
+     "iteration": 0,
+     "rms_error_db_3000_4200": 0.22885966590323467,
+     "max_abs_error_db_3000_4150": 0.9096964748671859,
+     "rms_error_db_edge_4200": 0.22499412548689776
+    },
+    {
+     "iteration": 1,
+     "rms_error_db_3000_4200": 0.10406005451414453,
+     "max_abs_error_db_3000_4150": 0.3540726013408175,
+     "rms_error_db_edge_4200": 0.10205941587972081
+    },
+    {
+     "iteration": 2,
+     "rms_error_db_3000_4200": 0.0864416640229374,
+     "max_abs_error_db_3000_4150": 0.3013123364554282,
+     "rms_error_db_edge_4200": 0.08454464820303029
+    },
+    {
+     "iteration": 3,
+     "rms_error_db_3000_4200": 0.07988193269723494,
+     "max_abs_error_db_3000_4150": 0.2857920544724557,
+     "rms_error_db_edge_4200": 0.07805424434957768
+    }
+   ],
+   "fir_response_db": {
+    "1000": -1.1023017053777416e-08,
+    "2000": -7.134088069432085e-08,
+    "2500": -2.469122730854213e-07,
+    "3000": -0.9684930844261758,
+    "3500": -2.160264137338147,
+    "3812.5": -2.38195175735988,
+    "4000": -10.134832316203495,
+    "4062.5": -15.149291274776857,
+    "4125": -24.555020286964613
+   }
+  }
+ },
+ "R2": {
+  "C1_pass": true,
+  "C1": {
+   "opus_max_abs_difference_db": 3.552713678800501e-15,
+   "tolerance_db": 0.01,
+   "up_to_hz": 4150.0,
+   "pass": true
+  },
+  "surr8_taps_sha256": "a7839f21b609fe1a7a30879987973b55f0f91ff91797c2383a656d749e932a55",
+  "edge_hz": 2093.75,
+  "diagnosed_edge_hz": 2093.75,
+  "edge_reproduces": true,
+  "iterations": [
+   {
+    "iteration": 0,
+    "rms_error_db_3000_4200": 0.5804345488540497,
+    "max_abs_error_db_3000_4150": 2.8397906143556852,
+    "rms_error_db_edge_4200": 0.44256512843983986
+   },
+   {
+    "iteration": 1,
+    "rms_error_db_3000_4200": 0.775122556862087,
+    "max_abs_error_db_3000_4150": 2.4124274327039927,
+    "rms_error_db_edge_4200": 0.5894922959472474
+   },
+   {
+    "iteration": 2,
+    "rms_error_db_3000_4200": 0.9307979318562871,
+    "max_abs_error_db_3000_4150": 3.384604767356656,
+    "rms_error_db_edge_4200": 0.7074335207191047
+   },
+   {
+    "iteration": 3,
+    "rms_error_db_3000_4200": 0.9844058691452859,
+    "max_abs_error_db_3000_4150": 3.796215853712674,
+    "rms_error_db_edge_4200": 0.7487055214698247
+   }
+  ],
+  "properties": {
+   "num_taps": 1023,
+   "symmetric_odd": true,
+   "dc_gain": 1.0000000000000002,
+   "fir_response_db": {
+    "1000": -3.312100723874017e-08,
+    "2000": 4.38876881244933e-06,
+    "2500": -3.111386205599401,
+    "3000": -4.79537108355623,
+    "3500": -9.448607111648261,
+    "3812.5": -11.53007047970469,
+    "4000": -17.42384153142513,
+    "4062.5": -26.641037374711672,
+    "4125": -36.3036923735106
+   },
+   "surr8_minus_lp_fir_db": {
+    "1000": -2.6495968571988787e-08,
+    "2000": 4.432896053628567e-06,
+    "2500": -3.1113860586000075,
+    "3000": -4.179554093749657,
+    "3500": -7.2886587192558165,
+    "3812.5": -7.022308326310306,
+    "4000": -6.665145122774536,
+    "4062.5": -10.92279986684367,
+    "4125": -15.251769960840782
+   },
+   "measured_h1_rel_db": {
+    "1000": 6.269908407192756e-05,
+    "2000": -0.003082295437098555,
+    "2500": -3.1377795321482655,
+    "3000": -4.799810836545053,
+    "3500": -9.411960248050129,
+    "3812.5": -11.427848755079712,
+    "4000": -17.386733128629277,
+    "4062.5": -25.26584135131153,
+    "4125": -35.67561285423487
+   },
+   "target_db": {
+    "1000": 0.0,
+    "2000": 0.0,
+    "2500": -2.971645829750322,
+    "3000": -4.809440193156988,
+    "3500": -9.136955070837809,
+    "3812.5": -11.405511969154853,
+    "4000": -17.50418252252905,
+    "4062.5": -25.728599867592344,
+    "4125": -31.879397000522196
+   }
+  },
+  "opus8": {
+   "coherent_bandwidth_hz": 4031.25,
+   "coherent_hf_power_db": -34.609337907056585,
+   "total_hf_power_db": -16.743043569518882,
+   "image_coherence_4100_4900": 0.22609752781749143,
+   "level_db": -1.7138626691231247
+  }
+ },
+ "E2": {
+  "conditions": [
+   "OPUS_REFDEC",
+   "SILK_REFDEC",
+   "LP_LIBOPUS",
+   "SURR8",
+   "NB8",
+   "WB8"
+  ],
+  "refdec_packets_identical": true,
+  "refdec_samples_per_packet": [
+   "960"
+  ],
+  "refdec_output_gain_zero": true,
+  "refdec_pre_skip_is_3x_lookahead": true,
+  "refdec_48k_length_equals_ffmpeg": true,
+  "refdec_decoder": [
+   "libopus 1.4"
+  ],
+  "ffmpeg_path_identity_with_codec_round_trip": {
+   "checked": 6,
+   "identical": 6
+  },
+  "packets_expected_config": {
+   "NB8": 1.0,
+   "WB8": 1.0
+  },
+  "readback_mismatches": [],
+  "median_payload_kbps": {
+   "NB8": 7.3665612625033,
+   "WB8": 7.857066934909259
+  },
+  "lengths_equal_ref": true,
+  "nonfinite_samples": 0,
+  "empty_hypotheses": 0,
+  "determinism": {
+   "waveforms_identical": true,
+   "hypotheses_identical": true
+  },
+  "decoder_difference_calibration_set": [
+   {
+    "condition": "OPUS",
+    "bit_identical": 0,
+    "snr_db_median": 10.7200017396427,
+    "snr_db_min": 6.085450140040869,
+    "max_abs_difference": 0.4382057897746563,
+    "lag_min": -1,
+    "lag_max": -1
+   },
+   {
+    "condition": "SILK",
+    "bit_identical": 0,
+    "snr_db_median": 10.510870378497962,
+    "snr_db_min": 6.0502536313876405,
+    "max_abs_difference": 0.45870934426784515,
+    "lag_min": -1,
+    "lag_max": -1
+   }
+  ],
+  "seconds_per_utterance": 1.367552101612091,
+  "pass": true
+ },
+ "files": {
+  "e1_asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+  "e1_audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f",
+  "e2_asr_outputs.csv": "6b7769665f28cb92eba97f535e403c9dbb07c2e4b0fb7522c99bfbd59924b846",
+  "e2_audio_manifest.csv": "03928b4b5b4abe89163515c5cec6e1815198c75741a9325250ca20ca3b9d24ff",
+  "e2_decoder_difference.csv": "65a77064ec6f18d743978188c2ff3c4a92a10d0ea67e582cfc9617c134968d48",
+  "lp_libopus_filter.json": "6804c23bd3442b6eeb35ef162457f515df59a67059eef9d58d1900f3035824d7",
+  "r1_curves.csv": "b56b7c5c65c93c482cda69447c6e51a4671494de4aa43edec2101c4bf5324ca9",
+  "surr8_filter.json": "2c15d1e2f38939e040c19df6b0044cc3767b8d4ab1aa707de0d4e732fc8045ca"
+ },
+ "report_sha256": "6391750a297d73635c7009180d3cdcdc97f31258c5f946fc84e82862f6585fa1"
+}

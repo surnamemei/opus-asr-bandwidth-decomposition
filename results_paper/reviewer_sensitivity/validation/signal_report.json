@@ -1,0 +1,163 @@
+{
+ "created_utc": "2026-09-27T05:43:10.042730+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "code_freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754",
+ "part": "signal",
+ "n_utterances": 40,
+ "transfer": {
+  "lp": {
+   "coherent_bandwidth_hz": 4093.75,
+   "coherent_hf_power_db": -24.904205288889326,
+   "total_hf_power_db": -24.620715039266535,
+   "image_coherence_4100_4900": 0.0006451032195219825,
+   "level_db": 3.338226618151946e-07
+  },
+  "silk_nb_linear_ref": {
+   "coherent_bandwidth_hz": 4062.5,
+   "coherent_hf_power_db": -27.740315210145766,
+   "total_hf_power_db": -17.167511899529252,
+   "image_coherence_4100_4900": 0.141722032815992,
+   "level_db": -0.3908329649706803
+  },
+  "opus_8k_nb": {
+   "coherent_bandwidth_hz": 4000.0,
+   "coherent_hf_power_db": -35.65737737484325,
+   "total_hf_power_db": -17.394060702681323,
+   "image_coherence_4100_4900": 0.04480120667695265,
+   "level_db": -2.054328076547608
+  },
+  "surr8": {
+   "coherent_bandwidth_hz": 4000.0,
+   "coherent_hf_power_db": -33.1609577741979,
+   "total_hf_power_db": -32.77156968805093,
+   "image_coherence_4100_4900": 0.0011520587476625814,
+   "level_db": -5.620932989806128e-05
+  },
+  "opus_8k_nb_ffmpeg": {
+   "coherent_bandwidth_hz": 4031.25,
+   "coherent_hf_power_db": -31.919564836050085,
+   "total_hf_power_db": -16.89757820351482,
+   "image_coherence_4100_4900": 0.2800531257011317,
+   "level_db": -1.7845382736989452
+  }
+ },
+ "R1-V": {
+  "control": "LP_LIBOPUS",
+  "gates": [
+   {
+    "subset": "train-clean-100",
+    "gate": 1,
+    "name": "zero effective delay",
+    "status": "PASS",
+    "evidence": "odd, exactly symmetric taps with (L-1)/2 = 511 samples removed: True; alignment lag 0 in 40/40"
+   },
+   {
+    "subset": "train-clean-100",
+    "gate": 2,
+    "name": "waveform length unchanged",
+    "status": "PASS",
+    "evidence": "40/40 utterances; deterministic 40/40"
+   },
+   {
+    "subset": "train-clean-100",
+    "gate": 3,
+    "name": "low-band distortion small (bandwidth removal only)",
+    "status": "PASS",
+    "evidence": "LSD 0-3 kHz median 0.112 dB, p95 0.135 dB; LSD 0-4 kHz median 1.12 dB = 17.8% of Opus8-NB (6.29 dB); min coherence 0-3800 Hz 0.9988 (Opus8-NB 0.039)"
+   },
+   {
+    "subset": "train-clean-100",
+    "gate": 4,
+    "name": "bandwidth matches SILK-NB (coherent definition)",
+    "status": "PASS",
+    "evidence": "coherent bandwidth LP 4093.8 Hz, reference 4062.5 (+31.2), Opus8-NB 4000.0 (+93.8); power-based retained bandwidth median LP 4093.8 Hz (range 3950-4200; Opus8-NB 4281.2 includes the image)"
+   },
+   {
+    "subset": "train-clean-100",
+    "gate": "5 (revised)",
+    "name": "4-8 kHz attenuation matches SILK-NB's linear (bitrate-independent) response",
+    "status": "PASS",
+    "evidence": "coherent 4-8 kHz power LP -24.9 dB, linear reference -27.7 dB (+2.8, tolerance +-3.0); total 4-8 kHz power change median LP -24.0 dB <= Opus8-NB -16.8 dB: True; information only: Opus8-NB coherent 4-8 kHz power -35.7 dB (+10.8)"
+   },
+   {
+    "subset": "train-clean-100",
+    "gate": 6,
+    "name": "transition shape matches SILK-NB linear response",
+    "status": "FAIL",
+    "evidence": "|H1| LP - reference: RMS 2.07 dB over [3000.0, 4200.0] Hz, max 3.25 dB over [3000.0, 4150.0] Hz; LP |H1| above 4200 Hz <= -31.3 dB"
+   }
+  ],
+  "original_gate5_information_only": [
+   {
+    "subset": "train-clean-100",
+    "gate": 5,
+    "name": "4-8 kHz attenuation matches SILK-NB (coherent definition)",
+    "status": "FAIL",
+    "evidence": "coherent 4-8 kHz power LP -24.9 dB, reference -27.7 (+2.8), Opus8-NB -35.7 (+10.8); total 4-8 kHz power change median LP -24.0 dB <= Opus8-NB -16.8 dB (difference = image, mirror coherence 4.1-4.9 kHz Opus8-NB 0.04, LP 0.001)"
+   }
+  ],
+  "pass": false
+ },
+ "R2-V": {
+  "gates": {
+   "R2-V1": {
+    "pass": true,
+    "symmetric_odd_taps": true,
+    "max_abs_lag_samples": 0
+   },
+   "R2-V2": {
+    "pass": true,
+    "min_coherence": 0.9937854630510852
+   },
+   "R2-V3": {
+    "pass": false,
+    "rms_db": 2.0360027922291,
+    "max_abs_db": 8.907625508211098,
+    "edge_hz": 2093.75,
+    "validation_subset_opus_edge_hz": 1812.5
+   },
+   "R2-V4": {
+    "pass": true,
+    "difference_hz": -31.25,
+    "surr8_hz": 4000.0,
+    "opus_hz": 4031.25
+   },
+   "R2-V5": {
+    "pass": true,
+    "difference_db": -1.2413929381478113,
+    "surr8_db": -33.1609577741979,
+    "opus_db": -31.919564836050085
+   },
+   "R2-V6": {
+    "pass": true,
+    "max_h1_rel_db_above_4200_hz": -39.47286092188664
+   }
+  },
+  "pass": false,
+  "descriptive": {
+   "surr8_lsd_0_3k_vs_ref_db": {
+    "median": 1.5557793974876404,
+    "p95": 1.7216529965400695
+   },
+   "surr8_retained_bandwidth_hz_median": 4031.25,
+   "surr8_total_hf_power_db": -32.77156968805093,
+   "surr8_minus_lp_fir_db": {
+    "1000": -2.6495968571988787e-08,
+    "2000": 4.432896053628567e-06,
+    "3000": -4.179554093749657,
+    "3500": -7.2886587192558165,
+    "4000": -6.665145122774536
+   },
+   "surr8_packets_irrelevant": "no codec"
+  }
+ },
+ "reference_decoder_checks": {
+  "packets_identical": true,
+  "samples_per_packet": [
+   "960"
+  ]
+ },
+ "rows_sha256": "73b690ae2da4fa8c50a1f21bbd9c8a7089707828b7b53aa539116f364f1fc7fa",
+ "curves_sha256": "670ee71adc9be38c0497d83ab495f5aa232745da13d9f5b5f3902fff20b19b66",
+ "report_sha256": "a6d0dd861a849714f526a9372b1d4fc40048c3538d14280a4b53647d40fbf24d"
+}

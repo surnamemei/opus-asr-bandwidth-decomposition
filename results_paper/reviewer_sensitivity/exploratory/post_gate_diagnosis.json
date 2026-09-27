@@ -1,0 +1,353 @@
+{
+ "label": "EXPLORATORY - POST HOC: computed after the frozen R1-V and R2-V gates failed and R1 and R2 were STOPPED; not part of any rule; cannot change any outcome; code outside the code freeze",
+ "created_utc": "2026-09-27T05:51:59.379651+00:00",
+ "inputs": {
+  "calibration_report_sha256": "6391750a297d73635c7009180d3cdcdc97f31258c5f946fc84e82862f6585fa1",
+  "signal_report_sha256": "a6d0dd861a849714f526a9372b1d4fc40048c3538d14280a4b53647d40fbf24d"
+ },
+ "alignment_lags": {
+  "signal_validation_subset": {
+   "lp": {
+    "0": 40
+   },
+   "opus_8k_nb": {
+    "0": 21,
+    "1": 18,
+    "2": 1
+   },
+   "opus_8k_nb_ffmpeg": {
+    "2": 40
+   },
+   "silk_nb_linear_ref": {
+    "0": 22,
+    "1": 17,
+    "2": 1
+   },
+   "surr8": {
+    "0": 40
+   }
+  },
+  "stage3_calibration_set_e2": {
+   "LP_LIBOPUS": {
+    "0": 20
+   },
+   "NB8": {
+    "2": 20
+   },
+   "OPUS_REFDEC": {
+    "0": 13,
+    "1": 7
+   },
+   "SILK_REFDEC": {
+    "0": 14,
+    "1": 6
+   },
+   "SURR8": {
+    "0": 20
+   },
+   "WB8": {
+    "0": 20
+   }
+  }
+ },
+ "r1_validation_misfit": {
+  "rms_db_3000_3900": 1.5982506504566445,
+  "rms_db_3900_4200": 3.042782634157351,
+  "rows": [
+   {
+    "hz": 2000,
+    "silk40_libopus_calibration": -0.3634009287919812,
+    "silk40_libopus_validation": -0.4348967936115688,
+    "lp_libopus_validation": -3.1384688242732326e-06
+   },
+   {
+    "hz": 2500,
+    "silk40_libopus_calibration": -0.9375964185723152,
+    "silk40_libopus_validation": -0.9605626883602209,
+    "lp_libopus_validation": -3.2821979395189e-07
+   },
+   {
+    "hz": 3000,
+    "silk40_libopus_calibration": -0.9382377467986848,
+    "silk40_libopus_validation": -1.4820491244262854,
+    "lp_libopus_validation": -0.9701213299840712
+   },
+   {
+    "hz": 3500,
+    "silk40_libopus_calibration": -2.0182081111801224,
+    "silk40_libopus_validation": -3.9378571741308255,
+    "lp_libopus_validation": -2.1424773820591656
+   },
+   {
+    "hz": 3750,
+    "silk40_libopus_calibration": -2.256890425543068,
+    "silk40_libopus_validation": -4.584390167786679,
+    "lp_libopus_validation": -2.258782214511754
+   },
+   {
+    "hz": 3812.5,
+    "silk40_libopus_calibration": -2.4469629311215937,
+    "silk40_libopus_validation": -5.283646938187695,
+    "lp_libopus_validation": -2.421773743700146
+   },
+   {
+    "hz": 4000,
+    "silk40_libopus_calibration": -9.818548515598252,
+    "silk40_libopus_validation": -11.8715578902006,
+    "lp_libopus_validation": -9.75179996211616
+   },
+   {
+    "hz": 4062.5,
+    "silk40_libopus_calibration": -15.160772699533108,
+    "silk40_libopus_validation": -18.769309405380543,
+    "lp_libopus_validation": -15.518681093085425
+   },
+   {
+    "hz": 4125,
+    "silk40_libopus_calibration": -23.74717751597008,
+    "silk40_libopus_validation": -25.52295811472673,
+    "lp_libopus_validation": -23.797303535748657
+   }
+  ]
+ },
+ "r2_validation_misfit": {
+  "validation_edge_hz": 1812.5,
+  "rms_db_edge_4000": 0.8679841050262993,
+  "rms_db_4000_4200": 6.260595338434199,
+  "largest_error": {
+   "hz": 4125.0,
+   "db": -8.907625508211098
+  },
+  "rows": [
+   {
+    "hz": 2000,
+    "opus_calibration": -0.2886091786919288,
+    "opus_validation": -0.8826351059297156,
+    "target_calibration": 0.0,
+    "target_validation": -0.8826351059297156,
+    "surr8_validation": -0.0026121898608462
+   },
+   {
+    "hz": 2500,
+    "opus_calibration": -2.971645829750322,
+    "opus_validation": -3.038264532501369,
+    "target_calibration": -2.971645829750322,
+    "target_validation": -3.062724752454249,
+    "surr8_validation": -3.1426174442521977
+   },
+   {
+    "hz": 3000,
+    "opus_calibration": -4.809440193156988,
+    "opus_validation": -5.072156103630587,
+    "target_calibration": -4.809440193156988,
+    "target_validation": -5.072156103630587,
+    "surr8_validation": -4.797428056518593
+   },
+   {
+    "hz": 3500,
+    "opus_calibration": -8.85447475768507,
+    "opus_validation": -5.9479153586488085,
+    "target_calibration": -9.136955070837809,
+    "target_validation": -7.565690393798307,
+    "surr8_validation": -9.397454016126536
+   },
+   {
+    "hz": 3812.5,
+    "opus_calibration": -11.405511969154853,
+    "opus_validation": -11.756365327102888,
+    "target_calibration": -11.405511969154853,
+    "target_validation": -11.756365327102888,
+    "surr8_validation": -11.39826892345754
+   },
+   {
+    "hz": 4000,
+    "opus_calibration": -17.50418252252905,
+    "opus_validation": -15.887230880863925,
+    "target_calibration": -17.50418252252905,
+    "target_validation": -15.887230880863925,
+    "surr8_validation": -17.428148369856004
+   },
+   {
+    "hz": 4062.5,
+    "opus_calibration": -25.728599867592344,
+    "opus_validation": -20.179784719193865,
+    "target_calibration": -25.728599867592344,
+    "target_validation": -20.179784719193865,
+    "surr8_validation": -25.545791060067582
+   },
+   {
+    "hz": 4093.75,
+    "opus_calibration": -31.879397000522196,
+    "opus_validation": -23.08866116578627,
+    "target_calibration": -31.879397000522196,
+    "target_validation": -23.08866116578627,
+    "surr8_validation": -31.944432739660197
+   },
+   {
+    "hz": 4125,
+    "opus_calibration": -29.528474081169726,
+    "opus_validation": -26.800705087581846,
+    "target_calibration": -31.879397000522196,
+    "target_validation": -26.800705087581846,
+    "surr8_validation": -35.708330595792944
+   }
+  ],
+  "calibration_fit_rms_db_edge_4000": 0.1457693020897723,
+  "calibration_fit_rms_db_4000_4200": 2.476578903481962
+ },
+ "silk40_alignment_dependence": {
+  "libopus_delay_samples_16k": {
+   "calibration": {
+    "median": 0.4350653869044945,
+    "min": 0.15816573685762583,
+    "max": 0.9072613703493306
+   },
+   "validation": {
+    "median": 0.47497523327798785,
+    "min": 0.24613676415329988,
+    "max": 1.8116923897685062
+   }
+  },
+  "max_abs_calibration_minus_validation_db_3000_4150": {
+   "libopus_frozen": 3.6085367058474365,
+   "libopus_subsample": 2.8999395211012136,
+   "libopus_fixed0": 0.9196519074531473,
+   "ffmpeg_frozen": 0.9413986638936365,
+   "ffmpeg_fixed2": 0.9413986638936365
+  },
+  "libopus_minus_ffmpeg_fixed_alignment_calibration_db_3000_4150": {
+   "max_abs": 3.5295057312260742,
+   "rms": 1.9480635631967125
+  },
+  "rows": [
+   {
+    "hz": 2000,
+    "libopus_frozen_calibration": -0.36340092879198127,
+    "libopus_subsample_calibration": -0.036158724010734576,
+    "libopus_fixed0_calibration": -0.02123832956027508,
+    "ffmpeg_frozen_calibration": -0.02184032436657567,
+    "ffmpeg_fixed2_calibration": -0.02184032436657567,
+    "libopus_frozen_validation": -0.43489679361156885,
+    "libopus_subsample_validation": -0.17294152015839673,
+    "libopus_fixed0_validation": -0.07334398632102943,
+    "ffmpeg_frozen_validation": -0.06097983211164515,
+    "ffmpeg_fixed2_validation": -0.06097983211164515
+   },
+   {
+    "hz": 3000,
+    "libopus_frozen_calibration": -0.9382377467986847,
+    "libopus_subsample_calibration": -0.5658772401334773,
+    "libopus_fixed0_calibration": -0.4054992027986075,
+    "ffmpeg_frozen_calibration": -0.5340834397109194,
+    "ffmpeg_fixed2_calibration": -0.5340834397109194,
+    "libopus_frozen_validation": -1.4820491244262854,
+    "libopus_subsample_validation": -1.1524637820888832,
+    "libopus_fixed0_validation": -0.43856543477360627,
+    "ffmpeg_frozen_validation": -0.565465143919097,
+    "ffmpeg_fixed2_validation": -0.565465143919097
+   },
+   {
+    "hz": 3500,
+    "libopus_frozen_calibration": -2.0182081111801224,
+    "libopus_subsample_calibration": -1.0088715435755464,
+    "libopus_fixed0_calibration": -0.7880522167449805,
+    "ffmpeg_frozen_calibration": -2.1679079890223334,
+    "ffmpeg_fixed2_calibration": -2.1679079890223334,
+    "libopus_frozen_validation": -3.9378571741308255,
+    "libopus_subsample_validation": -3.418775550779011,
+    "libopus_fixed0_validation": -0.7183271310732975,
+    "ffmpeg_frozen_validation": -2.0609648436797343,
+    "ffmpeg_fixed2_validation": -2.0609648436797343
+   },
+   {
+    "hz": 3750,
+    "libopus_frozen_calibration": -2.256890425543068,
+    "libopus_subsample_calibration": -1.328355190521335,
+    "libopus_fixed0_calibration": -0.907658646261018,
+    "ffmpeg_frozen_calibration": -3.8211343821231116,
+    "ffmpeg_fixed2_calibration": -3.8211343821231116,
+    "libopus_frozen_validation": -4.584390167786679,
+    "libopus_subsample_validation": -3.7973554067781317,
+    "libopus_fixed0_validation": -1.2421074478585807,
+    "ffmpeg_frozen_validation": -4.089822589111616,
+    "ffmpeg_fixed2_validation": -4.089822589111616
+   },
+   {
+    "hz": 3812.5,
+    "libopus_frozen_calibration": -2.4469629311215937,
+    "libopus_subsample_calibration": -1.6857206265989801,
+    "libopus_fixed0_calibration": -1.2508131800647695,
+    "ffmpeg_frozen_calibration": -4.529645050847824,
+    "ffmpeg_fixed2_calibration": -4.529645050847824,
+    "libopus_frozen_validation": -5.283646938187695,
+    "libopus_subsample_validation": -4.24708166837431,
+    "libopus_fixed0_validation": -1.4018201307856317,
+    "ffmpeg_frozen_validation": -4.657187985791927,
+    "ffmpeg_fixed2_validation": -4.657187985791927
+   },
+   {
+    "hz": 4000,
+    "libopus_frozen_calibration": -9.818548515598252,
+    "libopus_subsample_calibration": -8.835942500101645,
+    "libopus_fixed0_calibration": -7.95101108510544,
+    "ffmpeg_frozen_calibration": -10.673836060722985,
+    "ffmpeg_fixed2_calibration": -10.673836060722985,
+    "libopus_frozen_validation": -11.871557890200599,
+    "libopus_subsample_validation": -10.194411704485988,
+    "libopus_fixed0_validation": -8.330400888839673,
+    "ffmpeg_frozen_validation": -10.974826746071146,
+    "ffmpeg_fixed2_validation": -10.974826746071146
+   },
+   {
+    "hz": 4062.5,
+    "libopus_frozen_calibration": -15.160772699533107,
+    "libopus_subsample_calibration": -14.521726744472808,
+    "libopus_fixed0_calibration": -14.165028146120594,
+    "ffmpeg_frozen_calibration": -15.542817442183058,
+    "ffmpeg_fixed2_calibration": -15.542817442183058,
+    "libopus_frozen_validation": -18.769309405380543,
+    "libopus_subsample_validation": -17.42166626557402,
+    "libopus_fixed0_validation": -13.76250213726129,
+    "ffmpeg_frozen_validation": -15.093537806509318,
+    "ffmpeg_fixed2_validation": -15.093537806509318
+   },
+   {
+    "hz": 4125,
+    "libopus_frozen_calibration": -23.747177515970076,
+    "libopus_subsample_calibration": -22.69676017459789,
+    "libopus_fixed0_calibration": -21.761122138157813,
+    "ffmpeg_frozen_calibration": -20.824894061399256,
+    "ffmpeg_fixed2_calibration": -20.824894061399256,
+    "libopus_frozen_validation": -25.522958114726734,
+    "libopus_subsample_validation": -23.973506560908987,
+    "libopus_fixed0_validation": -22.1137432093473,
+    "ffmpeg_frozen_validation": -21.624707163772264,
+    "ffmpeg_fixed2_validation": -21.624707163772264
+   }
+  ]
+ },
+ "decoder_waveform_difference_calibration_set": [
+  {
+   "condition": "OPUS",
+   "lag": -1.0,
+   "snr_unaligned_db_median": 10.7200017396427,
+   "snr_aligned_db_median": 17.74302856613103,
+   "snr_aligned_db_min": 11.876271990342266
+  },
+  {
+   "condition": "SILK",
+   "lag": -1.0,
+   "snr_unaligned_db_median": 10.510870378497962,
+   "snr_aligned_db_median": 17.323407175654005,
+   "snr_aligned_db_min": 10.678931651300203
+  }
+ ],
+ "reading": [
+  "The libopus chain has a sub-sample, content-dependent delay (about 0.45 samples at 16 kHz); the frozen per-utterance integer alignment puts its utterances at lag 0 or 1, whereas every FFmpeg-decoded utterance is at lag 2.",
+  "Under that alignment the pooled |H1| of the libopus chain depends on each set's lag mix, so the libopus SILK40 curve moved between the calibration set and the signal-validation subset; with one fixed alignment for every utterance it is as stable across sets as FFmpeg's. This most likely drove the R1-REUSE failure and the R1-V gate 6 failure.",
+  "Measured with one fixed alignment, libopus's band edge is genuinely flatter to about 3.8 kHz than FFmpeg's and then steeper.",
+  "The R2-V3 misfit is concentrated at 4.0-4.2 kHz, more than 20 dB down, where the held-out Opus 8 kbit/s curve is less steep than on dev-clean and SURR8 (whose corrections did not converge there) over-attenuates.",
+  "These readings are exploratory. Any successor analysis needs an approved, sealed amendment and is reported as post hoc."
+ ],
+ "diagnosis_sha256": "7882bd8944f9654fb418fb0e339a33fc63e7676aaaeecd299140ad0894e86505"
+}

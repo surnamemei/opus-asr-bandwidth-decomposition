@@ -1,0 +1,41 @@
+{
+ "created_utc": "2026-09-27T05:42:42.556241+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "calibration_report_sha256": "6391750a297d73635c7009180d3cdcdc97f31258c5f946fc84e82862f6585fa1",
+ "r1_status": "calibrated",
+ "r1_reuse_pass": false,
+ "r1_control": "LP_LIBOPUS",
+ "lp_libopus_taps_sha256": "62376a666e1fe6550405c4f022e5c0bc075883478084e1b383393be71457892c",
+ "r2_status": "calibrated",
+ "surr8_taps_sha256": "a7839f21b609fe1a7a30879987973b55f0f91ff91797c2383a656d749e932a55",
+ "code_sha256": {
+  "paper/reviewer_sensitivity/reviewer_design.py": "492441cca5769af2b3eb3ddd3bfa40229a7376d5a5e064c206db9519bcdb01be",
+  "paper/reviewer_sensitivity/reviewer_pipeline.py": "ec018b09c3f91954b683635bf5275ecc4143f5034afcc02ecc4b454fa380d40a",
+  "paper/reviewer_sensitivity/reviewer_stats.py": "0cd97a941f504cbdb936aa1e8c08df7c5b89e5be88ea4ba20b4c2e3526b19aad",
+  "paper/reviewer_sensitivity/run_reviewer_sensitivity.py": "d159dafe8ad8faa6e46e85d6ecc5241deab9c49ca0ecddcc1d193d6a59a900fa",
+  "paper/taslp_upgrade/upgrade_design.py": "333302d6774c478f939d5a39bc9acbd7b5b2e54fe7b044ea757a340c77bcc3fe",
+  "paper/taslp_upgrade/upgrade_pipeline.py": "26a8fb5907e69fdbfe92cc8bc12ff80218a76856e5b47d2c8e7ec23ba5fc47e2",
+  "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe",
+  "paper/taslp_upgrade/upgrade_amendments.py": "dd26603016ce780fb279027e8e540d9dfcb4c2185f020b0cbf50a15e0fc624cb",
+  "paper/run_lowpass_confirmation.py": "880901a635aca0f7da33f4d6dc2d11b6080cf00402e44915cb13e74b4628fabb",
+  "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+  "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+  "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+  "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+  "paper/stage3_report.py": "92240a89d1239bc406a4c782ff0bb630295106f3be250ba8cb9adbc7cec7000b",
+  "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+  "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+  "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+  "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+  "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+  "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+ },
+ "code_added_since_design_freeze": [
+  "paper/reviewer_sensitivity/reviewer_pipeline.py",
+  "paper/reviewer_sensitivity/reviewer_stats.py",
+  "paper/reviewer_sensitivity/run_reviewer_sensitivity.py"
+ ],
+ "code_changed_since_design_freeze": [],
+ "amendment": null,
+ "freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754"
+}
