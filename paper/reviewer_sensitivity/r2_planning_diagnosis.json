@@ -1,0 +1,393 @@
+{
+ "created_utc": "2026-09-27T05:15:06.060834+00:00",
+ "probe": {
+  "date": "2026-09-27",
+  "statement": "While the superseded draft (spec 668202b9b900...) was being written, run_lowpass_validation.build_target was applied once to the frozen opus_8k_nb h1_rel_db curve of the Stage 2B filter-validation set (train-clean-100). It gave an edge of 1625 Hz. No tolerance of that draft was changed (all were unchanged Stage 2B values), but that draft validated R2 on the same set.",
+  "result_edge_hz": 1625.0,
+  "reproduced_here_hz": 1625.0
+ },
+ "sources": {
+  "results_paper/lowpass_validation/transfer_curves.csv": "ba952d4e348c70b77519ddb6dc67669ffc44d913db0c74f965eabbd8fcf33711",
+  "results_paper/lowpass_confirmation/transfer_curves.csv": "0f6c67920ac4d5c99d8c41ebc5b433d3b3b2a85d8f72a0fe6ed47c555733df4b"
+ },
+ "edges_hz_by_deviation_db": {
+  "dev-clean": {
+   "opus_8k_nb": {
+    "0.25": 2093.75,
+    "0.5": 2093.75,
+    "1": 2125.0
+   },
+   "opus_12k_nb": {
+    "0.25": 2062.5,
+    "0.5": 2093.75,
+    "1": 2375.0
+   },
+   "silk_nb_linear_ref": {
+    "0.25": 2687.5,
+    "0.5": 3000.0,
+    "1": 3250.0
+   },
+   "lp": {
+    "0.25": 3000.0,
+    "0.5": 3000.0,
+    "1": 3250.0
+   }
+  },
+  "dev-other": {
+   "opus_8k_nb": {
+    "0.25": 1625.0,
+    "0.5": 1656.25,
+    "1": 1843.75
+   },
+   "opus_12k_nb": {
+    "0.25": 1656.25,
+    "0.5": 1687.5,
+    "1": 2093.75
+   },
+   "silk_nb_linear_ref": {
+    "0.25": 2593.75,
+    "0.5": 2937.5,
+    "1": 3218.75
+   },
+   "lp": {
+    "0.25": 3000.0,
+    "0.5": 3000.0,
+    "1": 3250.0
+   }
+  },
+  "train-clean-100": {
+   "opus_8k_nb": {
+    "0.25": 1593.75,
+    "0.5": 1625.0,
+    "1": 1968.75
+   },
+   "opus_12k_nb": {
+    "0.25": 1781.25,
+    "0.5": 1906.25,
+    "1": 2125.0
+   },
+   "silk_nb_linear_ref": {
+    "0.25": 2656.25,
+    "0.5": 2906.25,
+    "1": 3218.75
+   },
+   "lp": {
+    "0.25": 3000.0,
+    "0.5": 3000.0,
+    "1": 3250.0
+   }
+  }
+ },
+ "opus8_edges_hz_by_level_band": {
+  "dev-clean": {
+   "500-2000": 2093.75,
+   "250-1000": 1343.75,
+   "500-1000": 1375.0,
+   "300-3400": 2218.75
+  },
+  "dev-other": {
+   "500-2000": 1656.25,
+   "250-1000": 968.75,
+   "500-1000": 1000.0,
+   "300-3400": 2156.25
+  },
+  "train-clean-100": {
+   "500-2000": 1625.0,
+   "250-1000": 906.25,
+   "500-1000": 1125.0,
+   "300-3400": 2281.25
+  }
+ },
+ "opus8_shape": {
+  "dev-clean": [
+   {
+    "hz": 250.0,
+    "opus8_h1_rel_db": 1.2408717878559068,
+    "opus8_coherence": 0.983520855487808,
+    "target_db": 0.0,
+    "lp_h1_rel_db": 1.0322315625911301e-07,
+    "target_minus_lp_db": -1.0322315625911301e-07
+   },
+   {
+    "hz": 1000.0,
+    "opus8_h1_rel_db": 0.2715698010151464,
+    "opus8_coherence": 0.8503808046495167,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -1.972319681016036e-09,
+    "target_minus_lp_db": 1.972319681016036e-09
+   },
+   {
+    "hz": 1500.0,
+    "opus8_h1_rel_db": -0.8077717846513942,
+    "opus8_coherence": 0.7184745714535112,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -1.2372157741189193e-07,
+    "target_minus_lp_db": 1.2372157741189193e-07
+   },
+   {
+    "hz": 1625.0,
+    "opus8_h1_rel_db": -0.4464541320137365,
+    "opus8_coherence": 0.7342041825136494,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -4.371853788261957e-09,
+    "target_minus_lp_db": 4.371853788261957e-09
+   },
+   {
+    "hz": 2000.0,
+    "opus8_h1_rel_db": -0.2886091786919288,
+    "opus8_coherence": 0.6454334911752818,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -8.286611572023058e-07,
+    "target_minus_lp_db": 8.286611572023058e-07
+   },
+   {
+    "hz": 2500.0,
+    "opus8_h1_rel_db": -2.971645829750322,
+    "opus8_coherence": 0.4439702172293326,
+    "target_db": -2.971645829750322,
+    "lp_h1_rel_db": 7.460684082430808e-07,
+    "target_minus_lp_db": -2.9716465758187303
+   },
+   {
+    "hz": 3000.0,
+    "opus8_h1_rel_db": -4.809440193156988,
+    "opus8_coherence": 0.3110263715580056,
+    "target_db": -4.809440193156988,
+    "lp_h1_rel_db": -0.5288711418756227,
+    "target_minus_lp_db": -4.280569051281365
+   },
+   {
+    "hz": 3500.0,
+    "opus8_h1_rel_db": -8.85447475768507,
+    "opus8_coherence": 0.2074460260010446,
+    "target_db": -9.136955070837807,
+    "lp_h1_rel_db": -2.1695366942705494,
+    "target_minus_lp_db": -6.967418376567258
+   },
+   {
+    "hz": 3812.5,
+    "opus8_h1_rel_db": -11.405511969154851,
+    "opus8_coherence": 0.1860897392999873,
+    "target_db": -11.405511969154851,
+    "lp_h1_rel_db": -4.528004128749273,
+    "target_minus_lp_db": -6.8775078404055785
+   },
+   {
+    "hz": 4000.0,
+    "opus8_h1_rel_db": -17.50418252252905,
+    "opus8_coherence": 0.0601724301212914,
+    "target_db": -17.50418252252905,
+    "lp_h1_rel_db": -10.63361065107978,
+    "target_minus_lp_db": -6.87057187144927
+   },
+   {
+    "hz": 4125.0,
+    "opus8_h1_rel_db": -29.52847408116973,
+    "opus8_coherence": 0.0060485471955813,
+    "target_db": -31.8793970005222,
+    "lp_h1_rel_db": -20.93081688291004,
+    "target_minus_lp_db": -10.94858011761216
+   }
+  ],
+  "dev-other": [
+   {
+    "hz": 250.0,
+    "opus8_h1_rel_db": 1.4462650636343617,
+    "opus8_coherence": 0.9815273159563788,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -3.8528883368915796e-08,
+    "target_minus_lp_db": 3.8528883368915796e-08
+   },
+   {
+    "hz": 1000.0,
+    "opus8_h1_rel_db": 0.2984180452456325,
+    "opus8_coherence": 0.8256460330167475,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -6.404823881996631e-09,
+    "target_minus_lp_db": 6.404823881996631e-09
+   },
+   {
+    "hz": 1500.0,
+    "opus8_h1_rel_db": -0.1106492318414966,
+    "opus8_coherence": 0.7768489391304093,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -8.870883608075307e-08,
+    "target_minus_lp_db": 8.870883608075307e-08
+   },
+   {
+    "hz": 1625.0,
+    "opus8_h1_rel_db": -0.4088777861139225,
+    "opus8_coherence": 0.6384475412374809,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -1.2593465979873598e-07,
+    "target_minus_lp_db": 1.2593465979873598e-07
+   },
+   {
+    "hz": 2000.0,
+    "opus8_h1_rel_db": -1.548499286519768,
+    "opus8_coherence": 0.5389563175069702,
+    "target_db": -1.6075015187423043,
+    "lp_h1_rel_db": -2.478733189729785e-07,
+    "target_minus_lp_db": -1.6075012708689853
+   },
+   {
+    "hz": 2500.0,
+    "opus8_h1_rel_db": -2.458085617002339,
+    "opus8_coherence": 0.4844525593406383,
+    "target_db": -2.881452657558858,
+    "lp_h1_rel_db": -1.548625419959938e-06,
+    "target_minus_lp_db": -2.881451108933438
+   },
+   {
+    "hz": 3000.0,
+    "opus8_h1_rel_db": -5.30193947878315,
+    "opus8_coherence": 0.313214846640594,
+    "target_db": -5.30193947878315,
+    "lp_h1_rel_db": -0.5129002775595585,
+    "target_minus_lp_db": -4.789039201223591
+   },
+   {
+    "hz": 3500.0,
+    "opus8_h1_rel_db": -8.060552936670097,
+    "opus8_coherence": 0.2103451043305906,
+    "target_db": -8.060552936670097,
+    "lp_h1_rel_db": -2.1561915275236303,
+    "target_minus_lp_db": -5.904361409146468
+   },
+   {
+    "hz": 3812.5,
+    "opus8_h1_rel_db": -11.823204884245158,
+    "opus8_coherence": 0.1684072522789219,
+    "target_db": -11.823204884245158,
+    "lp_h1_rel_db": -4.521182949097726,
+    "target_minus_lp_db": -7.302021935147431
+   },
+   {
+    "hz": 4000.0,
+    "opus8_h1_rel_db": -16.68681265857913,
+    "opus8_coherence": 0.0705447631666335,
+    "target_db": -16.68681265857913,
+    "lp_h1_rel_db": -10.70724917395787,
+    "target_minus_lp_db": -5.979563484621259
+   },
+   {
+    "hz": 4125.0,
+    "opus8_h1_rel_db": -30.17514404807279,
+    "opus8_coherence": 0.0049010536860172,
+    "target_db": -30.17514404807279,
+    "lp_h1_rel_db": -20.922765264061127,
+    "target_minus_lp_db": -9.252378784011665
+   }
+  ],
+  "train-clean-100": [
+   {
+    "hz": 250.0,
+    "opus8_h1_rel_db": 1.293252842337781,
+    "opus8_coherence": 0.9786253154783836,
+    "target_db": 0.0,
+    "lp_h1_rel_db": 4.1110629956646906e-10,
+    "target_minus_lp_db": -4.1110629956646906e-10
+   },
+   {
+    "hz": 1000.0,
+    "opus8_h1_rel_db": 0.3289232108020953,
+    "opus8_coherence": 0.8437578506959477,
+    "target_db": 0.0,
+    "lp_h1_rel_db": -1.48451656061792e-09,
+    "target_minus_lp_db": 1.48451656061792e-09
+   },
+   {
+    "hz": 1500.0,
+    "opus8_h1_rel_db": -0.4289686831600852,
+    "opus8_coherence": 0.7149936264902769,
+    "target_db": 0.0,
+    "lp_h1_rel_db": 3.937984528810567e-08,
+    "target_minus_lp_db": -3.937984528810567e-08
+   },
+   {
+    "hz": 1625.0,
+    "opus8_h1_rel_db": -0.7425256171387791,
+    "opus8_coherence": 0.7318612602834932,
+    "target_db": -0.7425256171387791,
+    "lp_h1_rel_db": -9.774552282997465e-08,
+    "target_minus_lp_db": -0.7425255193932563
+   },
+   {
+    "hz": 2000.0,
+    "opus8_h1_rel_db": -1.5747616613551343,
+    "opus8_coherence": 0.6352126522689544,
+    "target_db": -1.5747616613551343,
+    "lp_h1_rel_db": 9.408780015244416e-07,
+    "target_minus_lp_db": -1.5747626022331358
+   },
+   {
+    "hz": 2500.0,
+    "opus8_h1_rel_db": -2.469753472011351,
+    "opus8_coherence": 0.5255332371171555,
+    "target_db": -2.5179601979410453,
+    "lp_h1_rel_db": -1.3474606522209024e-07,
+    "target_minus_lp_db": -2.51796006319498
+   },
+   {
+    "hz": 3000.0,
+    "opus8_h1_rel_db": -5.492708563501511,
+    "opus8_coherence": 0.317201422729205,
+    "target_db": -5.492708563501511,
+    "lp_h1_rel_db": -0.5257982683155444,
+    "target_minus_lp_db": -4.966910295185967
+   },
+   {
+    "hz": 3500.0,
+    "opus8_h1_rel_db": -7.604988161208277,
+    "opus8_coherence": 0.2381131310382401,
+    "target_db": -7.7286996657033615,
+    "lp_h1_rel_db": -2.1605194729606865,
+    "target_minus_lp_db": -5.568180192742675
+   },
+   {
+    "hz": 3812.5,
+    "opus8_h1_rel_db": -12.108413336459416,
+    "opus8_coherence": 0.1659140359320693,
+    "target_db": -12.108413336459416,
+    "lp_h1_rel_db": -4.508080374856954,
+    "target_minus_lp_db": -7.6003329616024615
+   },
+   {
+    "hz": 4000.0,
+    "opus8_h1_rel_db": -17.035468327189292,
+    "opus8_coherence": 0.0684230420667164,
+    "target_db": -17.035468327189292,
+    "lp_h1_rel_db": -10.591166472353637,
+    "target_minus_lp_db": -6.444301854835656
+   },
+   {
+    "hz": 4125.0,
+    "opus8_h1_rel_db": -31.369718775041857,
+    "opus8_coherence": 0.0036756957783561,
+    "target_db": -31.369718775041857,
+    "lp_h1_rel_db": -20.767591497270278,
+    "target_minus_lp_db": -10.60212727777158
+   }
+  ]
+ },
+ "running_minimum_depth_db": {
+  "dev-clean": 2.3509229193524703,
+  "dev-other": 0.7234008989091549,
+  "train-clean-100": 0.5658459169509252
+ },
+ "findings": [
+  "The planning probe reproduces: the unchanged Stage 2B target construction puts the edge of Opus 8 kbit/s's coherent response at 1625 Hz on the filter-validation set.",
+  "It is not a property of Opus 8 kbit/s alone: the same construction gives 2093.75 Hz on dev-clean (the calibration data of R2) and 1656.25 Hz on dev-other, whereas the SILK-NB reference at 40 kbit/s gives 2906.25-3000 Hz on all three sets.",
+  "It depends on the construction constants: with the level band set to 0.5-2 (frozen), 0.25-1, 0.5-1 or 0.3-3.4 kHz, the edge ranges from 906.25 to 2281.25 Hz across the three sets.",
+  "Cause: relative to its 0.5-2 kHz level, the coherent response of Opus at 8 kbit/s declines smoothly across the band (dev-clean: +1.2 dB at 0.25 kHz, -0.8 dB at 1.5 kHz, -3.0 dB at 2.5 kHz, -4.8 dB at 3 kHz, -8.9 dB at 3.5 kHz), and so does its coherence (0.98 at 0.25 kHz, 0.72 at 1.5 kHz, 0.31 at 3 kHz). The 'edge' is where this decline first stays below -0.5 dB. It marks the start of a gradual loss of coherent (linearly predictable) content through low-rate coding, not a band limit.",
+  "Between 2.5 and 4 kHz the three sets' targets agree to within 1.4 dB, and the surrogate target lies 2.5 to 7.6 dB below LP there on every set.",
+  "The running minimum lies up to 2.35 dB below the capped curve (non-monotone ripples), so the target is an envelope, not the measured response itself."
+ ],
+ "consequences": [
+  "The filter-validation set, whose Opus 8 kbit/s curve was inspected, validates neither R1 nor R2. A new signal-only validation subset (selection_signal_validation.json) is drawn before this freeze, and none of its audio is read before RS3.",
+  "The R2 condition is described as the 8-kbit/s effective coherent-linear surrogate (SURR8) for an alternative attribution under a more inclusive same-frequency linear-loss definition, not as a bandwidth control; its 'edge' is reported as a construction parameter, not as a bandwidth.",
+  "The surrogate construction stays the unchanged Stage 2B procedure: no constant is tuned to these results. On the frozen dev-clean curve its edge is 2093.75 Hz; RS1 must reproduce that curve (gate R2-C1), so this is the edge SURR8 will have.",
+  "R2-V3 compares the whole surrogate response, from that calibration edge to 4.2 kHz, with the target built from the new subset; the between-set variation shown above is exactly what V3 tests."
+ ],
+ "diagnosis_sha256": "dac556a9d4b2d7d48443257e7553b922d5359ca773e3caeb76217e975c370445"
+}

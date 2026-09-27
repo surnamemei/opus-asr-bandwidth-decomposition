@@ -1,0 +1,381 @@
+{
+ "created_utc": "2026-09-27T05:11:04.513258+00:00",
+ "subset": "train-clean-100",
+ "role": "signal-only validation subset for R1-V and R2-V: no transcript is read and no ASR is run",
+ "speaker_source": "data/LibriSpeech/SPEAKERS.TXT",
+ "speakers_file_sha256": "3350f093382f8baa1d589c9f5a5cee8ec3705e656f521d6eafbaa31a5fcd8f76",
+ "seed": 53055,
+ "speaker_rule": "random.Random(53055).sample of 20 female then 20 male speakers from the sorted train-clean-100 IDs in SPEAKERS.TXT, excluding the 40 speakers of the Stage 2B filter-validation set",
+ "utterance_rule": "For each selected speaker in ascending numeric ID order, list every <speaker>/<chapter>/*.flac file of train-clean-100, sort the file names, and pick one with random.Random(53055).choice (one generator shared across speakers, in that order). File names only; no audio or transcript is read during selection.",
+ "excluded_filter_validation_speakers": [
+  40,
+  60,
+  103,
+  118,
+  200,
+  248,
+  332,
+  730,
+  1034,
+  1246,
+  1867,
+  1926,
+  2007,
+  2196,
+  2384,
+  2416,
+  2518,
+  2691,
+  2843,
+  3607,
+  3664,
+  4137,
+  4340,
+  4362,
+  4680,
+  4859,
+  5049,
+  5104,
+  5163,
+  5463,
+  5703,
+  6272,
+  6437,
+  6818,
+  6925,
+  7113,
+  7517,
+  8609,
+  8630,
+  8770
+ ],
+ "filter_validation_spec_sha256": "166f5672263373ece22a955baf3b2e1f3c7ac7c9ce14098f9daa65938d9055ff",
+ "speakers_female": [
+  32,
+  250,
+  328,
+  1098,
+  1363,
+  1898,
+  1963,
+  2764,
+  2910,
+  4853,
+  5022,
+  5561,
+  5867,
+  6078,
+  6147,
+  6415,
+  7059,
+  7148,
+  7780,
+  8465
+ ],
+ "speakers_male": [
+  460,
+  839,
+  1455,
+  1624,
+  2136,
+  3486,
+  3699,
+  3830,
+  4441,
+  4788,
+  5390,
+  5456,
+  5808,
+  6181,
+  6836,
+  7067,
+  7226,
+  7312,
+  8095,
+  8108
+ ],
+ "disjoint_from_dev_and_filter_validation_speakers": true,
+ "utterances": [
+  {
+   "speaker_id": 32,
+   "chapter_id": 21625,
+   "utterance_id": 16,
+   "path": "32/21625/32-21625-0016.flac",
+   "candidates": 117
+  },
+  {
+   "speaker_id": 250,
+   "chapter_id": 142286,
+   "utterance_id": 11,
+   "path": "250/142286/250-142286-0011.flac",
+   "candidates": 114
+  },
+  {
+   "speaker_id": 328,
+   "chapter_id": 129766,
+   "utterance_id": 37,
+   "path": "328/129766/328-129766-0037.flac",
+   "candidates": 99
+  },
+  {
+   "speaker_id": 460,
+   "chapter_id": 172359,
+   "utterance_id": 45,
+   "path": "460/172359/460-172359-0045.flac",
+   "candidates": 126
+  },
+  {
+   "speaker_id": 839,
+   "chapter_id": 130898,
+   "utterance_id": 1,
+   "path": "839/130898/839-130898-0001.flac",
+   "candidates": 100
+  },
+  {
+   "speaker_id": 1098,
+   "chapter_id": 133695,
+   "utterance_id": 38,
+   "path": "1098/133695/1098-133695-0038.flac",
+   "candidates": 92
+  },
+  {
+   "speaker_id": 1363,
+   "chapter_id": 139304,
+   "utterance_id": 15,
+   "path": "1363/139304/1363-139304-0015.flac",
+   "candidates": 98
+  },
+  {
+   "speaker_id": 1455,
+   "chapter_id": 134435,
+   "utterance_id": 53,
+   "path": "1455/134435/1455-134435-0053.flac",
+   "candidates": 131
+  },
+  {
+   "speaker_id": 1624,
+   "chapter_id": 168623,
+   "utterance_id": 38,
+   "path": "1624/168623/1624-168623-0038.flac",
+   "candidates": 101
+  },
+  {
+   "speaker_id": 1898,
+   "chapter_id": 145724,
+   "utterance_id": 5,
+   "path": "1898/145724/1898-145724-0005.flac",
+   "candidates": 128
+  },
+  {
+   "speaker_id": 1963,
+   "chapter_id": 142776,
+   "utterance_id": 30,
+   "path": "1963/142776/1963-142776-0030.flac",
+   "candidates": 129
+  },
+  {
+   "speaker_id": 2136,
+   "chapter_id": 5147,
+   "utterance_id": 37,
+   "path": "2136/5147/2136-5147-0037.flac",
+   "candidates": 127
+  },
+  {
+   "speaker_id": 2764,
+   "chapter_id": 36616,
+   "utterance_id": 11,
+   "path": "2764/36616/2764-36616-0011.flac",
+   "candidates": 120
+  },
+  {
+   "speaker_id": 2910,
+   "chapter_id": 131096,
+   "utterance_id": 30,
+   "path": "2910/131096/2910-131096-0030.flac",
+   "candidates": 95
+  },
+  {
+   "speaker_id": 3486,
+   "chapter_id": 166446,
+   "utterance_id": 11,
+   "path": "3486/166446/3486-166446-0011.flac",
+   "candidates": 120
+  },
+  {
+   "speaker_id": 3699,
+   "chapter_id": 19402,
+   "utterance_id": 13,
+   "path": "3699/19402/3699-19402-0013.flac",
+   "candidates": 117
+  },
+  {
+   "speaker_id": 3830,
+   "chapter_id": 12531,
+   "utterance_id": 28,
+   "path": "3830/12531/3830-12531-0028.flac",
+   "candidates": 118
+  },
+  {
+   "speaker_id": 4441,
+   "chapter_id": 76263,
+   "utterance_id": 0,
+   "path": "4441/76263/4441-76263-0000.flac",
+   "candidates": 124
+  },
+  {
+   "speaker_id": 4788,
+   "chapter_id": 294466,
+   "utterance_id": 29,
+   "path": "4788/294466/4788-294466-0029.flac",
+   "candidates": 107
+  },
+  {
+   "speaker_id": 4853,
+   "chapter_id": 27670,
+   "utterance_id": 17,
+   "path": "4853/27670/4853-27670-0017.flac",
+   "candidates": 111
+  },
+  {
+   "speaker_id": 5022,
+   "chapter_id": 29411,
+   "utterance_id": 39,
+   "path": "5022/29411/5022-29411-0039.flac",
+   "candidates": 115
+  },
+  {
+   "speaker_id": 5390,
+   "chapter_id": 30096,
+   "utterance_id": 0,
+   "path": "5390/30096/5390-30096-0000.flac",
+   "candidates": 116
+  },
+  {
+   "speaker_id": 5456,
+   "chapter_id": 58161,
+   "utterance_id": 28,
+   "path": "5456/58161/5456-58161-0028.flac",
+   "candidates": 112
+  },
+  {
+   "speaker_id": 5561,
+   "chapter_id": 41615,
+   "utterance_id": 24,
+   "path": "5561/41615/5561-41615-0024.flac",
+   "candidates": 134
+  },
+  {
+   "speaker_id": 5808,
+   "chapter_id": 48608,
+   "utterance_id": 60,
+   "path": "5808/48608/5808-48608-0060.flac",
+   "candidates": 120
+  },
+  {
+   "speaker_id": 5867,
+   "chapter_id": 48852,
+   "utterance_id": 71,
+   "path": "5867/48852/5867-48852-0071.flac",
+   "candidates": 113
+  },
+  {
+   "speaker_id": 6078,
+   "chapter_id": 54013,
+   "utterance_id": 69,
+   "path": "6078/54013/6078-54013-0069.flac",
+   "candidates": 132
+  },
+  {
+   "speaker_id": 6147,
+   "chapter_id": 34606,
+   "utterance_id": 8,
+   "path": "6147/34606/6147-34606-0008.flac",
+   "candidates": 117
+  },
+  {
+   "speaker_id": 6181,
+   "chapter_id": 216552,
+   "utterance_id": 68,
+   "path": "6181/216552/6181-216552-0068.flac",
+   "candidates": 114
+  },
+  {
+   "speaker_id": 6415,
+   "chapter_id": 116629,
+   "utterance_id": 38,
+   "path": "6415/116629/6415-116629-0038.flac",
+   "candidates": 116
+  },
+  {
+   "speaker_id": 6836,
+   "chapter_id": 76549,
+   "utterance_id": 2,
+   "path": "6836/76549/6836-76549-0002.flac",
+   "candidates": 116
+  },
+  {
+   "speaker_id": 7059,
+   "chapter_id": 77897,
+   "utterance_id": 21,
+   "path": "7059/77897/7059-77897-0021.flac",
+   "candidates": 111
+  },
+  {
+   "speaker_id": 7067,
+   "chapter_id": 76047,
+   "utterance_id": 21,
+   "path": "7067/76047/7067-76047-0021.flac",
+   "candidates": 111
+  },
+  {
+   "speaker_id": 7148,
+   "chapter_id": 59157,
+   "utterance_id": 31,
+   "path": "7148/59157/7148-59157-0031.flac",
+   "candidates": 115
+  },
+  {
+   "speaker_id": 7226,
+   "chapter_id": 86965,
+   "utterance_id": 0,
+   "path": "7226/86965/7226-86965-0000.flac",
+   "candidates": 111
+  },
+  {
+   "speaker_id": 7312,
+   "chapter_id": 92432,
+   "utterance_id": 23,
+   "path": "7312/92432/7312-92432-0023.flac",
+   "candidates": 26
+  },
+  {
+   "speaker_id": 7780,
+   "chapter_id": 274562,
+   "utterance_id": 88,
+   "path": "7780/274562/7780-274562-0088.flac",
+   "candidates": 106
+  },
+  {
+   "speaker_id": 8095,
+   "chapter_id": 274348,
+   "utterance_id": 3,
+   "path": "8095/274348/8095-274348-0003.flac",
+   "candidates": 112
+  },
+  {
+   "speaker_id": 8108,
+   "chapter_id": 274318,
+   "utterance_id": 45,
+   "path": "8108/274318/8108-274318-0045.flac",
+   "candidates": 110
+  },
+  {
+   "speaker_id": 8465,
+   "chapter_id": 246942,
+   "utterance_id": 25,
+   "path": "8465/246942/8465-246942-0025.flac",
+   "candidates": 118
+  }
+ ],
+ "selection_sha256": "51d8feb8e34ba0ca2a89b806c0086b1f87529b9587c75e2ffa07c28a762ded3d"
+}
