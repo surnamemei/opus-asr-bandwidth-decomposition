@@ -1,0 +1,32 @@
+{
+ "set": "sweep",
+ "selection_sha256": "d3fb1487594ed35fde1ad6419ff694b9c2200656fa4aa11f4c6db48966b3f680",
+ "sessions": [
+  {
+   "started_utc": "2026-09-27T01:55:06.782225+00:00",
+   "resumed_after": 0,
+   "chunks": 209,
+   "code_sha256": {
+    "paper/taslp_upgrade/upgrade_design.py": "333302d6774c478f939d5a39bc9acbd7b5b2e54fe7b044ea757a340c77bcc3fe",
+    "paper/taslp_upgrade/upgrade_stats.py": "1f5496236518682aaf98ca2728880e5327af6af8fadf0d6606f17d41a99206fe",
+    "paper/taslp_upgrade/upgrade_pipeline.py": "26a8fb5907e69fdbfe92cc8bc12ff80218a76856e5b47d2c8e7ec23ba5fc47e2",
+    "paper/taslp_upgrade/run_bitrate_sweep.py": "ae28f1a6e4a0ed45e79ea6ecb35f91e786a8a89eefde47da9363771479608249",
+    "paper/taslp_upgrade/run_level_sensitivity.py": "ab9bb7bd53af434d5e95532f20b082b67fbb156f9f2c9634cefc1f790cbcdde0",
+    "paper/run_stage3.py": "5e59f8f0ec2df72c16dfa87b4b7f6adb08d4e44fa395c45c18e6cb8851422a6c",
+    "paper/stage3_audio.py": "d63aada553a9e8d522958249fe4edb639123ef10c2036307308728bba18a09e5",
+    "paper/stage3_asr.py": "e85089058dd97c64d55b57bba69d8a54102c1ea6676a4bcfe29c69b2ddef7075",
+    "paper/stage3_stats.py": "7d655fdf0154b67e132583e214d05f694ca5d1bf2a7edde102ca694965a3078d",
+    "paper/stage3_report.py": "92240a89d1239bc406a4c782ff0bb630295106f3be250ba8cb9adbc7cec7000b",
+    "paper/common.py": "804e77dcd689ba2b296955d3adb168c223755b7f3c998d09c0ff0ada5d3d7c0a",
+    "paper/lowpass.py": "2db57c8ba3c1197fb40eeb78319f80f962c62e1f22b0589477ca4b15437431eb",
+    "paper/opus_direct.py": "08a1927131d436a37953b0c2cabcf15daf3586ac44647c8fe8d2dd2bbd711f3e",
+    "paper/run_lowpass_validation.py": "e312079ec8df5773ac0355e549675aa3c963719c44b63d38875c31e9f9af3b1d",
+    "paper/run_opus_validation.py": "8cccd0e7ce28b1afaa0b8f52592cddd97f11dfa694eb63567ab9c92c5521d742",
+    "paper/run_reproduce.py": "0b8f559197b35ace4a035387b337a9f31247042d981134ad05e6d50dd7fb8e54"
+   },
+   "seconds": 1384.4189388751984,
+   "finished_utc": "2026-09-27T02:18:11.201285+00:00",
+   "seconds_per_utterance": 0.8314828461712903
+  }
+ ]
+}

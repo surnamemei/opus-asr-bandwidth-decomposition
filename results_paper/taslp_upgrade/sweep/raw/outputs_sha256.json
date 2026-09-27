@@ -1,0 +1,15 @@
+{
+ "set": "sweep",
+ "created_utc": "2026-09-27T02:18:11.210819+00:00",
+ "n_utterances": 1665,
+ "selection_sha256": "d3fb1487594ed35fde1ad6419ff694b9c2200656fa4aa11f4c6db48966b3f680",
+ "files": {
+  "asr_outputs.csv": "f74dc20f02f20914725c668bc83d18227428279e1f82f4545de390fb679546f6",
+  "audio_manifest.csv": "4727e66a793778a98316fbdfc00333d9a68221580f2ddcd8de813b9d746d1abe",
+  "pooled_transfer.csv": "43011bba619111ddfded6549c838ab8d247816fdd2e09d9f9b28a731b66a992b",
+  "pooled_transfer_curves.csv": "7119753748299ea0af75467dbdf55687aaa2ac9a53492b339516ff9fec05128b",
+  "signal_metrics.csv": "9b52809ad3db76ef7ae9dd8c4290ad8bcc4f99ebf553829cb91047c66cb42857",
+  "utterance_metrics.csv": "40c45a4490c5db93937361b86812e077b80a03259f258b28dc21ae3b3feded26"
+ },
+ "outputs_sha256": "03da63e5835c3706ad9da6524a6e23e10c0978c08384e1a646de6ba1315d23d0"
+}

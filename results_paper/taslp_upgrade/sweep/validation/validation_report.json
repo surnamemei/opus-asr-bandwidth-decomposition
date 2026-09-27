@@ -1,0 +1,90 @@
+{
+ "created_utc": "2026-09-27T01:53:59.086268+00:00",
+ "spec_sha256": "0d5d5c7105e794c92e56427d798339121b302afce7b361f3bbe1aaf38979ccd0",
+ "code_freeze_sha256": "af54518c0aa92b4ee6135d8d6e6fdc17fb2526602490fc026fc9972160a7624f",
+ "n_utterances": 1665,
+ "gates": {
+  "V1": true,
+  "V2": true,
+  "V3": true,
+  "V4": true,
+  "V5": true
+ },
+ "verdict": "PASS",
+ "measured_median_payload_kbps": [
+  7.3612838515546635,
+  11.349225783219302,
+  15.428217054263564,
+  23.458566221142163,
+  38.96435358479701
+ ],
+ "median_container_kbps": [
+  8.193548387096774,
+  12.180645161290322,
+  16.263461538461538,
+  24.284953940634598,
+  39.7678510998308
+ ],
+ "payload_within_tolerance": [
+  true,
+  true,
+  true,
+  true,
+  true
+ ],
+ "adjacent_ratios": [
+  1.5417454362695722,
+  1.3594070070467152,
+  1.5204975493042745,
+  1.6609861496854896
+ ],
+ "share_packets_expected_config_min": 1.0,
+ "bridge_share_silk8_identical_to_stage3_opus_settings": 1.0,
+ "lp_taps_sha256": "583c66a169d31e27cf2250c8dd475d5cc74f7d590a8364ee9ffde463d69b1a16",
+ "descriptive_by_condition": [
+  {
+   "condition": "LP",
+   "lag_min": 0,
+   "lag_max": 0,
+   "rms_change_db_median": -0.08654792039509578,
+   "clipped_samples": 301
+  },
+  {
+   "condition": "SILK12",
+   "lag_min": 2,
+   "lag_max": 2,
+   "rms_change_db_median": -0.39973827946693086,
+   "clipped_samples": 86
+  },
+  {
+   "condition": "SILK16",
+   "lag_min": 1,
+   "lag_max": 2,
+   "rms_change_db_median": -0.2899245558116215,
+   "clipped_samples": 119
+  },
+  {
+   "condition": "SILK24",
+   "lag_min": 1,
+   "lag_max": 2,
+   "rms_change_db_median": -0.18762019299229607,
+   "clipped_samples": 79
+  },
+  {
+   "condition": "SILK40",
+   "lag_min": 1,
+   "lag_max": 2,
+   "rms_change_db_median": -0.11874894987431578,
+   "clipped_samples": 113
+  },
+  {
+   "condition": "SILK8",
+   "lag_min": 1,
+   "lag_max": 2,
+   "rms_change_db_median": -0.6835730655307113,
+   "clipped_samples": 144
+  }
+ ],
+ "rows_sha256": "adf4382f00f6614960d3393a2a701e2ef4d8a35dfb34aa486c67859f53523717",
+ "report_sha256": "1ca6b91ba901cddea83298a3840eb52eb123fcaa2e1906c4aab4cdda0691c977"
+}
