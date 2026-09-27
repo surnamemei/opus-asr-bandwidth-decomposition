@@ -1,9 +1,12 @@
 % Extra preamble for rendering the supplementary material (tools/render_ieee.sh with
 % EXTRA_HEADER=tools/ieee-supplement.tex): a supplement is mostly tables and figures, so floats may
-% also form float pages, several to a page (presentation only).
+% also form float pages, several to a page (presentation only). Floats may also stand where they are
+% defined (h), so tables stay beside their text; a float page must be at least 85 % full, so a
+% part-filled page takes text below its floats instead of whitespace. The title still comes first
+% (\suppressfloats[t] at the start of the supplement).
 \makeatletter
-\def\fps@table{tp}
-\def\fps@figure{tp}
+\def\fps@table{htp}
+\def\fps@figure{htp}
 \makeatother
 \setcounter{topnumber}{4}
 \setcounter{dbltopnumber}{4}
@@ -11,5 +14,5 @@
 \renewcommand{\topfraction}{0.95}
 \renewcommand{\dbltopfraction}{0.95}
 \renewcommand{\textfraction}{0.05}
-\renewcommand{\floatpagefraction}{0.6}
-\renewcommand{\dblfloatpagefraction}{0.6}
+\renewcommand{\floatpagefraction}{0.85}
+\renewcommand{\dblfloatpagefraction}{0.85}

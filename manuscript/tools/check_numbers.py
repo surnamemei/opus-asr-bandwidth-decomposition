@@ -319,20 +319,40 @@ if SUBMISSION:
          f"{T.R3_HYP[W]['utterances']:,} utterances in both recognisers", "R3 reproduction (S7)")
     need(f"decoder-matched control failed held-out transition-shape validation: RMS difference {T.R1_RMS:.2f} dB "
          f"over 3.0–4.2 kHz (limit {T.R1_TOL['g6_h1_rms_max_db']:.1f} dB)", "R1-V gate 6 (S7)")
-    need(f"8-kbit/s effective coherent-linear surrogate failed held-out transition-shape validation: RMS difference "
-         f"from its target {T.R2_V3['rms_db']:.2f} dB (limit {T.R2_TOL['V3_rms_max_db']:.1f} dB), maximum "
-         f"{T.R2_V3['max_abs_db']:.2f} dB (limit {T.R2_TOL['V3_abs_max_db']:.1f} dB)", "R2-V3 (S7)")
+    need("8-kbit/s effective coherent-linear surrogate", "R2 label (S7)")
+    need(f"failed held-out transition-shape validation: RMS difference from its target {T.R2_V3['rms_db']:.2f} dB "
+         f"(limit {T.R2_TOL['V3_rms_max_db']:.1f} dB), maximum {T.R2_V3['max_abs_db']:.2f} dB "
+         f"(limit {T.R2_TOL['V3_abs_max_db']:.1f} dB)", "R2-V3 (S7)")
     need(f"(median {T.R_DELAY['calibration']['median']:.2f} and {T.R_DELAY['validation']['median']:.2f} samples "
          f"at 16 kHz", "exploratory delay (S7)")
-    need(f"{T.R_STAB['libopus_frozen']:.2f} dB with the frozen alignment, against {T.R_STAB['libopus_fixed0']:.2f} dB "
-         f"with one fixed alignment for every utterance and {T.R_STAB['ffmpeg_fixed2']:.2f} dB for the "
-         f"FFmpeg-decoded chain", "exploratory stability (S7)")
+    need(f"3.0–4.15 kHz: {T.R_STAB['libopus_frozen']:.2f} dB, against {T.R_STAB['libopus_fixed0']:.2f} dB with one "
+         f"fixed alignment and {T.R_STAB['ffmpeg_fixed2']:.2f} dB for the FFmpeg-decoded chain", "exploratory stability (S7)")
     need("This fractional-delay diagnosis is post hoc and exploratory", "exploratory label (S7)")
     need(f"Whisper large-v3 on test-clean lay above zero ({up(*T.r3(W, 'W', 'test-clean'))})", "R3 secondary (S7)")
     need(f"wav2vec2-base-960h on test-other below zero ({up(*T.r3(V, 'W', 'test-other'))})", "R3 secondary (S7)")
     for tok in primary:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
+    # SPS Information for Authors: "The abstract must be between 150-250 words."
+    abstract = TEXTS["taslp_submission.md"].split("# Abstract", 1)[1].split("**Index Terms**", 1)[0]
+    if not 150 <= len(abstract.split()) <= 250:
+        fails.append(f"ABSTRACT has {len(abstract.split())} words (SPS limit 150-250)")
+    # the sequential bandwidth share is path-dependent wherever a share value is stated, and
+    # Whisper's exact share appears in the results only (high-level prose says "a small share")
+    paragraphs = TEXTS["taslp_submission.md"].split("\n\n")
+    for para in paragraphs:
+        if re.search(r"\b40 %", para) and "path-dependent" not in para:
+            fails.append(f"SHARE without 'path-dependent': {' '.join(para.split())[:90]}")
+    sections = re.split(r"\n(?=#{1,2} )", TEXTS["taslp_submission.md"])
+    w_share = f"{round(100 * b('confirmation', W, 'bw_share_of_opus_total', kind='ratio')[0]):.0f} %"
+    where = [sec.split("\n", 1)[0] for sec in sections if w_share in sec]
+    if where != ["## 4.3 Bandwidth component and codec-specific residual"]:
+        fails.append(f"WHISPER SHARE '{w_share}' outside Section 4.3: {where}")
+    # limitations added in the final pass (encoder application mode; lossy-coded source audio)
+    need("`application=audio`, retained to reproduce the frozen codec baseline", "limitation: application mode")
+    need("`OPUS_APPLICATION_VOIP` was not evaluated", "limitation: application mode")
+    need("MP3-compressed [@panayotov2015librispeech, Sec. 5]", "limitation: LibriVox MP3 source")
+    need("generalisation to pristine-source recordings is limited", "limitation: LibriVox MP3 source")
     for f, text in TEXTS.items():
         for mt in re.finditer(r"pre-?regist\w*", re.sub(r"<!--.*?-->", "", text, flags=re.S), flags=re.I):
             fails.append(f"WORDING in {f}: '{mt.group(0)}' (use prospective specification / version sealing)")
@@ -356,6 +376,7 @@ FORBIDDEN = [r"\b(the |be )?first (to|study|studies|work|paper|time|demonstrat\w
              r"statistically indistinguishable", r"\bequivalent\b", r"caused by (in-band )?coding",
              r"byte-identical to the prior study\b", r"\bproves?\b",
              r"\bwideband (coding )?(is|was) (generally |universally |always )?(better|superior)\b",
+             r"\bdecoder[- ](independent|invariant|invariance)\b", r"\b(independent|invariant) (of|to) the decoder\b",
              r"\buniversally superior\b"]
 body = re.sub(r"<!--.*?-->", "", MS, flags=re.S)
 for pat in FORBIDDEN:
