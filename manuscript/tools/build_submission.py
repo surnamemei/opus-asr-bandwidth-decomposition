@@ -3,9 +3,10 @@
 Presentation and submission selection: draft-2 text is moved to the supplement, shortened or
 re-referenced (table, figure and section numbers), and "pre-registered" is reworded as a
 prospective, version-sealed specification. The only text not taken from draft 2 reports the later
-sensitivity plan (sealed R1-R3 outputs): the forced-wideband counterfactual (Sections 3.10 and
-4.11, and edits to the Discussion, Limitations, Conclusion and Reproducibility statement) and
-Supplementary Section S7. Every number is copied from draft 2 or from the output of
+sealed analyses: R1-R3 (the forced-wideband counterfactual of Sections 3.10 and 4.11, and
+Supplementary Section S7) and R4 (the reference-decoder sensitivity paragraph of Section 4.8 and
+Supplementary Section S8), with the matching edits to the Discussion, Limitations, Conclusion and
+Reproducibility statement. Every number is copied from draft 2 or from the output of
 tools/make_tables.py, which derives it from the frozen outputs; nothing is computed here.
 
     python manuscript/tools/build_submission.py           # (re)write both files
@@ -254,6 +255,18 @@ Coding therefore changed with the band, so the comparison does not isolate a ban
 interaction and does not change the decomposition. The result was recogniser-dependent and does
 not show a general advantage of wideband coding at this rate (per-subset results and
 descriptors: Supplementary Section S7, Tables S13 and S14)."""
+# the reference-decoder sensitivity of the total penalty (sealed R4 outputs): total penalty only; no
+# bandwidth component, share or residual under libopus; R1 remains STOPPED
+R4_RESULTS = """**Decoder sensitivity.** As a post-confirmation decoder sensitivity, the same frozen 8 kbit/s Opus
+bitstreams were decoded with libopus 1.4 instead of FFmpeg 6.1.1. The total Opus penalty remained
+positive for both recognisers: +0.72 pp [+0.49, +0.97] for Whisper large-v3 and +3.56 pp
+[+2.79, +4.54] for wav2vec2-base-960h. Relative to FFmpeg decoding, the libopus decoder reduced
+Whisper WER by 0.11 pp [0.04, 0.17], whereas no clear decoder difference was established for
+wav2vec2 (+0.09 pp [−0.04, +0.21]). This sensitivity tests the total penalty only; the bandwidth
+decomposition remains defined for the FFmpeg chain. With FFmpeg decoding the totals were +0.83 and
++3.48 pp (Table III); the frozen outcomes were DECODER_LOWER_PENALTY (Whisper) and
+NO_CLEAR_DECODER_DIFFERENCE (wav2vec2). The sealed plan, its checks and the decoder diagnostics are
+in Supplementary Section S8."""
 head = head.rstrip("\n") + "\n\n" + R3_METHODS + "\n\n"
 
 results = f"""# 4. Results
@@ -302,9 +315,11 @@ recognisers (Supplementary Section S2, Table S2).
 
 {p47[1]}
 
-## 4.8 Negative controls
+## 4.8 Negative controls and decoder sensitivity
 
 {p48}
+
+{R4_RESULTS}
 
 ## 4.9 Level-matched sensitivity analysis (Addition A)
 
@@ -363,16 +378,21 @@ back = rep(back, "and each decision record was sealed. Code, sealed selections,"
            "added the forced-wideband counterfactual (Section 4.11); its code was frozen after a\n"
            "calibration step, the counterfactual was decoded once, and its decision record was sealed. Two\n"
            "additional attribution sensitivities were prospectively gated but stopped before ASR because\n"
-           "their signal-domain controls failed held-out validation. Supplementary material gives the\n"
-           "tables and figures moved out of this paper and the counterfactual's details (Tables S1–S14,\n"
-           "Figs. S1–S3), the level-matching, bitrate-sweep and sensitivity-analysis diagnostics (Sections\n"
-           "S4, S5 and S7), and the amendments and deviations.\nCode, sealed selections,")
+           "their signal-domain controls failed held-out validation. A further sealed plan tested the\n"
+           "decoder sensitivity of the total penalty; its code was frozen after a calibration dry run, the\n"
+           "libopus-decoded audio was recognised once, and its decision record was sealed. Supplementary\n"
+           "material gives the tables and figures moved out of this paper and the details of the later\n"
+           "analyses (Tables S1–S17, Figs. S1–S3), the level-matching, bitrate-sweep and sensitivity-analysis\n"
+           "diagnostics (Sections S4, S5, S7 and S8), and the amendments and deviations.\nCode, sealed selections,")
 back = rep(back, "on these data. Restoring the band and\ndecoder-side enhancement were not tested.",
            "on these data. At the same nominal\n"
            "8 kbit/s, forcing wideband instead of narrowband lowered the WER of wav2vec2-base-960h but not\n"
            "detectably that of Whisper large-v3 (Section 4.11): on these data, a wideband allocation\n"
-           "lowered WER for one recogniser only. Restoring the band without changing the coding, as\n"
-           "bandwidth extension would, and decoder-side enhancement were not tested.")
+           "lowered WER for one recogniser only. The total 8 kbit/s Opus penalty persisted under the\n"
+           "libopus reference decoder for both recognisers; its magnitude was lower for Whisper, while no\n"
+           "clear decoder difference was established for wav2vec2, and the bandwidth decomposition itself\n"
+           "remains defined for the FFmpeg decoder chain (Section 4.8). Restoring the band without changing\n"
+           "the coding, as bandwidth extension would, and decoder-side enhancement were not tested.")
 back = rep(back, "Estimating the interaction would need a\nfactorial design, for example Opus forced to wideband at 8 kbit/s, which was not run. The\ncontrol was fitted",
            "Estimating the interaction would need a\nfactorial design. A forced-wideband 8 kbit/s counterfactual was tested, but changing bandwidth\n"
            "allocation also changes the coding-distortion budget, so the comparison does not identify a\n"
@@ -398,6 +418,15 @@ back = rep(back, "**The decomposition.** The decomposition is sequential, so the
            "**The decomposition.** The decomposition is sequential, so the residual includes any\n"
            "interaction between band limitation and coding, and the bandwidth share is path-dependent, not\n"
            "an interaction-free attribution.")
+back = rep(back, "**Implementations.** One encoder (libopus 1.4) and one decoder (FFmpeg 6.1.1) were used. Opus\n"
+                 "leaves decoder resampling to the implementation [@rfc6716], so the image and possibly the\n"
+                 "residual could differ with another decoder, such as libopus's own.",
+           "**Implementations.** One encoder (libopus 1.4) was used, and Opus leaves decoder resampling to the\n"
+           "implementation [@rfc6716]. The primary decomposition is defined for FFmpeg 6.1.1 decoding. A\n"
+           "post-confirmation sensitivity using the libopus 1.4 reference decoder showed that the total\n"
+           "8 kbit/s penalty persisted for both recognisers, although its magnitude was lower for Whisper.\n"
+           "Because the decoder-matched bandwidth control failed held-out validation before ASR, decoder\n"
+           "invariance of the bandwidth share or codec-specific residual was not established.")
 back = rep(back, "inspected, but the wideband threshold has moved over time.",
            "inspected, but the wideband threshold has moved over time. The encoder used\n"
            "`application=audio`, retained to reproduce the frozen codec baseline of the preliminary\n"
@@ -441,6 +470,7 @@ T8 = gen_table("TABLE 8 ")
 cap8 = cap(": Addition B: signal descriptors by rate")
 S5A, S5B, S6t = gen_table("TABLE S5A "), gen_table("TABLE S5B "), gen_table("TABLE S6 ")
 S13t, S14t = gen_table("TABLE S13 "), gen_table("TABLE S14 ")
+S15t, S16t, S17t = gen_table("TABLE S15 "), gen_table("TABLE S16 "), gen_table("TABLE S17 ")
 capS6 = capS(": Addition B: corpus WER")
 fig_wer = cap("![Corpus WER by condition on the confirmation set")
 fig_forest = cap("![Paired contrasts on the pilot and the confirmation set")
@@ -541,7 +571,8 @@ the contrasts between pilot and confirmation and between the two recognisers.
 : Addition A per subset (secondary scope; no multiplicity correction; 95 % speaker-bootstrap intervals): level-matched residual and effect of level matching (pp).
 
 Per 100 reference words, the level-matched residual comprised +0.52 substitutions [+0.35, +0.71]
-for Whisper and +1.79 substitutions [+1.48, +2.19] for wav2vec2. {a_para[3].replace("(Appendix B)", "(Section S6)")}
+for Whisper and +1.79 substitutions [+1.48, +2.19] for wav2vec2. The changed hypotheses and the corrected
+expectation for wav2vec2-base-960h are reported in the main paper (Section 4.9) and in Section S6.
 
 {a_para[4]}
 
@@ -627,6 +658,54 @@ completed after it had stopped; three pre-specified descriptive items of the cou
 afterwards from sealed outputs by a separate script, and the in-band descriptors were sealed with
 the recognition outputs rather than before recognition; a pre-freeze dry run on 3 calibration
 utterances was discarded.
+
+# S8. Reference-decoder sensitivity of the total penalty
+
+A further plan, sealed after the analyses of Section S7 and before its own decoding and
+recognition, tested whether the libopus 1.4 reference decoder, instead of FFmpeg 6.1.1, changes
+the total penalty OPUS − REF on the same frozen confirmation bitstreams (main paper, Section 4.8).
+It tests the total penalty only: no bandwidth component, share or residual was computed under
+libopus, it is not a successor to the stopped decoder analysis of Section S7, and a result without
+a clear difference is not an equivalence claim. The decoder applied RFC 7845 pre-skip and end
+trimming at 48 kHz, followed by the Stage 3 resampler, with no gain, alignment or filtering; only
+OPUS_LIBOPUS was recognised, once. The frozen rule classifies D = OPUS_LIBOPUS − OPUS_FFMPEG by
+whether its 95 % interval lies below zero (DECODER_LOWER_PENALTY), above zero
+(DECODER_HIGHER_PENALTY) or includes it (NO_CLEAR_DECODER_DIFFERENCE), with no minimum effect and
+Stage 3's bootstrap and seed. All pre-recognition checks passed: bitstreams byte-identical to
+Stage 3's (2,174 of 2,174), no decoding error, the pre-specified output lengths, no non-finite
+sample, an unchanged environment, and exact reproduction of the sealed Stage 3 calibration outputs
+and of Stage 3's OPUS − REF. The same bitstreams had been decoded with the same libopus path
+before, signal only, when the stopped analysis of Section S7 was checked; the new decode reproduced
+it exactly, and no libopus-decoded evaluation audio had been recognised before.
+
+{S15t}
+
+: Reference-decoder sensitivity of the total 8 kbit/s penalty on the confirmation set (2,174 utterances, 73 speakers; pooled; 95 % speaker-bootstrap intervals with Stage 3's seed): corpus WER (%), the totals and their difference (pp), and the frozen outcome. Total penalty only: no bandwidth share or residual under libopus.
+
+{S16t}
+
+: Reference-decoder sensitivity per subset (secondary scope; no multiplicity correction; 95 % speaker-bootstrap intervals). The wav2vec2 test-other interval of D has a lower bound of exactly 0.00 and does not exclude zero.
+
+{S17t}
+
+: Reference-decoder sensitivity: descriptive decoder and signal diagnostics against REF (lag counts, per-utterance medians, pooled cross-spectral measures, and samples at or above full scale, which were passed on unchanged). No descriptor enters the rule.
+
+The FFmpeg- and libopus-decoded signals of the same bitstream were never bit-identical; their SNR
+had a median of 10.13 dB unaligned and 17.96 dB after the better one-sample shift (minimum
+0.06 dB; the better shift was −1 in 2,173 utterances and +1 in one). *Transcript differences (a
+post-analysis descriptive addition, not pre-specified).* Relative to OPUS_FFMPEG, 292 raw (103
+normalised) Whisper transcripts and 801 raw (797 normalised) wav2vec2 transcripts of the 2,174
+changed under OPUS_LIBOPUS. OPUS_LIBOPUS was recognised in a separate run whose Whisper batches
+differed from Stage 3's, and greedy float16 Whisper decoding is not exactly invariant to batch
+composition (Section S4: 3 of 4,348 hypotheses), so not every Whisper transcript difference can be
+interpreted as a decoder effect; wav2vec2 decodes each utterance alone.
+
+**Deviations** (none changed a gate, rule, selection or outcome): the transcript-difference counts
+were computed after the analysis by a script outside the code freeze; the main paper reports this
+analysis in a Results paragraph and a Discussion sentence and rewrites the Implementations
+limitation, whose statement that one decoder was used no longer held, whereas the plan foresaw one
+main-paper sentence and at most one added limitation sentence; and the Whisper batch-composition
+component of the cross-run comparison is part of D and was not separated.
 """
 OUTPUTS = {"taslp_submission.md": main.rstrip("\n") + "\n", "taslp_supplement.md": supp}
 

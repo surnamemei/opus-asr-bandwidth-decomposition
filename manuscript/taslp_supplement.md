@@ -153,13 +153,8 @@ gains had a median of +0.562 dB (5th–95th percentile +0.290 to +1.032 dB; rang
 : Addition A per subset (secondary scope; no multiplicity correction; 95 % speaker-bootstrap intervals): level-matched residual and effect of level matching (pp).
 
 Per 100 reference words, the level-matched residual comprised +0.52 substitutions [+0.35, +0.71]
-for Whisper and +1.79 substitutions [+1.48, +2.19] for wav2vec2. Level matching changed 42 of the 2,174 Whisper hypotheses and 188 of the 2,174 wav2vec2
-hypotheses, without reducing either error count. The plan had expected wav2vec2-base-960h to be
-insensitive to a scalar gain, because its first convolution has no bias and is followed by
-per-channel normalisation. That expectation was corrected before the code freeze: the
-normalisation's epsilon lets gain information persist in low-variance channels (Section S6).
-The wav2vec2 result is therefore informative about level and is read in the same way as the
-Whisper result.
+for Whisper and +1.79 substitutions [+1.48, +2.19] for wav2vec2. The changed hypotheses and the corrected
+expectation for wav2vec2-base-960h are reported in the main paper (Section 4.9) and in Section S6.
 
 Level matching raised the number of samples at or above full scale from 113 in 17 utterances
 (OPUS) to 349 in 33 utterances, out of about $2.6 \times 10^{8}$; as in the confirmatory
@@ -330,3 +325,71 @@ completed after it had stopped; three pre-specified descriptive items of the cou
 afterwards from sealed outputs by a separate script, and the in-band descriptors were sealed with
 the recognition outputs rather than before recognition; a pre-freeze dry run on 3 calibration
 utterances was discarded.
+
+# S8. Reference-decoder sensitivity of the total penalty
+
+A further plan, sealed after the analyses of Section S7 and before its own decoding and
+recognition, tested whether the libopus 1.4 reference decoder, instead of FFmpeg 6.1.1, changes
+the total penalty OPUS − REF on the same frozen confirmation bitstreams (main paper, Section 4.8).
+It tests the total penalty only: no bandwidth component, share or residual was computed under
+libopus, it is not a successor to the stopped decoder analysis of Section S7, and a result without
+a clear difference is not an equivalence claim. The decoder applied RFC 7845 pre-skip and end
+trimming at 48 kHz, followed by the Stage 3 resampler, with no gain, alignment or filtering; only
+OPUS_LIBOPUS was recognised, once. The frozen rule classifies D = OPUS_LIBOPUS − OPUS_FFMPEG by
+whether its 95 % interval lies below zero (DECODER_LOWER_PENALTY), above zero
+(DECODER_HIGHER_PENALTY) or includes it (NO_CLEAR_DECODER_DIFFERENCE), with no minimum effect and
+Stage 3's bootstrap and seed. All pre-recognition checks passed: bitstreams byte-identical to
+Stage 3's (2,174 of 2,174), no decoding error, the pre-specified output lengths, no non-finite
+sample, an unchanged environment, and exact reproduction of the sealed Stage 3 calibration outputs
+and of Stage 3's OPUS − REF. The same bitstreams had been decoded with the same libopus path
+before, signal only, when the stopped analysis of Section S7 was checked; the new decode reproduced
+it exactly, and no libopus-decoded evaluation audio had been recognised before.
+
+| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |
+|---|---|---|
+| WER, REF (%) | 2.50 [2.19, 2.84] | 5.36 [4.73, 6.08] |
+| WER, OPUS_FFMPEG (%) | 3.32 [2.86, 3.82] | 8.84 [7.72, 10.17] |
+| WER, OPUS_LIBOPUS (%) | 3.22 [2.78, 3.70] | 8.92 [7.78, 10.26] |
+| T_ffmpeg = OPUS_FFMPEG − REF (pp) | +0.83 [+0.57, +1.10] | +3.48 [+2.73, +4.45] |
+| T_libopus = OPUS_LIBOPUS − REF (pp) | +0.72 [+0.49, +0.97] | +3.56 [+2.79, +4.54] |
+| D = OPUS_LIBOPUS − OPUS_FFMPEG (pp) | −0.11 [−0.17, −0.04] | +0.09 [−0.04, +0.21] |
+| Outcome (frozen rule) | DECODER_LOWER_PENALTY | NO_CLEAR_DECODER_DIFFERENCE |
+
+: Reference-decoder sensitivity of the total 8 kbit/s penalty on the confirmation set (2,174 utterances, 73 speakers; pooled; 95 % speaker-bootstrap intervals with Stage 3's seed): corpus WER (%), the totals and their difference (pp), and the frozen outcome. Total penalty only: no bandwidth share or residual under libopus.
+
+| Subset | Recogniser | WER, OPUS_LIBOPUS (%) | T_ffmpeg (pp) | T_libopus (pp) | D (pp) |
+|---|---|---|---|---|---|
+| test-clean | Whisper large-v3 | 1.87 [1.54, 2.22] | +0.26 [+0.12, +0.43] | +0.25 [+0.12, +0.40] | −0.01 [−0.07, +0.05] |
+| test-clean | wav2vec2-base-960h | 4.62 [4.06, 5.21] | +1.34 [+0.97, +1.77] | +1.32 [+0.95, +1.71] | −0.02 [−0.14, +0.09] |
+| test-other | Whisper large-v3 | 5.03 [4.12, 6.11] | +1.58 [+1.04, +2.20] | +1.35 [+0.85, +1.91] | −0.23 [−0.37, −0.10] |
+| test-other | wav2vec2-base-960h | 14.71 [12.10, 17.85] | +6.35 [+4.76, +8.54] | +6.58 [+4.90, +8.82] | +0.23 [+0.00, +0.47] |
+
+: Reference-decoder sensitivity per subset (secondary scope; no multiplicity correction; 95 % speaker-bootstrap intervals). The wav2vec2 test-other interval of D has a lower bound of exactly 0.00 and does not exclude zero.
+
+| Descriptor (against REF; descriptive) | OPUS_FFMPEG | OPUS_LIBOPUS |
+|---|---|---|
+| Integer lag (samples: utterances) | 1: 12; 2: 2,162 | 0: 1,084; 1: 1,082; 2: 8 |
+| RMS change, median [5th, 95th percentile] (dB) | −0.68 [−2.09, −0.34] | −0.67 [−1.98, −0.33] |
+| 4–5 kHz power (dB, pooled) | −13.33 | −13.85 |
+| Total 4–8 kHz power (dB, pooled) | −16.74 | −17.26 |
+| Mirror coherence, 4.1–4.9 kHz (pooled) | 0.227 | 0.098 |
+| Samples at or above full scale (utterances) | 113 (17) | 51 (14) |
+
+: Reference-decoder sensitivity: descriptive decoder and signal diagnostics against REF (lag counts, per-utterance medians, pooled cross-spectral measures, and samples at or above full scale, which were passed on unchanged). No descriptor enters the rule.
+
+The FFmpeg- and libopus-decoded signals of the same bitstream were never bit-identical; their SNR
+had a median of 10.13 dB unaligned and 17.96 dB after the better one-sample shift (minimum
+0.06 dB; the better shift was −1 in 2,173 utterances and +1 in one). *Transcript differences (a
+post-analysis descriptive addition, not pre-specified).* Relative to OPUS_FFMPEG, 292 raw (103
+normalised) Whisper transcripts and 801 raw (797 normalised) wav2vec2 transcripts of the 2,174
+changed under OPUS_LIBOPUS. OPUS_LIBOPUS was recognised in a separate run whose Whisper batches
+differed from Stage 3's, and greedy float16 Whisper decoding is not exactly invariant to batch
+composition (Section S4: 3 of 4,348 hypotheses), so not every Whisper transcript difference can be
+interpreted as a decoder effect; wav2vec2 decodes each utterance alone.
+
+**Deviations** (none changed a gate, rule, selection or outcome): the transcript-difference counts
+were computed after the analysis by a script outside the code freeze; the main paper reports this
+analysis in a Results paragraph and a Discussion sentence and rewrites the Implementations
+limitation, whose statement that one decoder was used no longer held, whereas the plan foresaw one
+main-paper sentence and at most one added limitation sentence; and the Whisper batch-composition
+component of the cross-run comparison is part of D and was not separated.

@@ -567,4 +567,89 @@ out.append(f"libopus delay, median samples at 16 kHz: calibration {R_DELAY['cali
            f"{R_STAB['ffmpeg_fixed2']:.2f} dB; libopus, frozen alignment {R_STAB['libopus_frozen']:.2f} dB")
 out.append("")
 
+# ================================================================ R4: reference-decoder total-penalty sensitivity (sealed outputs)
+R4R = ROOT / "results_paper" / "decoder_sensitivity"
+R4_DEC = sealed(R4R / "analysis" / "r4_decision.json", "decision_sha256")
+R4_VAL = sealed(R4R / "validation" / "validation_report.json", "report_sha256")
+R4_DESC = sealed(R4R / "analysis" / "r4_descriptives.json", "descriptives_sha256")
+R4_RAW = sealed(R4R / "raw" / "outputs_sha256.json", "outputs_sha256")
+assert file_sha256(R4R / "analysis" / "r4_bootstrap.csv") == R4_DEC["bootstrap_sha256"]
+assert file_sha256(R4R / "validation" / "validation_rows.csv") == R4_VAL["rows_sha256"]
+assert R4_DESC["r4_decision_sha256"] == R4_DEC["decision_sha256"] and R4_DEC["outputs_sha256"] == R4_RAW["outputs_sha256"]
+assert R4_VAL["pass"] and R4_DEC["anchor_reproduction"]["pass"] and R4_VAL["gates"]["G9"]["pass"]
+R4_BOOT = load(R4R / "analysis" / "r4_bootstrap.csv")
+R4_OUT = {m: R4_DEC["cells"][m]["outcome"] for m, _ in MODELS}
+R4_DIAG = R4_VAL["diagnostics"]
+R4_ROWS = load(R4R / "validation" / "validation_rows.csv")
+
+
+def r4(model, quantity, scope="pooled"):
+    return ub(R4_BOOT, model, quantity, scope, "micro")
+
+
+out.append("TABLE S15 (R4: reference-decoder sensitivity of the total penalty, pooled) [submission]")
+out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|")
+for label, q, signed in [("WER, REF (%)", "wer_REF", False), ("WER, OPUS_FFMPEG (%)", "wer_OPUS_FFMPEG", False),
+                         ("WER, OPUS_LIBOPUS (%)", "wer_OPUS_LIBOPUS", False),
+                         ("T_ffmpeg = OPUS_FFMPEG − REF (pp)", "T_ffmpeg", True),
+                         ("T_libopus = OPUS_LIBOPUS − REF (pp)", "T_libopus", True),
+                         ("D = OPUS_LIBOPUS − OPUS_FFMPEG (pp)", "D", True)]:
+    out.append(row(label, [ci(*r4(m, q), signed=signed) for m, _ in MODELS]))
+out.append(row("Outcome (frozen rule)", [R4_OUT[m] for m, _ in MODELS]))
+out.append("")
+out.append("TABLE S16 (R4 per subset, secondary) [submission]")
+out.append("| Subset | Recogniser | WER, OPUS_LIBOPUS (%) | T_ffmpeg (pp) | T_libopus (pp) | D (pp) |")
+out.append("|---|---|---|---|---|---|")
+for scope in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(scope, [name, ci(*r4(m, "wer_OPUS_LIBOPUS", scope), signed=False),
+                               ci(*r4(m, "T_ffmpeg", scope)), ci(*r4(m, "T_libopus", scope)), ci(*r4(m, "D", scope))]))
+out.append("")
+
+
+def lag_cell(counts):
+    return "; ".join(f"{k}: {int(v):,}" for k, v in counts.items())
+
+
+S3_OPUS_MAN = [r for r in load(ROOT / "results_paper" / "stage3_asr" / "raw" / "confirmation" / "audio_manifest.csv")
+               if r["condition"] == "OPUS"]
+R4_CLIPS = {"OPUS_FFMPEG": (sum(int(r["clip_count"]) for r in S3_OPUS_MAN), sum(int(r["clip_count"]) > 0 for r in S3_OPUS_MAN)),
+            "OPUS_LIBOPUS": (sum(int(r["libopus_clip_count"]) for r in R4_ROWS),
+                             sum(int(r["libopus_clip_count"]) > 0 for r in R4_ROWS))}
+out.append("TABLE S17 (R4 descriptive decoder and signal diagnostics; no descriptor enters the rule) [submission]")
+out.append("| Descriptor (against REF; descriptive) | OPUS_FFMPEG | OPUS_LIBOPUS |")
+out.append("|---|---|---|")
+dF, dL = R4_DIAG["OPUS_FFMPEG"], R4_DIAG["OPUS_LIBOPUS"]
+out.append(row("Integer lag (samples: utterances)", [lag_cell(dF["lag_vs_ref_counts"]), lag_cell(dL["lag_vs_ref_counts"])]))
+out.append(row("RMS change, median [5th, 95th percentile] (dB)",
+               [f"{fmt(d['rms_change_db']['median'])} [{fmt(d['rms_change_db']['p05'])}, {fmt(d['rms_change_db']['p95'])}]"
+                for d in (dF, dL)]))
+out.append(row("4–5 kHz power (dB, pooled)", [fmt(d["pooled_power_4000_5000_db"]) for d in (dF, dL)]))
+out.append(row("Total 4–8 kHz power (dB, pooled)", [fmt(d["pooled_total_hf_power_4000_8000_db"]) for d in (dF, dL)]))
+out.append(row("Mirror coherence, 4.1–4.9 kHz (pooled)", [f"{d['pooled_mirror_coherence_4100_4900']:.3f}" for d in (dF, dL)]))
+out.append(row("Samples at or above full scale (utterances)",
+               [f"{R4_CLIPS[c][0]} ({R4_CLIPS[c][1]})" for c in ["OPUS_FFMPEG", "OPUS_LIBOPUS"]]))
+out.append("")
+dd, rep = R4_DIAG["decoder_difference"], R4_DIAG["reproduction"]
+n4 = rep["of"]
+out.append("R4 DECODER DIFFERENCE, REPRODUCTION AND TRANSCRIPTS [submission]")
+out.append(f"FFmpeg vs libopus, same bitstream: bit-identical {dd['bit_identical']} of {n4:,}; SNR median "
+           f"{dd['snr_unaligned_db']['median']:.2f} dB unaligned (minimum {dd['snr_unaligned_db']['min']:.2f}), "
+           f"{dd['snr_one_sample_db']['median']:.2f} dB after the better one-sample shift (minimum "
+           f"{dd['snr_one_sample_db']['min']:.2f}); shift −1 in {dd['one_sample_shift_counts']['-1']:,}, "
+           f"+1 in {dd['one_sample_shift_counts']['1']}")
+out.append(f"reproduction: FFmpeg re-decode = Stage 3 {rep['ffmpeg_identical_to_stage3']:,} of {n4:,}; libopus = earlier "
+           f"libopus decode {rep['libopus_identical_to_r1_refdec']:,} of {n4:,}")
+H = R4_DESC["hypothesis_differences"]
+out.append("transcripts differing from OPUS_FFMPEG (raw; normalised): " + "; ".join(
+    f"{m} {H[m]['raw_hypothesis_differs']}; {H[m]['normalised_hypothesis_differs']} of {H[m]['utterances']:,} ("
+    + ", ".join(f"{s} {v['raw_hypothesis_differs']}; {v['normalised_hypothesis_differs']}" for s, v in H[m]["by_subset"].items())
+    + ")" for m, _ in MODELS))
+out.append(f"R4 gates: G1 {R4_VAL['gates']['G1']['identical']:,} of {n4:,}; G2 decoded {R4_VAL['gates']['G2']['decoded']:,}, "
+           f"errors {len(R4_VAL['gates']['G2']['decode_errors'])}; G3 {R4_VAL['gates']['G3']['pass']}; "
+           f"G4 non-finite {R4_VAL['gates']['G4']['nonfinite_48k'] + R4_VAL['gates']['G4']['nonfinite_16k']}; "
+           f"G5 {R4_VAL['gates']['G5']['pass']}; G7 {R4_VAL['gates']['G7']['pass']}; G9 {R4_VAL['gates']['G9']['pass']}")
+out.append("")
+
 print("\n".join(out))

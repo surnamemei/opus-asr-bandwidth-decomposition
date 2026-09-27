@@ -60,6 +60,8 @@ for f in floats:
                 else f"Table {ROMAN.get(num, num)}" if num in ROMAN else f"Table {num}")
     else:
         final = min(natural, float(p.get("text", "516pt")[:-2]))
+        if "final" in p:                     # a figure scaled by a rendering option (supplement)
+            final = float(p["final"][:-2])
         size = FIGURE_PT * final / natural if natural else FIGURE_PT
         name = f"Fig. {num}"
     print(f"| {lab} | {name}: {f['caption'][:48]} | {p.get('placement', '?')} | {natural:.0f} | {final:.0f} "

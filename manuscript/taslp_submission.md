@@ -528,7 +528,7 @@ Per-utterance signal features explained little of which utterances were affected
 36 exploratory correlations had intervals excluding zero, all with $\lvert\rho\rvert \le 0.09$,
 uncorrected for multiplicity. No mechanism is inferred from them.
 
-## 4.8 Negative controls
+## 4.8 Negative controls and decoder sensitivity
 
 Opus at 64 kbit/s (NEG_CODEC), coded by CELT, left WER unchanged in both recognisers:
 +0.002 pp [−0.046, +0.049] and +0.002 pp [−0.057, +0.065] (Supplementary Table S5). The 7 kHz low-pass
@@ -536,6 +536,17 @@ Opus at 64 kbit/s (NEG_CODEC), coded by CELT, left WER unchanged in both recogni
 (Whisper) and +0.10 pp [+0.02, +0.19] (wav2vec2). Both were within the pre-declared ±0.5 pp
 margin, so neither control capped the decision. We read the NEG_LP result as the resolution
 limit of the pipeline, and do not interpret effects of order 0.1 pp.
+
+**Decoder sensitivity.** As a post-confirmation decoder sensitivity, the same frozen 8 kbit/s Opus
+bitstreams were decoded with libopus 1.4 instead of FFmpeg 6.1.1. The total Opus penalty remained
+positive for both recognisers: +0.72 pp [+0.49, +0.97] for Whisper large-v3 and +3.56 pp
+[+2.79, +4.54] for wav2vec2-base-960h. Relative to FFmpeg decoding, the libopus decoder reduced
+Whisper WER by 0.11 pp [0.04, 0.17], whereas no clear decoder difference was established for
+wav2vec2 (+0.09 pp [−0.04, +0.21]). This sensitivity tests the total penalty only; the bandwidth
+decomposition remains defined for the FFmpeg chain. With FFmpeg decoding the totals were +0.83 and
++3.48 pp (Table III); the frozen outcomes were DECODER_LOWER_PENALTY (Whisper) and
+NO_CLEAR_DECODER_DIFFERENCE (wav2vec2). The sealed plan, its checks and the decoder diagnostics are
+in Supplementary Section S8.
 
 ## 4.9 Level-matched sensitivity analysis (Addition A)
 
@@ -714,8 +725,11 @@ evidence supports but does not establish. The bitrate sweep bears on the second:
 narrowband left no detectable residual beyond the control on these data. At the same nominal
 8 kbit/s, forcing wideband instead of narrowband lowered the WER of wav2vec2-base-960h but not
 detectably that of Whisper large-v3 (Section 4.11): on these data, a wideband allocation
-lowered WER for one recogniser only. Restoring the band without changing the coding, as
-bandwidth extension would, and decoder-side enhancement were not tested.
+lowered WER for one recogniser only. The total 8 kbit/s Opus penalty persisted under the
+libopus reference decoder for both recognisers; its magnitude was lower for Whisper, while no
+clear decoder difference was established for wav2vec2, and the bandwidth decomposition itself
+remains defined for the FFmpeg decoder chain (Section 4.8). Restoring the band without changing
+the coding, as bandwidth extension would, and decoder-side enhancement were not tested.
 
 # 6. Limitations
 
@@ -739,9 +753,12 @@ band edge the reference still rose by up to 0.83 dB between 32 and 40 kbit/s. Th
 validated under a corrected criterion after the first criterion failed; the failed validation
 is retained and reported.
 
-**Implementations.** One encoder (libopus 1.4) and one decoder (FFmpeg 6.1.1) were used. Opus
-leaves decoder resampling to the implementation [@rfc6716], so the image and possibly the
-residual could differ with another decoder, such as libopus's own. The automatic choice of
+**Implementations.** One encoder (libopus 1.4) was used, and Opus leaves decoder resampling to the
+implementation [@rfc6716]. The primary decomposition is defined for FFmpeg 6.1.1 decoding. A
+post-confirmation sensitivity using the libopus 1.4 reference decoder showed that the total
+8 kbit/s penalty persisted for both recognisers, although its magnitude was lower for Whisper.
+Because the decoder-matched bandwidth control failed held-out validation before ASR, decoder
+invariance of the bandwidth share or codec-specific residual was not established. The automatic choice of
 bandwidth depends on the libopus version: 8 kbit/s selects narrowband in every version we
 inspected, but the wideband threshold has moved over time. The encoder used
 `application=audio`, retained to reproduce the frozen codec baseline of the preliminary
@@ -813,10 +830,12 @@ and each decision record was sealed. A later plan, sealed before any of its audi
 added the forced-wideband counterfactual (Section 4.11); its code was frozen after a
 calibration step, the counterfactual was decoded once, and its decision record was sealed. Two
 additional attribution sensitivities were prospectively gated but stopped before ASR because
-their signal-domain controls failed held-out validation. Supplementary material gives the
-tables and figures moved out of this paper and the counterfactual's details (Tables S1–S14,
-Figs. S1–S3), the level-matching, bitrate-sweep and sensitivity-analysis diagnostics (Sections
-S4, S5 and S7), and the amendments and deviations.
+their signal-domain controls failed held-out validation. A further sealed plan tested the
+decoder sensitivity of the total penalty; its code was frozen after a calibration dry run, the
+libopus-decoded audio was recognised once, and its decision record was sealed. Supplementary
+material gives the tables and figures moved out of this paper and the details of the later
+analyses (Tables S1–S17, Figs. S1–S3), the level-matching, bitrate-sweep and sensitivity-analysis
+diagnostics (Sections S4, S5, S7 and S8), and the amendments and deviations.
 Code, sealed selections, per-utterance outputs and all
 intermediate reports are in the project repository (link withheld for review).
 LibriSpeech, the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are
