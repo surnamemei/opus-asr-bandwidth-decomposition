@@ -1,0 +1,22 @@
+{
+ "created_utc": "2026-09-27T06:05:46.681357+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "code_freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754",
+ "part": "sweep",
+ "n_utterances": 1665,
+ "gates": {
+  "R3-G0": true,
+  "R3-G1": true,
+  "R3-G2": true,
+  "R3-G3": true,
+  "R3-G4": true,
+  "R3-G5": true
+ },
+ "median_payload_kbps": {
+  "NB8": 7.3612838515546635,
+  "WB8": 7.75946148092745
+ },
+ "wb8_total_hf_power_db": 2.13628444425699,
+ "rows_sha256": "3eed8a5ba359bfbd53c44dfd6fa11b208d84ef3532be3037475c7e2934f65579",
+ "report_sha256": "b6f868dab1f3a2e3379e77450e43c744144539f5ab8f37cec0930700d85e28e3"
+}

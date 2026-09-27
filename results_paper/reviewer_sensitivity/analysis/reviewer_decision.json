@@ -1,0 +1,21 @@
+{
+ "created_utc": "2026-09-27T06:18:31.024179+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "decisions": {
+  "R1": "5ff00393b40322121cdb623c75d6eb16de52703c0c8aaba13b96337fdec98bf3",
+  "R2": "0f8d270b3e72ce691ea0c0a380a0b51997ea08c262f457cbeb6415f2f61f62f8",
+  "R3": "d8a7ea11533c09ad49496ad56dfce2ed3350d496b700912b4c80cd2bdd5568e1"
+ },
+ "bootstrap_sha256": {
+  "sweep_bootstrap.csv": "318118598163de228790dbf5a4f0bc94602a4fe6d3ee79d963e1d55f3b482b24"
+ },
+ "outcomes": {
+  "R1": "STOPPED",
+  "R2": "STOPPED",
+  "R3": {
+   "whisper": "NO_CLEAR_DIFFERENCE",
+   "wav2vec2": "WB_BETTER"
+  }
+ },
+ "decision_sha256": "10adb06228f5e8d25d4d4033b45a0a0360ebdb32ddc47624c28b9e3513936a04"
+}

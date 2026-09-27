@@ -1,0 +1,33 @@
+{
+ "created_utc": "2026-09-27T06:00:51.632833+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "code_freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754",
+ "part": "confirmation",
+ "n_utterances": 2174,
+ "R1-G1": true,
+ "R1-G2": true,
+ "R1-G3": true,
+ "identity_all_bit_identical": false,
+ "decoder_difference": [
+  {
+   "condition": "OPUS",
+   "bit_identical": 0,
+   "snr_db_median": 10.130099723235546,
+   "snr_db_min": 1.767654011229027,
+   "max_abs_difference": 0.8253550231456757,
+   "lag_min": -1,
+   "lag_max": 1
+  },
+  {
+   "condition": "SILK",
+   "bit_identical": 0,
+   "snr_db_median": 9.895825597073303,
+   "snr_db_min": 0.930649896647575,
+   "max_abs_difference": 0.7666290700435638,
+   "lag_min": -1,
+   "lag_max": 1
+  }
+ ],
+ "rows_sha256": "b3d7b77880ea0faeb48fafd87650d30b77fc7c80f21c9a8429c61341dc8df57d",
+ "report_sha256": "5c4519ca1e53daf7d8e6cad9b2076ae790dfe7772bdb8c376b9e4d1d1796c32d"
+}

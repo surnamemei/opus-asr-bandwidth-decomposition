@@ -1,0 +1,9 @@
+{
+ "created_utc": "2026-09-27T06:18:31.023687+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "code_freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754",
+ "validation_report_sha256": "32a07cbaadef089a07a4c6cb92e34684af3c854d8d27d9e7ca68f271f11dfeb2",
+ "analysis": "R1",
+ "outcome": "STOPPED",
+ "decision_sha256": "5ff00393b40322121cdb623c75d6eb16de52703c0c8aaba13b96337fdec98bf3"
+}

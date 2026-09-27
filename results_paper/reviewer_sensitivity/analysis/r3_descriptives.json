@@ -1,0 +1,70 @@
+{
+ "created_utc": "2026-09-27T06:19:15.743048+00:00",
+ "label": "descriptive measures pre-specified in the plan (R3, sections 9.2 and 9.3) and not computed by the frozen analyse(); computed by this reporting script outside the code freeze after RS5; they enter no outcome",
+ "r3_decision_sha256": "d8a7ea11533c09ad49496ad56dfce2ed3350d496b700912b4c80cd2bdd5568e1",
+ "outputs_sha256": "d7ad0873cc9bbc6c09e0cef2ea98924520d6f44fbaf126253cf0ab41b47ac66d",
+ "hypothesis_differences": {
+  "whisper": {
+   "utterances": 1665,
+   "nb8_vs_wb8_raw_hypothesis_differs": 782,
+   "nb8_vs_b_silk8_raw_hypothesis_differs": 0
+  },
+  "wav2vec2": {
+   "utterances": 1665,
+   "nb8_vs_wb8_raw_hypothesis_differs": 999,
+   "nb8_vs_b_silk8_raw_hypothesis_differs": 0
+  }
+ },
+ "signal_descriptor_medians": {
+  "NB8": {
+   "coherence 0-3.5 kHz vs REF": 0.6231032918637651,
+   "LSD 0-3 kHz vs REF (dB)": 6.191066741943359,
+   "LSD 0-4 kHz vs REF (dB)": 6.494602203369141,
+   "retained bandwidth (Hz)": 4625.0,
+   "4-8 kHz power change vs REF (dB)": -17.185115368334817
+  },
+  "WB8": {
+   "coherence 0-3.5 kHz vs REF": 0.5586135806794125,
+   "LSD 0-3 kHz vs REF (dB)": 6.766394138336182,
+   "LSD 0-4 kHz vs REF (dB)": 6.90861177444458,
+   "retained bandwidth (Hz)": 8000.0,
+   "4-8 kHz power change vs REF (dB)": 1.7216089514231605
+  }
+ },
+ "pooled_against_ref": {
+  "NB8": {
+   "h1_level_db": -1.825150220055519,
+   "coherent_bandwidth_hz": 4000.0,
+   "coherent_hf_power_db": -33.796269423568745,
+   "total_hf_power_db": -16.537916422220437,
+   "mean_coherence_0_3500": 0.6570642822281437
+  },
+  "WB8": {
+   "h1_level_db": -2.849587132743633,
+   "coherent_bandwidth_hz": 8000.0,
+   "coherent_hf_power_db": -9.156062910981152,
+   "total_hf_power_db": 2.13628444425699,
+   "mean_coherence_0_3500": 0.5905568924371178
+  }
+ },
+ "packets_and_levels": {
+  "NB8": {
+   "payload_kbps_median": 7.361283851554663,
+   "container_kbps_median": 8.193548387096774,
+   "rms_change_db_median": -0.6835730655307113,
+   "lag_min": 1.0,
+   "lag_max": 2.0,
+   "clipped_samples": 144.0
+  },
+  "WB8": {
+   "payload_kbps_median": 7.75946148092745,
+   "container_kbps_median": 8.573724884080372,
+   "rms_change_db_median": -0.8672698011329084,
+   "lag_min": 0.0,
+   "lag_max": 1.0,
+   "clipped_samples": 227.0
+  }
+ },
+ "note_on_timing": "the plan lists the in-band descriptor set among the measures sealed before ASR; validate sweep sealed the packet, bitrate, level and lag rows before ASR, but the in-band descriptors were computed in the RS4b run (signal_metrics.csv) and are sealed with its outputs",
+ "descriptives_sha256": "847f300ef31f207eb81c6b199dcf5fb1327044936b007bd7b410daeacb1a4b3c"
+}

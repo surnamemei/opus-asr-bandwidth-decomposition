@@ -1,0 +1,29 @@
+{
+ "created_utc": "2026-09-27T06:18:31.023972+00:00",
+ "spec_sha256": "2a6eae3511c07ac862c605c38eb4dd297a98c239248d5ec09b0eec9dc48345c0",
+ "code_freeze_sha256": "dc271f2918de862d7cfb26b7b860eab58859405d046c01a40eda7e6d0de5c754",
+ "validation_report_sha256": "32a07cbaadef089a07a4c6cb92e34684af3c854d8d27d9e7ca68f271f11dfeb2",
+ "analysis": "R3: forced-wideband 8 kbit/s practical counterfactual (not a factorial causal effect)",
+ "cells": {
+  "whisper": {
+   "W": [
+    0.14240055694440049,
+    -0.06618436666562687,
+    0.36217055658909436
+   ],
+   "outcome": "NO_CLEAR_DIFFERENCE"
+  },
+  "wav2vec2": {
+   "W": [
+    -0.9778171576848835,
+    -1.569848046218368,
+    -0.4198316166336049
+   ],
+   "outcome": "WB_BETTER"
+  }
+ },
+ "outcome": null,
+ "note": "per recogniser only; no combined R3 outcome is formed",
+ "outputs_sha256": "d7ad0873cc9bbc6c09e0cef2ea98924520d6f44fbaf126253cf0ab41b47ac66d",
+ "decision_sha256": "d8a7ea11533c09ad49496ad56dfce2ed3350d496b700912b4c80cd2bdd5568e1"
+}
