@@ -16,14 +16,5 @@
 \renewcommand{\textfraction}{0.05}
 \renewcommand{\floatpagefraction}{0.85}
 \renewcommand{\dblfloatpagefraction}{0.85}
-% Figures are set at 85 % of their natural width (presentation only): the supplement's figures are
-% simple plots, and full-width figures took most of a page each in the one-column layout. The
-% IEEE-FLOAT log line records the final width for tools/ieee_layout_report.py.
-\makeatletter
-\renewcommand\IEEEautofigure[3]{%
-  \sbox\ieeebox{\includegraphics{#2}}%
-  \setlength\ieeefinal{0.85\wd\ieeebox}%
-  \typeout{IEEE-FLOAT kind=figure label=#1 placement=single-scaled natural=\the\wd\ieeebox\space
-    height=\the\ht\ieeebox\space column=\the\columnwidth\space text=\the\textwidth\space final=\the\ieeefinal}%
-  \begin{figure}\centering\includegraphics[width=\ieeefinal]{#2}\caption{#3}\label{#1}\end{figure}}
-\makeatother
+% Figures are set at their natural width (figure text at 8 pt, as in the main paper); the 85 % scaling of
+% an earlier draft was removed in the final invariance pass (figure-internal text must not fall below about 8 pt).

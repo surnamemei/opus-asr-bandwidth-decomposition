@@ -146,8 +146,8 @@ need(f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", "A abstract")
 cells = T.A_DEC["cells"]
 need(f"{cells[W]['retained_fraction_L_over_T_star']:.2f} and {cells[V]['retained_fraction_L_over_T_star']:.2f} times",
      "A retained share")
-need(f"{fmt(cells[W]['go_threshold_K_lower'], True, 3)} and {fmt(cells[V]['go_threshold_K_lower'], True, 3)} pp",
-     "A GO thresholds")
+need(f"{fmt(cells[W]['go_threshold_K_lower'], True, 3)} | {fmt(cells[V]['go_threshold_K_lower'], True, 3)}",
+     "A GO thresholds (Table S7)")
 assert T.A_DEC["outcome"] == "GO" and all(c["outcome"] == "GO" for c in cells.values())
 changed = T.A_DEC["hypotheses_changed_by_level_matching"]
 need(f"changed {changed[W]} of the {T.N_A:,} Whisper hypotheses and {changed[V]} of the {T.N_A:,} wav2vec2", "A changed")
@@ -176,8 +176,8 @@ need(f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(
 need(f"{fmt(S_[V][0], True, 3)}\n[{fmt(S_[V][1], True, 3)}, {fmt(S_[V][2], True, 3)}]", "B slope wav2vec2")
 need(f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling", "B abstract")
 thr = T.B_DEC["cells"]
-need(f"({fmt(thr[W]['meaningful_decline_threshold'], True, 3)} and {fmt(thr[V]['meaningful_decline_threshold'], True, 3)})",
-     "B thresholds")
+need(f"{fmt(thr[W]['meaningful_decline_threshold'], True, 3)} | {fmt(thr[V]['meaningful_decline_threshold'], True, 3)}",
+     "B thresholds (Table S9)")
 assert T.B_DEC["outcome"] == "GO" and all(c["outcome"] == "GO" for c in thr.values())
 for m in (W, V):   # no residual detectable at 24 and 40 kbit/s; detectable at 8
     assert all(T.sw(m, f"R_{r}")[1] <= 0 <= T.sw(m, f"R_{r}")[2] for r in (24, 40)) and R8[m][1] > 0
@@ -296,8 +296,8 @@ if SUBMISSION:
                "because their signal-domain controls failed held-out validation.")
     primary += [
         f"At approximately 8 kbit/s, forced wideband reduced the WER of wav2vec2-base-960h relative to forced "
-        f"narrowband by {abs(R3W[V][0]):.2f} pp [{abs(R3W[V][2]):.2f}, {abs(R3W[V][1]):.2f}] (WB_BETTER)",
-        f"Whisper large-v3 showed no clear difference: {up(*R3W[W])} (NO_CLEAR_DIFFERENCE)",
+        f"narrowband by {abs(R3W[V][0]):.2f} pp [{abs(R3W[V][2]):.2f}, {abs(R3W[V][1]):.2f}]",
+        f"Whisper large-v3 showed no clear difference: {up(*R3W[W])}",
         f"{T.R3_PAY['NB8']:.2f} (NB8) and {T.R3_PAY['WB8']:.2f} kbit/s (WB8)",
         f"REF: {fmt(T.R3_POOL['WB8']['total_hf_power_db'], True)} dB, against "
         f"{fmt(T.R3_POOL['NB8']['total_hf_power_db'], True)} dB for NB8",
@@ -347,7 +347,6 @@ if SUBMISSION:
         f"({up(*r4[(V, 'D')])}).",
         "This sensitivity tests the total penalty only; the bandwidth decomposition remains defined for the FFmpeg chain.",
         f"With FFmpeg decoding the totals were {fmt(r4[(W, 'T_ffmpeg')][0], True)} and {fmt(r4[(V, 'T_ffmpeg')][0], True)} pp",
-        "the frozen outcomes were DECODER_LOWER_PENALTY (Whisper) and NO_CLEAR_DECODER_DIFFERENCE (wav2vec2)",
         "The primary decomposition is defined for FFmpeg 6.1.1 decoding. A post-confirmation sensitivity using the "
         "libopus 1.4 reference decoder showed that the total 8 kbit/s penalty persisted for both recognisers, although "
         "its magnitude was lower for Whisper. Because the decoder-matched bandwidth control failed held-out validation "
@@ -384,8 +383,37 @@ if SUBMISSION:
     if where != ["## 4.3 Bandwidth component and codec-specific residual"]:
         fails.append(f"WHISPER SHARE '{w_share}' outside Section 4.3: {where}")
     # limitations added in the final pass (encoder application mode; lossy-coded source audio)
-    need("`application=audio`, retained to reproduce the frozen codec baseline", "limitation: application mode")
-    need("`OPUS_APPLICATION_VOIP` was not evaluated", "limitation: application mode")
+    # final invariance pass (sealed A1 and C1 records): the inclusive best-linear attribution and the metric
+    # audit in the main paper (Sections 3.11 and 4.12) and their details in Supplementary Sections S9 and S11
+    assert T.A1_DEC["outcome"] == "ROBUST_RESIDUAL"
+    a1r = {m: T.a1(m, "R8") for m in (W, V)}
+    a1d = {m: T.a1(m, "delta_L") for m in (W, V)}
+    for tok in [f"The residual beyond it was {up(*a1r[W])} and {up(*a1r[V])}",
+                f"LIN8 − LP was {up(*a1d[W])} for Whisper large-v3 and {up(*a1d[V])} for wav2vec2-base-960h",
+                "the exact split depends on how linear loss is defined, but the residual did not shrink",
+                "The attribution does not replace the sequential decomposition, and its linear share is not a bandwidth share.",
+                "its excess over the bandwidth component held under four error weightings"]:
+        if " ".join(tok.split()) not in main:
+            fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
+    need("The frozen outcome was ROBUST_RESIDUAL", "A1 outcome (S9)")
+    need("the Whisper share was unstable and the wav2vec2 share robust", "C1 classes (S11)")
+    cl = T.C1_REC["classifications"]
+    assert cl["whisper: sequential share B/T"]["classes"] == ["RATIO_UNSTABLE"]
+    assert all(cl[f"{m}: {s}"]["classes"] == ["METRIC_ROBUST"] for m in (W, V) for s in ("residual R > 0", "ordering R > B"))
+
+    # final invariance pass, B1 (sealed record): the encoder application mode (total penalty only)
+    assert T.B1_OUT == {W: "NO_CLEAR_APPLICATION_DIFFERENCE", V: "NO_CLEAR_APPLICATION_DIFFERENCE"}
+    b1v = {m: T.b1(m, "V") for m in (W, V)}
+    b1d = {m: T.b1(m, "D_app") for m in (W, V)}
+    for tok in [f"OPUS_VOIP8 − REF was {up(*b1v[W])} for Whisper large-v3 and {up(*b1v[V])} for wav2vec2-base-960h",
+                f"OPUS_VOIP8 − OPUS was {up(*b1d[W])} and {up(*b1d[V])}",
+                "no equivalence is claimed",
+                "`application=audio`, retained to reproduce the frozen codec baseline",
+                "`OPUS_APPLICATION_VOIP` alone showed that the total penalty persisted"]:
+        if " ".join(tok.split()) not in main:
+            fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
+    need("both recognisers returned NO_CLEAR_APPLICATION_DIFFERENCE", "B1 outcome (S10)")
+    need("For Whisper large-v3 the upper bound is exactly zero", "B1 boundary case (S10)")
     need("MP3-compressed [@panayotov2015librispeech, Sec. 5]", "limitation: LibriVox MP3 source")
     need("generalisation to pristine-source recordings is limited", "limitation: LibriVox MP3 source")
     for f, text in TEXTS.items():

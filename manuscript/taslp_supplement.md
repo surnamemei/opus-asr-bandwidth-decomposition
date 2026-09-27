@@ -5,8 +5,8 @@ date: "TASLP submission version, 2026-09-27"
 ---
 
 <!--
-SUPPLEMENTARY MATERIAL of the TASLP submission version (taslp_submission.md). Material moved out of draft 2 without
-changing any claim, number or caveat; checked with `python manuscript/tools/check_numbers.py --submission`.
+SUPPLEMENTARY MATERIAL of the TASLP submission version (taslp_submission.md): material moved out of draft 2, and the
+details of the later sealed analyses (Sections S7-S11); checked with `python manuscript/tools/check_numbers.py --submission`.
 -->
 
 ```{=latex}
@@ -59,10 +59,7 @@ component was +0.21 pp [−0.23, +0.67] (Whisper) and +2.04 pp [+1.12, +3.17] (w
 
 # S3. Confirmation: additional results
 
-Fig. S1 and Tables S3–S6 support main-paper Sections 4.2 and 4.4–4.8; Figs. S2 and S3 compare
-the contrasts between pilot and confirmation and between the two recognisers.
-
-![Corpus WER by condition on the confirmation set, with 95 % speaker-bootstrap intervals. Negative controls are shown in grey.](figures/fig_wer.pdf){#fig:wer}
+Tables S3–S6 support main-paper Sections 4.2 and 4.4–4.8.
 
 | Subset | Model | REF | LP | OPUS | SILK | LP − REF | OPUS − LP | SILK − LP |
 |---|---|---|---|---|---|---|---|---|
@@ -111,10 +108,6 @@ the contrasts between pilot and confirmation and between the two recognisers.
 | Mirror coherence, 4.1–4.9 kHz | 0.000 | 0.227 | 0.970 |
 | In-band gain $\lvert H_1\rvert$, 0.5–2 kHz (dB) | 0.00 | −1.83 | −0.08 |
 
-![Paired contrasts on the pilot and the confirmation set, with 95 % speaker-bootstrap intervals.](figures/fig_forest.pdf){#fig:forest}
-
-![Cross-recogniser comparison of the paired contrasts on the confirmation set, with 95 % speaker-bootstrap intervals. The diagonal marks equal effects in both recognisers; negative controls are shown in grey.](figures/fig_models.pdf){#fig:models}
-
 # S4. Addition A: level-matched sensitivity analysis
 
 *Post-confirmation sensitivity analysis on the confirmation utterances, decoded a second time;
@@ -125,6 +118,16 @@ for all 2,174 utterances, the largest level-matching error was $1.6 \times 10^{-
 gains equalled those implied by the confirmation audio within $1.4 \times 10^{-14}$ dB. The
 gains had a median of +0.562 dB (5th–95th percentile +0.290 to +1.032 dB; range −0.076 to
 +2.381 dB).
+
+Before recognition, LP and OPUS had to reproduce the confirmation audio bit for bit, the
+level-matched RMS had to equal that of LP within 0.001 dB, and the gains had to equal those
+implied by the confirmation audio within $10^{-6}$ dB. Each follow-up rule has three outcomes,
+GO, WEAKEN or FALSIFY, applied per recogniser; the combined outcome is GO or FALSIFY only if both
+recognisers agree, and WEAKEN otherwise, and a missing interval bound never satisfies GO or
+FALSIFY. With $T^\ast$ the confirmatory OPUS − LP estimate of each recogniser, Addition A returns
+GO if the lower bound of $L$ = OPUS8_LEVEL_MATCHED − LP is above zero and the lower bound of
+$K$ = OPUS8_LEVEL_MATCHED − OPUS is above $-0.25\,T^\ast$, and FALSIFY if the upper bound of $K$
+is below $-0.5\,T^\ast$.
 
 | Addition A (pooled) | Whisper large-v3 | wav2vec2-base-960h |
 |---|---|---|
@@ -170,6 +173,11 @@ the analysis uses the same-run LP and OPUS.
 *Fresh-utterance, not fresh-speaker, holdout: 1,665 unused test utterances of 70 of the
 confirmation speakers.*
 
+The sweep used test utterances that the project had never encoded, decoded or recognised,
+selected from metadata only with the confirmation rule: up to 30 per speaker from every test
+speaker with an eligible unused utterance. This gave 1,665 utterances from 70 speakers
+(38 test-clean, 32 test-other; 777 and 888 utterances; 3.17 h; 31,601 reference words).
+
 Validation passed before recognition. Each rate produced 571,809 packets, all SILK-only
 narrowband with 20 ms frames, and every encoder setting read back as requested. Median payload
 bitrates were 7.36, 11.35, 15.43, 23.46 and 38.96 kbit/s, 2.3–8.0 % below nominal (main paper, Table V);
@@ -180,7 +188,15 @@ contrast on new utterances. Corpus WERs by condition are in Table S11. The slope
 (Table S9). The decline was concentrated at low rates. The step from 8 to 12 kbit/s was the
 largest (+0.34 and +1.32 pp), and the later steps were smaller. The point estimates fell at every
 step in both recognisers, and 66 % (Whisper) and 98 % (wav2vec2) of bootstrap replicates were
-monotone.
+monotone. Before recognition, encoding and decoding alone had to show that every packet at every
+rate was SILK-only narrowband with 20 ms frames, that every encoder setting read back as
+requested, and that the median payload bitrate was within ±15 % of nominal, with each rate's
+median at least 1.2 times the previous one. The rule compares the slope $S$ with
+$S^\ast = (U^\ast - T^\ast)/\log_2 5$, the slope implied by the confirmatory residuals at
+8 kbit/s ($T^\ast$, OPUS − LP) and 40 kbit/s ($U^\ast$, SILK − LP): GO if the lower bound of
+$R_8$ is above zero, the upper bound of $S$ is below zero and its lower bound is at or below
+$0.5\,S^\ast$; FALSIFY if the upper bound of $S$ is at or above zero and its lower bound is above
+$0.5\,S^\ast$.
 
 | Addition B (pooled) | Whisper large-v3 | wav2vec2-base-960h |
 |---|---|---|
@@ -246,21 +262,23 @@ result is retained (main paper, Section 3.4).
 **Follow-up analyses.** Before their code was frozen, a calibration check on the 20 calibration
 utterances found that level matching changed 1 of 20 wav2vec2-base-960h hypotheses. The sealed
 plan had expected wav2vec2 to remove a scalar gain in its first-layer normalisation, so that its
-result in Addition A would be uninformative and a GO expected by construction. A dated
-amendment, sealed before the freeze and before any evaluation audio was decoded, corrected that
-expectation. The normalisation's nonzero epsilon lets gain information persist in low-variance
-channels, so invariance is approximate, not exact, and the wav2vec2 result is interpreted
-normally. The check was reclassified from a freeze gate to a descriptive calibration finding,
-and the failed calibration record is retained. The amendment changed no estimand, gate,
-decision threshold, condition, selection or rule, and no code changed after the freeze. The
-three Whisper hypotheses that differed when Addition A decoded the confirmation audio again are
-reported in Section S4 (main paper, Section 4.9).
+result in Addition A would be uninformative. A dated amendment, sealed before the freeze and
+before any evaluation audio was decoded, corrected that expectation (the normalisation's nonzero
+epsilon lets gain information persist in low-variance channels), reclassified the check as a
+descriptive calibration finding and retained the failed calibration record; it changed no
+estimand, gate, decision threshold, condition, selection or rule, and no code changed after the
+freeze.
 
 # S7. Forced-wideband counterfactual and stopped sensitivity analyses
 
 A later plan, sealed after Additions A and B and before any of its audio was encoded, fixed the
 selections, pre-recognition checks, estimands, bootstrap and outcome rules of three analyses; its
-code was frozen after a calibration step.
+code was frozen after a calibration step. For the forced-wideband counterfactual, NB8 had to
+reproduce Addition B's SILK8 files byte for byte, every WB8 packet had to be SILK-only wideband
+with 20 ms frames, every encoder setting had to read back as requested, WB8's median payload
+bitrate had to lie within ±15 % of nominal and within ±10 % of NB8's, and WB8's pooled 4–8 kHz
+power relative to REF had to be at least −10 dB; the outcome is WB_BETTER if the interval of
+WB8 − NB8 lies below zero, WB_WORSE if it lies above zero and NO_CLEAR_DIFFERENCE otherwise.
 
 **Forced-wideband counterfactual (main paper, Sections 3.10 and 4.11).** All pre-recognition
 checks passed (bitrates and descriptors: Table S14). NB8's Ogg files and raw hypotheses were identical to those of Addition B's SILK8
@@ -317,14 +335,10 @@ calibration–validation difference over 3.0–4.15 kHz: 3.61 dB, against 0.92 d
 alignment and 0.94 dB for the FFmpeg-decoded chain). This fractional-delay diagnosis is post hoc
 and exploratory; no successor analysis has been run.
 
-**Deviations** (none changed a gate, tolerance, rule, selection or outcome): the code freeze was
-sealed before the held-out signal validation, keeping the plan's order; the validation report was
-sealed in three parts plus a combined report, so the decoder analysis's pre-recognition checks were
-completed after it had stopped; three pre-specified descriptive items of the counterfactual
-(differing-hypothesis counts, reproduction check, in-band descriptors of Table S14) were computed
-afterwards from sealed outputs by a separate script, and the in-band descriptors were sealed with
-the recognition outputs rather than before recognition; a pre-freeze dry run on 3 calibration
-utterances was discarded.
+**Deviations** (none changed a gate, tolerance, rule, selection or outcome; full list in the
+sealed record): the plan's order of code freeze and held-out signal validation, a validation
+report sealed in parts, three descriptive items computed afterwards from sealed outputs, and a
+discarded pre-freeze dry run.
 
 # S8. Reference-decoder sensitivity of the total penalty
 
@@ -387,9 +401,153 @@ differed from Stage 3's, and greedy float16 Whisper decoding is not exactly inva
 composition (Section S4: 3 of 4,348 hypotheses), so not every Whisper transcript difference can be
 interpreted as a decoder effect; wav2vec2 decodes each utterance alone.
 
-**Deviations** (none changed a gate, rule, selection or outcome): the transcript-difference counts
-were computed after the analysis by a script outside the code freeze; the main paper reports this
-analysis in a Results paragraph and a Discussion sentence and rewrites the Implementations
-limitation, whose statement that one decoder was used no longer held, whereas the plan foresaw one
-main-paper sentence and at most one added limitation sentence; and the Whisper batch-composition
-component of the cross-run comparison is part of D and was not separated.
+**Deviations** (none changed a gate, rule, selection or outcome; full list in the sealed
+record): the transcript-difference counts were computed after the analysis, outside the code
+freeze; the main paper reports the analysis in more text than the one sentence the plan foresaw;
+and the cross-run Whisper batch component is part of D.
+
+# S9. Inclusive best-linear attribution
+
+A plan sealed after the analysis of Section S8 specified the attribution of main-paper
+Section 3.11. It was committed, with its method note, signal-only calibration, code freeze and
+held-out validation, before any confirmation-set projection was computed. For each confirmation
+utterance, LIN8 is the orthogonal projection of the confirmation's exact Opus waveform onto the
+span of REF delayed by −256 to +255 samples (512 basis vectors), computed as in the BSS Eval
+reference code with a centred delay span; no parameter was fitted or tuned. Calibration and
+held-out validation each used one utterance from 40 new train-clean-100 speakers (20 female and
+20 male per set; no transcripts or ASR): the projection was numerically exact, a second pass
+reproduced every waveform, and the held-out projection error showed no collapse
+(calibration median projection error −12.39 dB, tolerance 3.08 dB; validation median −11.61 dB). Before recognition, the regenerated Opus files and waveforms equalled those of
+the confirmation for all 2,174 utterances, and the analysis code reproduced the confirmation's
+contrasts. LIN8 was recognised in its own run, so Whisper's batches differed from the
+confirmation's (Section S4); wav2vec2 decodes each utterance alone. The frozen outcome was
+ROBUST_RESIDUAL: the residual beyond LIN8 lay above zero and exceeded the linear component in
+both recognisers (Table S18) and in both subsets (Table S19). The confirmation projections used
+single-threaded linear algebra because of CPU contention on the shared machine; this changes
+rare samples in the last bit only, and the recognised audio is the audio that passed the checks.
+
+| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |
+|---|---|---|
+| WER, LIN8 (%) | 2.58 [2.28, 2.92] | 6.52 [5.69, 7.41] |
+| LIN8 − REF (inclusive linear component, pp) | +0.09 [−0.02, +0.19] | +1.16 [+0.81, +1.55] |
+| OPUS − LIN8 (residual beyond the best-linear surrogate, pp) | +0.74 [+0.51, +1.00] | +2.32 [+1.85, +2.97] |
+| LIN8 − LP (pp) | −0.06 [−0.13, +0.01] | −0.25 [−0.47, −0.04] |
+| Linear share, (LIN8 − REF)/(OPUS − REF) | 0.10 [−0.02, 0.22] | 0.33 [0.28, 0.39] |
+| Sequential share along REF → LP → OPUS | 0.17 [0.05, 0.29] | 0.40 [0.35, 0.45] |
+| Outcome (frozen rule) | ROBUST_RESIDUAL | ROBUST_RESIDUAL |
+
+: Inclusive best-linear attribution on the confirmation set (2,174 utterances, 73 speakers; pooled; 95 % speaker-bootstrap intervals with the confirmation's seed): corpus WER of LIN8 (%), the linear component, the residual beyond it and its difference from the control (pp), the descriptive linear share beside the sequential share, and the frozen outcome. The linear share is not a bandwidth share.
+
+| Subset | Recogniser | LIN8 − REF | OPUS − LIN8 | LIN8 − LP |
+|---|---|---|---|---|
+| test-clean | Whisper large-v3 | −0.02 [−0.10, +0.06] | +0.28 [+0.14, +0.46] | +0.008 [−0.05, +0.06] |
+| test-clean | wav2vec2-base-960h | +0.27 [+0.07, +0.48] | +1.08 [+0.82, +1.37] | −0.14 [−0.27, −0.01] |
+| test-other | Whisper large-v3 | +0.23 [+0.02, +0.45] | +1.36 [+0.87, +1.93] | −0.14 [−0.29, +0.00] |
+| test-other | wav2vec2-base-960h | +2.35 [+1.62, +3.24] | +3.99 [+2.99, +5.44] | −0.39 [−0.90, +0.06] |
+
+: Inclusive best-linear attribution per subset (secondary scope; no multiplicity correction; pp, 95 % speaker-bootstrap intervals).
+
+| Descriptor | LIN8, calibration | LIN8, validation | LIN8, confirmation | LP control |
+|---|---|---|---|---|
+| Projection NMSE (dB) | −12.39 | −11.61 | −12.08 | — |
+| Energy explained | 0.942 | 0.931 | 0.938 | — |
+| Gain, 0.5–2 kHz (dB) | −2.05 | −2.10 | −2.22 | 0.00 |
+| Response at 2.0 kHz, relative (dB) | −1.15 | −0.93 | −1.34 | 0.00 |
+| Response at 2.5 kHz, relative (dB) | −2.54 | −2.74 | −2.59 | 0.00 |
+| Response at 3.0 kHz, relative (dB) | −4.57 | −4.54 | −4.54 | −0.62 |
+| Response at 3.5 kHz, relative (dB) | −6.94 | −6.79 | −7.30 | −2.16 |
+| Response at 4.0 kHz, relative (dB) | −16.68 | −16.87 | −15.66 | −10.76 |
+| Delay (samples) | 1.69 | 1.64 | 1.67 | 0 |
+| Pooled coherence 0–3.5 kHz, OPUS / LIN8 | 0.650 / 0.945 | 0.658 / 0.939 | — | — |
+| Pooled 4–8 kHz power vs REF, OPUS / LIN8 (dB) | −17.5 / −28.8 | −18.4 / −30.7 | — | — |
+
+: Linear response of the 8 kbit/s chain: medians of the per-utterance best-linear filters on the calibration, validation and confirmation sets (projection error, gain over 0.5–2 kHz, response at fixed frequencies relative to that gain, and phase-slope delay), with the frozen LP control for comparison, and pooled cross-spectral measures against REF (no ASR). Descriptive only.
+
+# S10. Encoder application mode
+
+A plan sealed after the attribution of Section S9, and committed with its calibration and code
+freeze before any confirmation bitstream was encoded, tested whether changing only the encoder
+application (`OPUS_APPLICATION_AUDIO` → `OPUS_APPLICATION_VOIP`) changes the total 8 kbit/s penalty
+(main paper, Sections 3.11 and 4.12). Every other setting, the Ogg writer, the FFmpeg decoder and
+the resampler were unchanged, and the signal-type hint stayed `signal=auto`. In checks committed
+before recognition, the regenerated OPUS_AUDIO8 bitstreams and waveforms equalled those of the
+confirmation for all 2,174 utterances; every OPUS_VOIP8 utterance was encoded and decoded to the
+REF length without non-finite samples; every encoder control read back as requested (application
+2048); every packet was mono, narrowband and 20 ms (all SILK); and the analysis code reproduced
+the confirmation's contrasts. OPUS_VOIP8 was recognised once, in its own run (Whisper batch
+composition as in Section S4). The frozen rule classifies D_app = OPUS_VOIP8 − OPUS_AUDIO8 by
+whether its 95 % interval lies below zero (VOIP_LOWER_PENALTY), above zero (VOIP_HIGHER_PENALTY)
+or includes it (NO_CLEAR_APPLICATION_DIFFERENCE), with no minimum effect and no equivalence
+margin; both recognisers returned NO_CLEAR_APPLICATION_DIFFERENCE (Table S21). For Whisper
+large-v3 the upper bound is exactly zero, and the CER contrast and the test-other contrast
+excluded zero (Tables S21 and S22; secondary, uncorrected). The VoIP mode changed every waveform
+at an almost unchanged bitrate, with slightly lower in-band fidelity and a weaker image copy
+(Table S23); these descriptors enter no rule, and no mechanism is inferred.
+
+| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |
+|---|---|---|
+| WER, OPUS_AUDIO8 (= OPUS) (%) | 3.32 [2.86, 3.82] | 8.84 [7.72, 10.17] |
+| WER, OPUS_VOIP8 (%) | 3.20 [2.79, 3.64] | 8.80 [7.70, 10.07] |
+| A = OPUS_AUDIO8 − REF (pp) | +0.83 [+0.57, +1.10] | +3.48 [+2.73, +4.45] |
+| V = OPUS_VOIP8 − REF (pp) | +0.70 [+0.48, +0.95] | +3.44 [+2.71, +4.37] |
+| D_app = OPUS_VOIP8 − OPUS_AUDIO8 (pp) | −0.12 [−0.25, +0.00] | −0.03 [−0.23, +0.15] |
+| D_app, CER (pp) | −0.07 [−0.13, −0.007] | −0.05 [−0.13, +0.04] |
+| Outcome (frozen rule) | NO_CLEAR_APPLICATION_DIFFERENCE | NO_CLEAR_APPLICATION_DIFFERENCE |
+
+: Encoder application mode on the confirmation set (2,174 utterances, 73 speakers; pooled; 95 % speaker-bootstrap intervals with the confirmation's seed): corpus WER (%), the totals under the audio and VoIP application modes and their difference (pp), and the frozen outcome. Total penalty only: no bandwidth share or residual under the VoIP mode; not an equivalence test.
+
+| Subset | Recogniser | V = OPUS_VOIP8 − REF | D_app = OPUS_VOIP8 − OPUS_AUDIO8 |
+|---|---|---|---|
+| test-clean | Whisper large-v3 | +0.26 [+0.13, +0.41] | −0.004 [−0.10, +0.09] |
+| test-clean | wav2vec2-base-960h | +1.27 [+0.92, +1.65] | −0.07 [−0.28, +0.13] |
+| test-other | Whisper large-v3 | +1.30 [+0.84, +1.84] | −0.28 [−0.56, −0.02] |
+| test-other | wav2vec2-base-960h | +6.36 [+4.79, +8.48] | +0.02 [−0.33, +0.38] |
+
+: Encoder application mode per subset (secondary scope; no multiplicity correction; pp, 95 % speaker-bootstrap intervals).
+
+| Descriptor | OPUS_AUDIO8 | OPUS_VOIP8 |
+|---|---|---|
+| Payload bitrate, median [5th, 95th percentile] (kbit/s) | 7.34 [6.73, 7.71] | 7.29 [6.71, 7.68] |
+| Coherence with REF, 0–3.5 kHz (median) | 0.623 | 0.614 |
+| LSD vs REF, 0–3 kHz (dB, median) | 6.14 | 6.41 |
+| RMS change vs REF (dB, median) | −0.68 | −0.72 |
+| In-band gain, 0.5–2 kHz (dB, pooled) | −1.83 | −2.02 |
+| Total 4–8 kHz power vs REF (dB, pooled) | −16.7 | −16.8 |
+| Mirror coherence, 4.1–4.9 kHz (pooled) | 0.227 | 0.093 |
+| Integer lag vs REF (samples: utterances) | 1: 12; 2: 2,162 | −4: 1; −3: 1; −2: 20; −1: 28; 0: 213; 1: 1,625; 2: 286 |
+| Samples at or above full scale (utterances) | 113 (17) | 78 (19) |
+
+: Encoder application mode: payload bitrate and signal descriptors against REF (per-utterance medians or pooled cross-spectral measures), integer lags and samples at or above full scale (passed on unchanged). Descriptive only; no descriptor enters the rule.
+
+# S11. Metric and weighting robustness
+
+Without new recognition, the primary contrasts of main-paper Section 4.12 were recomputed from
+the confirmation outputs in every bootstrap replicate (the confirmation's seed on the same
+speakers) under four weightings: corpus WER, mean per-utterance WER, equal-speaker WER (the mean
+of per-speaker corpus WERs) and CER. The classification criteria were fixed in the audit code
+before it was run. A sign or ordering statement is robust to the weighting if its interval lies
+above zero under all four pooled weightings and, under corpus WER, in both subsets; a share is
+unstable if any pooled replicate has a non-positive denominator, if its corpus-WER interval has an
+upper-to-lower ratio above 2, or if its point estimates differ by more than a factor of 1.5 across
+weightings. The residual and its excess over the bandwidth component were robust for both
+recognisers, Whisper's bandwidth component was subset-dependent (not detectable on test-clean),
+the Whisper share was unstable and the wav2vec2 share robust; no pooled replicate had a
+non-positive denominator. Relative to the LP WER, the residual was 26.0 % (Whisper) and 30.6 %
+(wav2vec2) under corpus WER but 30.3 % and 45.6 % under CER, and the ratio of the two recognisers'
+bandwidth components ranged from 4.9 (CER) to 10.0 (corpus WER). In secondary cells, the ordering
+was unresolved for Whisper on test-clean under CER and for wav2vec2 on test-other under mean
+per-utterance WER, and for wav2vec2 the deletions rose more with band limitation than beyond it
+(residual minus bandwidth component −0.09 [−0.22, +0.02] per 100 reference words).
+
+| Weighting | Recogniser | LP − REF | OPUS − LP | (OPUS − LP) − (LP − REF) | Sequential share |
+|---|---|---|---|---|---|
+| Corpus WER | Whisper large-v3 | +0.14 [+0.04, +0.25] | +0.69 [+0.46, +0.94] | +0.55 [+0.30, +0.82] | 0.17 [0.05, 0.29] |
+| Corpus WER | wav2vec2-base-960h | +1.40 [+0.99, +1.92] | +2.07 [+1.68, +2.57] | +0.67 [+0.37, +0.95] | 0.40 [0.35, 0.45] |
+| Mean utterance WER | Whisper large-v3 | +0.35 [+0.17, +0.54] | +1.00 [+0.64, +1.39] | +0.65 [+0.25, +1.08] | 0.26 [0.14, 0.39] |
+| Mean utterance WER | wav2vec2-base-960h | +1.90 [+1.39, +2.44] | +2.61 [+2.12, +3.13] | +0.71 [+0.21, +1.20] | 0.42 [0.36, 0.48] |
+| Equal-speaker WER | Whisper large-v3 | +0.18 [+0.05, +0.31] | +0.77 [+0.53, +1.01] | +0.59 [+0.32, +0.88] | 0.19 [0.06, 0.31] |
+| Equal-speaker WER | wav2vec2-base-960h | +1.52 [+1.13, +1.95] | +2.16 [+1.79, +2.57] | +0.63 [+0.32, +0.95] | 0.41 [0.36, 0.46] |
+| CER | Whisper large-v3 | +0.12 [+0.07, +0.18] | +0.31 [+0.20, +0.44] | +0.19 [+0.08, +0.32] | 0.28 [0.17, 0.40] |
+| CER | wav2vec2-base-960h | +0.59 [+0.42, +0.81] | +1.09 [+0.87, +1.40] | +0.50 [+0.36, +0.65] | 0.35 [0.30, 0.39] |
+
+: Metric and weighting robustness of the primary contrasts on the confirmation set (pooled; pp; 95 % speaker-bootstrap intervals with the confirmation's seed): bandwidth component, residual, their difference and the sequential share under four weightings. No new recognition.

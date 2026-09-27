@@ -1,4 +1,4 @@
-"""Generate manuscript tables from the frozen Stage 3 outputs (read-only).
+"""Generate manuscript tables from the frozen Stage 3 outputs and the later sealed analyses (read-only).
 
 Every table cell in manuscript/manuscript.md is copied from this script's output, and
 check_numbers.py re-derives the same strings to verify the manuscript.
@@ -650,6 +650,200 @@ out.append(f"R4 gates: G1 {R4_VAL['gates']['G1']['identical']:,} of {n4:,}; G2 d
            f"errors {len(R4_VAL['gates']['G2']['decode_errors'])}; G3 {R4_VAL['gates']['G3']['pass']}; "
            f"G4 non-finite {R4_VAL['gates']['G4']['nonfinite_48k'] + R4_VAL['gates']['G4']['nonfinite_16k']}; "
            f"G5 {R4_VAL['gates']['G5']['pass']}; G7 {R4_VAL['gates']['G7']['pass']}; G9 {R4_VAL['gates']['G9']['pass']}")
+out.append("")
+
+# ================================================================ Final invariance pass (sealed outputs): A1, C1
+FIR = ROOT / "results_paper" / "final_invariance"
+A1_DEC = sealed(FIR / "A1_DECISION.json", "decision_sha256")
+A1_EVAL = sealed(FIR / "a1_evaluation" / "evaluation_report.json", "report_sha256")
+A1_CAL = sealed(FIR / "a1_calibration" / "signal_report.json", "report_sha256")
+A1_VAL = sealed(FIR / "a1_validation" / "validation_report.json", "report_sha256")
+A1_RAW = sealed(FIR / "a1_raw" / "outputs_sha256.json", "outputs_sha256")
+assert file_sha256(FIR / "a1_bootstrap.csv") == A1_DEC["bootstrap_sha256"]
+assert file_sha256(FIR / "a1_evaluation" / "evaluation_rows.csv") == A1_EVAL["rows_sha256"]
+assert A1_DEC["outputs_sha256"] == A1_RAW["outputs_sha256"] and A1_DEC["anchor_reproduction"]["pass"]
+assert A1_EVAL["pass"] and A1_VAL["pass"] and A1_CAL["pass"]
+A1_BOOT = load(FIR / "a1_bootstrap.csv")
+A1_ROWS = load(FIR / "a1_evaluation" / "evaluation_rows.csv")
+
+
+def a1(model, quantity, scope="pooled", kind="micro"):
+    return ub(A1_BOOT, model, quantity, scope, kind)
+
+
+out.append("TABLE A1 (inclusive best-linear attribution of the 8 kbit/s output, pooled) [submission]")
+out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|")
+for label, q, signed in [("WER, LIN8 (%)", "wer_LIN8", False),
+                         ("LIN8 − REF (inclusive linear component, pp)", "L8", True),
+                         ("OPUS − LIN8 (residual beyond the best-linear surrogate, pp)", "R8", True),
+                         ("LIN8 − LP (pp)", "delta_L", True)]:
+    out.append(row(label, [ci(*a1(m, q), signed=signed) for m, _ in MODELS]))
+out.append(row("Linear share, (LIN8 − REF)/(OPUS − REF)", [ci(*a1(m, "S8", kind="ratio"), signed=False) for m, _ in MODELS]))
+out.append(row("Sequential share along REF → LP → OPUS", [ci(*a1(m, "S_primary", kind="ratio"), signed=False) for m, _ in MODELS]))
+out.append(row("Outcome (frozen rule)", [A1_DEC["outcome"]] * 2))
+out.append("")
+out.append("TABLE A1S (inclusive best-linear attribution per subset, secondary) [submission]")
+out.append("| Subset | Recogniser | LIN8 − REF | OPUS − LIN8 | LIN8 − LP |")
+out.append("|---|---|---|---|---|")
+for scope in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(scope, [name] + [ci(*a1(m, q, scope)) for q in ["L8", "R8", "delta_L"]]))
+out.append("")
+
+
+def lp_response():
+    """Frozen LP control response at fixed frequencies relative to its 0.5-2 kHz gain (dB)."""
+    import numpy as np
+    taps = np.asarray(json.loads((ROOT / "results_paper" / "lowpass_validation" / "frozen_filter.json").read_text())["taps"])
+    freqs = np.fft.rfftfreq(8192, 1 / 16000)
+    db = 20 * np.log10(np.maximum(np.abs(np.fft.rfft(taps, 8192)), 1e-12))
+    gain = float(db[(freqs >= 500) & (freqs <= 2000)].mean())
+    return gain, {hz: float(db[int(np.argmin(abs(freqs - hz)))] - gain) for hz in [2000, 2500, 3000, 3500, 4000]}
+
+
+LP_GAIN, LP_REL = lp_response()
+A1_SUM = {"calibration": A1_CAL["summary"], "validation": A1_VAL["summary"], "confirmation": A1_EVAL["summary"]}
+out.append("TABLE A1D (linear response of the 8 kbit/s chain: per-utterance medians; LP control for comparison) [submission]")
+out.append("| Descriptor | LIN8, calibration | LIN8, validation | LIN8, confirmation | LP control |")
+out.append("|---|---|---|---|---|")
+out.append(row("Projection NMSE (dB)", [fmt(A1_SUM[s]["nmse_db"]["median"]) for s in A1_SUM] + ["—"]))
+out.append(row("Energy explained", [fmt(A1_SUM[s]["explained_energy_fraction"]["median"], dec=3) for s in A1_SUM] + ["—"]))
+out.append(row("Gain, 0.5–2 kHz (dB)", [fmt(A1_SUM[s]["gain_0p5_2k_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_GAIN, 2) + 0.0)]))
+for hz in [2000, 2500, 3000, 3500, 4000]:
+    out.append(row(f"Response at {hz / 1000:.1f} kHz, relative (dB)",
+                   [fmt(A1_SUM[s][f"rel_{hz}_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_REL[hz], 2) + 0.0)]))
+out.append(row("Delay (samples)", [fmt(A1_SUM[s]["linear_delay_samples"]["median"]) for s in A1_SUM] + ["0"]))
+pc, pv = A1_CAL["pooled"], A1_VAL["pooled"]
+out.append(row("Pooled coherence 0–3.5 kHz, OPUS / LIN8", [f"{fmt(p['REF->OPUS8']['mean_coherence_0_3500'], dec=3)} / "
+                                                              f"{fmt(p['REF->LIN8']['mean_coherence_0_3500'], dec=3)}" for p in (pc, pv)] + ["—", "—"]))
+out.append(row("Pooled 4–8 kHz power vs REF, OPUS / LIN8 (dB)", [f"{fmt(p['REF->OPUS8']['total_hf_power_db'], dec=1)} / "
+                                                                   f"{fmt(p['REF->LIN8']['total_hf_power_db'], dec=1)}" for p in (pc, pv)] + ["—", "—"]))
+out.append("")
+g = A1_VAL["gates"]
+out.append(f"A1 gates: calibration NMSE median {fmt(A1_CAL['summary']['nmse_db']['median'])} dB, tolerance "
+           f"{fmt(A1_CAL['collapse_tolerance_db'])} dB; validation median {fmt(g['V2']['validation_median_nmse_db'])} dB "
+           f"(gap {fmt(g['V2']['generalisation_gap_db'], signed=True)} dB); OPUS8 reproduced {A1_EVAL['gates']['E1']['opus8_identical']:,} "
+           f"of {A1_EVAL['gates']['E1']['of']:,}; anchors {A1_DEC['anchor_reproduction']['max_abs_difference_pp']:.1e} pp")
+out.append("")
+
+# ---------------------------------------------------------------- C1: metric and weighting robustness (no new ASR)
+C1_REC = sealed(FIR / "C1_RECORD.json", "record_sha256")
+assert file_sha256(FIR / "c1_metric_table.csv") == C1_REC["table_sha256"]
+C1_TAB = load(FIR / "c1_metric_table.csv")
+C1_W = [("micro", "Corpus WER"), ("macro", "Mean utterance WER"), ("speaker", "Equal-speaker WER"), ("cer", "CER")]
+
+
+def c1(model, metric, quantity, scope="pooled"):
+    rows = [r for r in C1_TAB if r["model"] == model and r["metric"] == metric and r["quantity"] == quantity
+            and r["scope"] == scope]
+    assert len(rows) == 1, (model, metric, quantity, scope)
+    return float(rows[0]["estimate"]), float(rows[0]["ci_lower"]), float(rows[0]["ci_upper"])
+
+
+out.append("TABLE C1 (metric and weighting robustness of the primary contrasts, pooled; no new ASR) [submission]")
+out.append("| Weighting | Recogniser | LP − REF | OPUS − LP | (OPUS − LP) − (LP − REF) | Sequential share |")
+out.append("|---|---|---|---|---|---|")
+for metric, wname in C1_W:
+    for m, name in MODELS:
+        out.append(row(wname, [name, ci(*c1(m, metric, "B")), ci(*c1(m, metric, "R")), ci(*c1(m, metric, "R_minus_B")),
+                               ci(*c1(m, metric, "share_B_over_T"), signed=False)]))
+out.append("")
+CL = C1_REC["classifications"]
+out.append("C1 classes: " + "; ".join(f"{k}: {'/'.join(v['classes'])}" for k, v in CL.items()))
+for m, name in MODELS:
+    est = CL[f"{m}: sequential share B/T"]["estimates"]
+    out.append(f"C1 share range {m}: {fmt(min(est.values()))}–{fmt(max(est.values()))}")
+out.append("C1 disagreeing secondary cells: whisper test-clean CER R−B " + ci(*c1("whisper", "cer", "R_minus_B", "test-clean"))
+           + "; wav2vec2 test-other macro R−B " + ci(*c1("wav2vec2", "macro", "R_minus_B", "test-other"))
+           + "; wav2vec2 deletions R−B " + ci(*c1("wav2vec2", "D", "R_minus_B")))
+out.append("")
+
+
+def c1_rel_residual(model, metric):
+    """Residual relative to the LP level (%), from the sealed C1 cells (REF level = T / (T / REF))."""
+    ref = c1(model, metric, "T")[0] / c1(model, metric, "rel_T")[0]
+    return 100 * c1(model, metric, "R")[0] / (ref + c1(model, metric, "B")[0])
+
+
+out.append("C1 residual relative to the LP level (%, Whisper and wav2vec2): " + "; ".join(
+    f"{wname} {c1_rel_residual('whisper', m):.1f} and {c1_rel_residual('wav2vec2', m):.1f}" for m, wname in C1_W))
+out.append("C1 ratio of the bandwidth components (wav2vec2 / Whisper): " + "; ".join(
+    f"{wname} {c1('wav2vec2', m, 'B')[0] / c1('whisper', m, 'B')[0]:.1f}" for m, wname in C1_W))
+out.append("C1 criteria: interval ratio above 2; point estimates differing by a factor above 1.5; replicates with "
+           "a non-positive denominator: " + ", ".join(
+               str(sum(int(float(r["replicates_denominator_le_0"] or 0)) for r in C1_TAB
+                       if r["model"] == m and r["scope"] == "pooled" and r["quantity"] == "share_B_over_T")) for m, _ in MODELS))
+out.append("")
+
+# ---------------------------------------------------------------- B1: encoder application mode (sealed outputs)
+B1_DEC = sealed(FIR / "B1_DECISION.json", "decision_sha256")
+B1_VAL = sealed(FIR / "b1_validation" / "validation_report.json", "report_sha256")
+B1_RAW = sealed(FIR / "b1_raw" / "outputs_sha256.json", "outputs_sha256")
+B1_CAL = sealed(FIR / "b1_calibration" / "encode_report.json", "report_sha256")
+assert file_sha256(FIR / "b1_bootstrap.csv") == B1_DEC["bootstrap_sha256"]
+assert file_sha256(FIR / "b1_validation" / "validation_rows.csv") == B1_VAL["rows_sha256"]
+assert B1_DEC["outputs_sha256"] == B1_RAW["outputs_sha256"] and B1_DEC["anchor_reproduction"]["pass"] and B1_VAL["pass"]
+B1_BOOT = load(FIR / "b1_bootstrap.csv")
+B1_OUT = {m: B1_DEC["cells"][m]["outcome"] for m, _ in MODELS}
+
+
+def b1(model, quantity, scope="pooled", kind="micro"):
+    return ub(B1_BOOT, model, quantity, scope, kind)
+
+
+out.append("TABLE B1 (encoder application mode: total penalty under OPUS_APPLICATION_VOIP, pooled) [submission]")
+out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|")
+for label, q, signed in [("WER, OPUS_AUDIO8 (= OPUS) (%)", "wer_OPUS_AUDIO8", False), ("WER, OPUS_VOIP8 (%)", "wer_OPUS_VOIP8", False),
+                         ("A = OPUS_AUDIO8 − REF (pp)", "A", True), ("V = OPUS_VOIP8 − REF (pp)", "V", True),
+                         ("D_app = OPUS_VOIP8 − OPUS_AUDIO8 (pp)", "D_app", True)]:
+    out.append(row(label, [ci(*b1(m, q), signed=signed) for m, _ in MODELS]))
+out.append(row("D_app, CER (pp)", [ci(*b1(m, "D_app", kind="micro_cer")) for m, _ in MODELS]))
+out.append(row("Outcome (frozen rule)", [B1_OUT[m] for m, _ in MODELS]))
+out.append("")
+out.append("TABLE B1S (encoder application mode per subset, secondary) [submission]")
+out.append("| Subset | Recogniser | V = OPUS_VOIP8 − REF | D_app = OPUS_VOIP8 − OPUS_AUDIO8 |")
+out.append("|---|---|---|---|")
+for scope in ["test-clean", "test-other"]:
+    for m, name in MODELS:
+        out.append(row(scope, [name, ci(*b1(m, "V", scope)), ci(*b1(m, "D_app", scope))]))
+out.append("")
+BD = B1_VAL["descriptive"]
+out.append("TABLE B1D (encoder application mode: packets and signal descriptors against REF, 2,174 utterances; descriptive) [submission]")
+out.append("| Descriptor | OPUS_AUDIO8 | OPUS_VOIP8 |")
+out.append("|---|---|---|")
+C_ = ["OPUS_AUDIO8", "OPUS_VOIP8"]
+out.append(row("Payload bitrate, median [5th, 95th percentile] (kbit/s)",
+               [f"{fmt(BD[c]['payload_kbps']['median'])} [{fmt(BD[c]['payload_kbps']['p05'])}, {fmt(BD[c]['payload_kbps']['p95'])}]" for c in C_]))
+out.append(row("Coherence with REF, 0–3.5 kHz (median)", [fmt(BD[c]["coherence_0_3500_vs_ref"]["median"], dec=3) for c in C_]))
+out.append(row("LSD vs REF, 0–3 kHz (dB, median)", [fmt(BD[c]["lsd_0_3k_db_vs_ref"]["median"]) for c in C_]))
+out.append(row("RMS change vs REF (dB, median)", [fmt(BD[c]["rms_change_db"]["median"]) for c in C_]))
+out.append(row("In-band gain, 0.5–2 kHz (dB, pooled)", [fmt(BD[c]["pooled_h1_level_db"]) for c in C_]))
+out.append(row("Total 4–8 kHz power vs REF (dB, pooled)", [fmt(BD[c]["pooled_total_hf_power_db"], dec=1) for c in C_]))
+out.append(row("Mirror coherence, 4.1–4.9 kHz (pooled)", [fmt(BD[c]["pooled_mirror_coherence_4100_4900"], dec=3) for c in C_]))
+out.append(row("Integer lag vs REF (samples: utterances)", [lag_cell(BD[c]["lag_vs_ref_counts"]).replace("-", MINUS) for c in C_]))
+out.append(row("Samples at or above full scale (utterances)",
+               [f"{BD[c]['clipped_samples_total']} ({BD[c]['utterances_with_clipping']})" for c in C_]))
+out.append("")
+K = B1_VAL["checks"]
+out.append(f"B1 checks: AUDIO8 reproduced {K['K1']['ogg_identical']:,} and {K['K1']['waveform_identical']:,} of {K['K1']['of']:,}; "
+           f"VOIP8 encoded {K['K2']['encoded']:,} of {K['K2']['of']:,}; readback application "
+           f"{K['K3']['OPUS_VOIP8']['queried_application']} for VOIP8; all-SILK utterances {K['K4']['OPUS_VOIP8']['utterances_all_silk']:,}; "
+           f"anchors {B1_DEC['anchor_reproduction']['max_abs_difference_pp']:.1e} pp")
+out.append("")
+# ---------------------------------------------------------------- main-paper Table VII (Section 4.12)
+B1_ROWS_ENABLED = True
+out.append("TABLE 9 (post-confirmation sensitivity of the residual and of the total, pooled) [submission]")
+out.append("| Pooled (confirmation set, pp) | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|")
+out.append(row("LIN8 − REF (inclusive linear component)", [ci(*a1(m, "L8")) for m, _ in MODELS]))
+out.append(row("OPUS − LIN8 (residual beyond the best-linear surrogate)", [ci(*a1(m, "R8")) for m, _ in MODELS]))
+out.append(row("LIN8 − LP", [ci(*a1(m, "delta_L")) for m, _ in MODELS]))
+out.append(row("Linear share, (LIN8 − REF)/(OPUS − REF)", [ci(*a1(m, "S8", kind="ratio"), signed=False) for m, _ in MODELS]))
+if B1_ROWS_ENABLED:
+    out.append(row("OPUS_VOIP8 − REF (total, VoIP application mode)", [ci(*b1(m, "V")) for m, _ in MODELS]))
+    out.append(row("OPUS_VOIP8 − OPUS (application mode)", [ci(*b1(m, "D_app")) for m, _ in MODELS]))
 out.append("")
 
 print("\n".join(out))
