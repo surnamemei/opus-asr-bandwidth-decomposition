@@ -1,0 +1,171 @@
+{
+ "created_utc": "2026-09-27T19:05:31.864952+00:00",
+ "spec_sha256": "42504ce4bb2675c26693d91d6cc4f0c4c3c1de5c9778e0e7c9530ca2a587b4aa",
+ "part": "encode",
+ "purpose": "calibration set only, no ASR: K1-K6 on the 20 Stage 3 calibration utterances and the descriptive summaries",
+ "n_utterances": 20,
+ "checks": {
+  "K1": {
+   "ogg_identical": 20,
+   "waveform_identical": 20,
+   "of": 20,
+   "pass": true
+  },
+  "K2": {
+   "errors": [],
+   "encoded": 20,
+   "of": 20,
+   "length_equals_ref": 20,
+   "nonfinite": 0,
+   "pass": true
+  },
+  "K3": {
+   "OPUS_AUDIO8": {
+    "utterances_with_mismatches": 0,
+    "queried_application": [
+     2049
+    ],
+    "expected_application": 2049
+   },
+   "OPUS_VOIP8": {
+    "utterances_with_mismatches": 0,
+    "queried_application": [
+     2048
+    ],
+    "expected_application": 2048
+   },
+   "pass": true
+  },
+  "K4": {
+   "OPUS_AUDIO8": {
+    "bandwidths": [
+     "NB"
+    ],
+    "frame_ms": [
+     "20.0"
+    ],
+    "any_stereo": false,
+    "packet_modes_reported": {
+     "SILK": 20
+    },
+    "utterances_all_silk": 20
+   },
+   "OPUS_VOIP8": {
+    "bandwidths": [
+     "NB"
+    ],
+    "frame_ms": [
+     "20.0"
+    ],
+    "any_stereo": false,
+    "packet_modes_reported": {
+     "SILK": 20
+    },
+    "utterances_all_silk": 20
+   },
+   "pass": true
+  },
+  "K5": {
+   "environment_differences": [],
+   "libopus": "libopus 1.4",
+   "libopus_path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+   "pass": true
+  },
+  "K6": {
+   "identical_second_pass": {
+    "audio8": true,
+    "voip8": true
+   },
+   "of": 20,
+   "pass": true
+  }
+ },
+ "descriptive": {
+  "OPUS_AUDIO8": {
+   "payload_kbps": {
+    "median": 7.3665612625033,
+    "p05": 6.5445449635684385,
+    "p95": 7.636281840050979
+   },
+   "container_kbps": {
+    "median": 8.241800969667977,
+    "p05": 7.21927817839842,
+    "p95": 8.438152504133802
+   },
+   "clipped_samples_total": 0,
+   "utterances_with_clipping": 0,
+   "lag_vs_ref_counts": {
+    "2": 20
+   },
+   "rms_change_db": {
+    "median": -0.7891666615430819,
+    "p05": -1.4808754716315382,
+    "p95": -0.3609015238528448
+   },
+   "lsd_0_3k_db_vs_ref": {
+    "median": 6.433093786239624,
+    "p05": 5.75128743648529,
+    "p95": 7.109129428863525
+   },
+   "coherence_0_3500_vs_ref": {
+    "median": 0.6132691305478242,
+    "p05": 0.5533714743047735,
+    "p95": 0.6796500787328109
+   },
+   "pooled_power_4000_8000_db": -18.74836233911929,
+   "pooled_total_hf_power_db": -18.74836233911929,
+   "pooled_mirror_coherence_4100_4900": 0.26519011111019253,
+   "pooled_mean_coherence_0_3500": 0.6513652206550387,
+   "pooled_h1_level_db": -1.5107790736430236,
+   "pooled_coherent_bandwidth_hz": 4000.0
+  },
+  "OPUS_VOIP8": {
+   "payload_kbps": {
+    "median": 7.360936952957848,
+    "p05": 6.492270755893272,
+    "p95": 7.644017193206158
+   },
+   "container_kbps": {
+    "median": 8.24475473127723,
+    "p05": 7.172214611604093,
+    "p95": 8.40099938947072
+   },
+   "clipped_samples_total": 0,
+   "utterances_with_clipping": 0,
+   "lag_vs_ref_counts": {
+    "-3": 1,
+    "0": 2,
+    "1": 17
+   },
+   "rms_change_db": {
+    "median": -0.8200237506151362,
+    "p05": -1.7429255795755583,
+    "p95": -0.5167527864724147
+   },
+   "lsd_0_3k_db_vs_ref": {
+    "median": 6.591151237487793,
+    "p05": 5.738470268249512,
+    "p95": 7.40123929977417
+   },
+   "coherence_0_3500_vs_ref": {
+    "median": 0.5931032832727772,
+    "p05": 0.5535900081007963,
+    "p95": 0.674137509584861
+   },
+   "pooled_power_4000_8000_db": -18.727998394346134,
+   "pooled_total_hf_power_db": -18.727998394346134,
+   "pooled_mirror_coherence_4100_4900": 0.19856641789497162,
+   "pooled_mean_coherence_0_3500": 0.6097617235413112,
+   "pooled_h1_level_db": -1.726041078043863,
+   "pooled_coherent_bandwidth_hz": 4031.25
+  },
+  "paired_payload_kbps_difference_voip_minus_audio": {
+   "median": -0.02359968564660031
+  },
+  "voip8_waveform_identical_to_audio8": 0
+ },
+ "seconds_per_utterance_per_pass": 1.6616924822330474,
+ "rows_sha256": "1180bb2501f5866a830c7409bc4957ded9cc90c177fe9336ce09d62c47602931",
+ "pass": true,
+ "report_sha256": "f2617b4f592bf0a0b9919b796a04930a90fb2384530be417ffa61376656242a9"
+}

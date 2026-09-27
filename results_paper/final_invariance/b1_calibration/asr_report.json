@@ -1,0 +1,38 @@
+{
+ "created_utc": "2026-09-27T19:07:58.886697+00:00",
+ "spec_sha256": "42504ce4bb2675c26693d91d6cc4f0c4c3c1de5c9778e0e7c9530ca2a587b4aa",
+ "part": "asr",
+ "gpu_at_start": {
+  "utc": "2026-09-27T19:05:50.741467+00:00",
+  "nvidia_smi": "NVIDIA GeForce RTX 5090, 891 MiB, 32607 MiB, 1 %",
+  "compute_apps": "366540, [N/A]",
+  "free_gib": 30.2021484375
+ },
+ "purpose": "calibration set only: K7 (environment reproduction and the OPUS_VOIP8 recognition path); no WER is compared",
+ "K7": {
+  "environment": {
+   "rows": {
+    "audio_frozen": 120,
+    "audio_new": 120,
+    "audio_matched": 120,
+    "asr_frozen": 240,
+    "asr_new": 240,
+    "asr_matched": 240
+   },
+   "waveform_mismatches": 0,
+   "ogg_mismatches": 0,
+   "hypothesis_mismatches": 0,
+   "pass": true
+  },
+  "audio_identical_to_encode_part": 20,
+  "of": 20,
+  "repeat_hypotheses_identical": true,
+  "empty_hypotheses": 0,
+  "pass": true
+ },
+ "files": {
+  "k7_asr_outputs.csv": "71f1bdc57e0685d65087b1ba0556ffe49620eb7774974c034f25933f519162e8"
+ },
+ "pass": true,
+ "report_sha256": "7a62b1167c87d4a56d264046805a67e8c4fb03994917023256bd6ea0ed8c5a18"
+}
