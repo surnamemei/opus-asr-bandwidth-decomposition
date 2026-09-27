@@ -1,0 +1,104 @@
+{
+ "created_utc": "2026-09-27T14:18:58.624861+00:00",
+ "spec_sha256": "1e3f95ecf87719d1f014a72aa82eb15f7718ccd3b7946a9953601dc81224aabc",
+ "part": "decode",
+ "purpose": "RS1 dry run, calibration set only, no ASR: G1-G5 analogues and G6a on the 20 calibration utterances, descriptive diagnostics, reproduction of R1's E2 audio",
+ "n_utterances": 20,
+ "gates": {
+  "G1": {
+   "pass": true,
+   "identical": 20,
+   "of": 20
+  },
+  "G2": {
+   "pass": true,
+   "decoded": 20,
+   "decode_errors": [],
+   "packets_identical": 20,
+   "of": 20
+  },
+  "G3": {
+   "output_gain_zero": true,
+   "pre_skip_is_3x_lookahead": true,
+   "samples_per_packet": [
+    "960"
+   ],
+   "length_48k_follows_convention": true,
+   "length_48k_is_3x_ref": true,
+   "length_48k_equals_ffmpeg": true,
+   "length_16k_equals_ref": true,
+   "pass": true
+  },
+  "G4": {
+   "nonfinite_48k": 0,
+   "nonfinite_16k": 0,
+   "pass": true
+  },
+  "G5": {
+   "environment_differences": [],
+   "decoder": "libopus 1.4",
+   "decoder_path": "/usr/lib/x86_64-linux-gnu/libopus.so.0.9.0",
+   "pass": true
+  },
+  "G6a": {
+   "ogg_identical": true,
+   "waveforms_identical": true,
+   "of": 20,
+   "pass": true
+  }
+ },
+ "diagnostics": {
+  "OPUS_LIBOPUS": {
+   "lag_vs_ref_counts": {
+    "0": 13,
+    "1": 7
+   },
+   "rms_change_db": {
+    "median": -0.7747122898636815,
+    "p05": -1.4678649489745292,
+    "p95": -0.3617708741820009
+   },
+   "pooled_power_4000_5000_db": -16.08480308391887,
+   "pooled_total_hf_power_4000_8000_db": -19.86130007995037,
+   "pooled_mirror_coherence_4100_4900": 0.1380828810222678
+  },
+  "OPUS_FFMPEG": {
+   "lag_vs_ref_counts": {
+    "2": 20
+   },
+   "rms_change_db": {
+    "median": -0.7891666615430819,
+    "p05": -1.4808754716315382,
+    "p95": -0.3609015238528448
+   },
+   "pooled_power_4000_5000_db": -14.972751925980587,
+   "pooled_total_hf_power_4000_8000_db": -18.74836233911929,
+   "pooled_mirror_coherence_4100_4900": 0.26519011111019253
+  },
+  "decoder_difference": {
+   "bit_identical": 0,
+   "snr_unaligned_db": {
+    "median": 10.7200017396427,
+    "min": 6.085450140040869
+   },
+   "snr_one_sample_db": {
+    "median": 17.74302856613103,
+    "min": 11.876271990342266
+   },
+   "one_sample_shift_counts": {
+    "-1": 20
+   },
+   "max_abs_difference": 0.4382057897746563
+  },
+  "reproduction": {
+   "ffmpeg_identical_to_stage3": 20,
+   "libopus_identical_to_r1_refdec": 20,
+   "r1_refdec_available": 20,
+   "of": 20
+  }
+ },
+ "seconds_per_utterance_per_pass": 0.11540822386741638,
+ "rows_sha256": "8618a84fdb926c8d2d742c44c3ab4b33fffed1d62bfdefc9782404f134fc3b9e",
+ "pass": true,
+ "report_sha256": "70fadf41c8421a04153165aac9470274080e955b775189abcd496bc57c06a66b"
+}

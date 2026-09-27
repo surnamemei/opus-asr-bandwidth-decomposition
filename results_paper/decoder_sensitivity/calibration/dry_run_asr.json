@@ -1,0 +1,44 @@
+{
+ "created_utc": "2026-09-27T15:03:02.089689+00:00",
+ "spec_sha256": "1e3f95ecf87719d1f014a72aa82eb15f7718ccd3b7946a9953601dc81224aabc",
+ "part": "asr",
+ "purpose": "RS1 dry run, calibration set only: G8 environment reproduction and G6b; no WER is compared",
+ "G8": {
+  "rows": {
+   "audio_frozen": 120,
+   "audio_new": 120,
+   "audio_matched": 120,
+   "asr_frozen": 240,
+   "asr_new": 240,
+   "asr_matched": 240
+  },
+  "waveform_mismatches": 0,
+  "ogg_mismatches": 0,
+  "hypothesis_mismatches": 0,
+  "seconds_per_utterance": 0.9923905849456787,
+  "pass": true
+ },
+ "G6b": {
+  "audio_identical_to_decode_part": 20,
+  "of": 20,
+  "repeat_hypotheses_identical": true,
+  "empty_hypotheses": 0,
+  "pass": true
+ },
+ "descriptive": {
+  "hypotheses_identical_to_r1_e2_refdec": {
+   "whisper": 20,
+   "wav2vec2": 20
+  },
+  "of": 20,
+  "note": "R1's E2 recognised OPUS_REFDEC in chunks with other conditions, so Whisper batches differed"
+ },
+ "files": {
+  "dry_run_asr_outputs.csv": "e54deb7590cca6a0d05d2c4d1efef4e67df1e0e36477470d7d719d79ca03164b",
+  "dry_run_decode_rows.csv": "8618a84fdb926c8d2d742c44c3ab4b33fffed1d62bfdefc9782404f134fc3b9e",
+  "g8_asr_outputs.csv": "2891a3d78a7c9f396aa251c881aa23b5a0491e98938143bafd5a991dd44bc344",
+  "g8_audio_manifest.csv": "201661883b63b4ae40849882237e13236b51b3b03dc523e7f62e0fc687e0de6f"
+ },
+ "pass": true,
+ "report_sha256": "03d42cd6f49a14a8544bf8230e5ef7f12e9d9b44f5057fe30d7e95059efb57b0"
+}
