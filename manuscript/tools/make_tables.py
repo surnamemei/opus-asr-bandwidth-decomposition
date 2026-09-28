@@ -854,24 +854,27 @@ out.append("")
 # Tables tagged [repository] above are superseded in the submission by the compact tables below; they are still
 # generated from the sealed records (check_numbers.py skips them in both documents).
 out.append("TABLE 10 (main paper: post-confirmation robustness analyses, pooled) [submission]")
-out.append("| Analysis | Question (contrast) | Whisper large-v3 | wav2vec2-base-960h | Interpretation boundary |")
+# the quantity column names the kind of contrast (residual, total penalty, change in the total, practical
+# contrast) before the contrast itself; the boundary column states what each row does not show
+out.append("| Analysis | Quantity tested | Whisper large-v3 | wav2vec2-base-960h | Boundary |")
 out.append("|---|---|---|---|---|")
 for label, question, cells, boundary in [
-        ("Best-linear", "Residual beyond the best-linear component of the codec output? (OPUS − LIN8)",
-         [ci(*a1(m, "R8")) for m, _ in MODELS], "Attribution sensitivity; its linear share is not a bandwidth share"),
-        ("Level match", "Residual after RMS level matching? (level-matched OPUS − LP)",
+        ("Best-linear", "Residual: OPUS − LIN8",
+         [ci(*a1(m, "R8")) for m, _ in MODELS], "Attribution sensitivity; linear share is not a bandwidth share"),
+        ("Level match", "Residual: level-matched OPUS − LP",
          [ci(*a(m, "L_level_matched_minus_lp")) for m, _ in MODELS], "Broadband level only"),
-        ("Decoder", "Total penalty under libopus decoding? (OPUS_LIBOPUS − REF)",
-         [ci(*r4(m, "T_libopus")) for m, _ in MODELS], "Total penalty only"),
-        ("Decoder", "Does the decoder change the total? (OPUS_LIBOPUS − OPUS)",
+        ("Decoder", "Total: OPUS_LIBOPUS − REF",
+         [ci(*r4(m, "T_libopus")) for m, _ in MODELS], "No share or residual computed"),
+        ("Decoder", "Change in total: OPUS_LIBOPUS − OPUS",
          [ci(*r4(m, "D")) for m, _ in MODELS], "No decoder-invariant residual or share claimed"),
-        ("Application", "Total penalty in the VoIP application mode? (OPUS_VOIP8 − REF)",
-         [ci(*b1(m, "V")) for m, _ in MODELS], "Total penalty only"),
-        ("Application", "Does the application mode change the total? (OPUS_VOIP8 − OPUS)",
+        ("Application", "Total: OPUS_VOIP8 − REF",
+         [ci(*b1(m, "V")) for m, _ in MODELS], "No share or residual computed"),
+        ("Application", "Change in total: OPUS_VOIP8 − OPUS",
          [ci(*b1(m, "D_app")) for m, _ in MODELS], "No clear difference; not equivalence"),
-        ("Allocation", "Wideband instead of narrowband at 8 kbit/s? (WB8 − NB8)",
-         [ci(*r3(m, "W")) for m, _ in MODELS], "Practical, not factorial; sweep utterances")]:
-    out.append(row(label, [question] + cells + [boundary]))
+        ("Allocation", "Practical contrast: WB8 − NB8",
+         [ci(*r3(m, "W")) for m, _ in MODELS], "Not factorial; sweep utterances")]:
+    # a contrast is not broken across lines (no-break spaces around its minus sign)
+    out.append(row(label, [question.replace(" − ", " − ")] + cells + [boundary]))
 out.append("")
 out.append("TABLE SC (supplement: decoder, application mode and bandwidth allocation, pooled) [submission]")
 out.append("| Pooled | Whisper large-v3 | wav2vec2-base-960h |")

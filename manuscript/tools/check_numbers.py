@@ -211,6 +211,9 @@ need(f"{fmt(thr[W]['meaningful_decline_threshold'], True, 3)} | {fmt(thr[V]['mea
 assert T.B_DEC["outcome"] == "GO" and all(c["outcome"] == "GO" for c in thr.values())
 for m in (W, V):   # no residual detectable at 24 and 40 kbit/s; detectable at 8
     assert all(T.sw(m, f"R_{r}")[1] <= 0 <= T.sw(m, f"R_{r}")[2] for r in (24, 40)) and R8[m][1] > 0
+# the paired 24-40 kbit/s contrast resolves a smaller difference for wav2vec2 only (Whisper's includes zero)
+D2440 = {m: T.sw(m, "D_24_40") for m in (W, V)}
+assert D2440[V][1] > 0 and D2440[W][1] <= 0 <= D2440[W][2]
 need(", ".join(f"{p:.2f}" for p in T.payload[:-1]) + f" and {T.payload[-1]:.2f} kbit/s", "B payload")
 dev = sorted(100 * (1 - p / r) for p, r in zip(T.payload, T.RATES))
 need(f"{dev[0]:.1f}–{dev[-1]:.1f} % below nominal", "B payload deviation")
@@ -243,6 +246,11 @@ need(f"{sel['n_utterances']:,} utterances from {sel['n_speakers']} speakers ({se
 
 # signal prose
 S = T.SUM
+# the prose states the values relative to LP (vs_lp_*); the descriptor table gives the separately computed
+# values relative to REF (vs_ref_*); the submission says that they agree to the precision shown
+for c in ("OPUS", "SILK"):
+    assert f"{float(S[c]['vs_lp_lsd_0_3k_db']):.2f}" == f"{float(S[c]['vs_ref_lsd_0_3k_db']):.2f}"
+    assert f"{float(S[c]['vs_lp_coherence_0_3500']):.3f}" == f"{float(S[c]['vs_ref_coherence_0_3500']):.3f}"
 need(f"{float(S['OPUS']['vs_lp_lsd_0_3k_db']):.2f} dB", "OPUS in-band LSD vs LP")
 need(f"{float(S['SILK']['vs_lp_lsd_0_3k_db']):.2f} dB", "SILK in-band LSD vs LP")
 need(f"{float(S['OPUS']['vs_lp_coherence_0_3500']):.3f}", "OPUS coherence vs LP")
@@ -282,7 +290,7 @@ for br, token in (("12k", "1.33 pp at 12 kbit/s"), ("8k", "6.63 pp at 8 kbit/s")
     row = [r for r in prior if r["codec"] == "opus" and r["bitrate"] == br and r["dataset"] == "test-other"][0]
     if f"{float(row['delta_wer_pp']):.2f}" not in token:
         fails.append(f"PRIOR mismatch {br}: {row['delta_wer_pp']}")
-    need(token, "preliminary study")
+    need_full_only(token, "preliminary study (the submission names the unpublished analysis without its numbers)")
 
 
 # LP reference convergence (frozen calibration curves)
@@ -304,10 +312,13 @@ if SUBMISSION:
     _src = (generated + "\n" + full).splitlines()
     known_headers = {tuple(cells_of(l)[1:]) for i, l in enumerate(_src)
                      if l.startswith("|") and not is_rule(l) and i + 1 < len(_src) and is_rule(_src[i + 1])}
+    # a table cell that build_submission.py rewords for the journal; the row is otherwise the checked draft-2 row
+    REWORDED = {"| LP | Fixed zero-phase low-pass control (Section 3.4) | — | — |":
+                "| LP | Frozen zero-phase low-pass control (Section 3.4) | — | — |"}
     for f, text in TEXTS.items():
         lines = text.splitlines()
         for i, line in enumerate(lines):
-            if not line.startswith("|") or " ".join(line.split()) in known:
+            if not line.startswith("|") or " ".join(REWORDED.get(line, line).split()) in known:
                 continue
             header = i + 1 < len(lines) and is_rule(lines[i + 1])
             if header and tuple(cells_of(line)[1:]) in known_headers:
@@ -371,12 +382,12 @@ if SUBMISSION:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
     # reference-decoder sensitivity of the total penalty (sealed R4 outputs): a Results paragraph, one
-    # Discussion sentence and the Implementations limitation in the main paper; tables, diagnostics,
-    # transcript differences and deviations in the supplement (Section S8)
+    # Discussion sentence and the decoder limitation in the main paper; tables in the supplement (Section S7),
+    # diagnostics and transcript differences in the repository
     assert T.R4_OUT == {W: "DECODER_LOWER_PENALTY", V: "NO_CLEAR_DECODER_DIFFERENCE"}
     r4 = {(m, q): T.r4(m, q) for m in (W, V) for q in ("T_ffmpeg", "T_libopus", "D")}
     d_w = r4[(W, "D")]
-    primary += [
+    r4_tokens = [
         f"the total penalty remained positive for both recognisers: {up(*r4[(W, 'T_libopus')])} for Whisper "
         f"large-v3 and {up(*r4[(V, 'T_libopus')])} for wav2vec2-base-960h",
         f"Relative to FFmpeg decoding, the libopus decoder reduced Whisper WER by {abs(d_w[0]):.2f} pp "
@@ -393,6 +404,11 @@ if SUBMISSION:
         "magnitude was lower for Whisper, while no clear decoder difference was established for wav2vec2, and the "
         "bandwidth decomposition itself remains defined for the FFmpeg decoder chain",
     ]
+    # (until the author-packaging pass these tokens were appended to `primary` after its check loop and so
+    # were never checked)
+    for tok in r4_tokens:
+        if " ".join(tok.split()) not in main:
+            fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
     # decoder SNR, transcript-difference counts and signal diagnostics are in the repository (sealed R4 records)
     need("no bandwidth component, share or residual was computed under libopus", "R4 claim boundary (S7)")
     need("a result without a clear difference is not an equivalence claim", "R4 claim boundary (S7)")
@@ -443,7 +459,7 @@ if SUBMISSION:
                 "No clear application-mode difference was established",
                 f"VoIP minus audio was {up(*b1d[W])} and {up(*b1d[V])}",
                 "no equivalence is claimed",
-                "`application=audio`, retained to reproduce the frozen codec baseline",
+                "`application=audio`, retained to reproduce the codec configuration of the preliminary analysis",
                 "`OPUS_APPLICATION_VOIP` was tested only as a post-confirmation sensitivity of the total penalty"]:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
@@ -454,6 +470,37 @@ if SUBMISSION:
     for f, text in TEXTS.items():
         for mt in re.finditer(r"pre-?regist\w*", re.sub(r"<!--.*?-->", "", text, flags=re.S), flags=re.I):
             fails.append(f"WORDING in {f}: '{mt.group(0)}' (use prospective specification / version sealing)")
+
+    # final pre-submission cleanup: clarifications that must stay in the main paper, and the journal register
+    # of its prose (outcome labels of the specifications live in the supplement and its tables)
+    lp = {c: (float(S[c]["vs_lp_lsd_0_3k_db"]), float(S[c]["vs_lp_coherence_0_3500"])) for c in ("OPUS", "SILK")}
+    for tok in [f"relative to LP, median LSD over 0–3 kHz was {lp['OPUS'][0]:.2f} dB and median coherence over "
+                f"0–3.5 kHz {lp['OPUS'][1]:.3f}, against {lp['SILK'][0]:.2f} dB and {lp['SILK'][1]:.3f} for SILK at "
+                f"40 kbit/s (relative to REF, the medians are the same to the precision shown",
+                "Neither 24 nor 40 kbit/s showed a detectable residual relative to LP individually, although for "
+                f"wav2vec2 their paired 24–40 kbit/s contrast resolved a smaller difference ({up(*D2440[V])};",
+                "worsened in-band fidelity relative to REF",
+                "The Whisper ratio is imprecise and is not invariant to the attribution definition or error weighting.",
+                "For wav2vec2, the best-linear component was slightly less harmful than the primary control despite its "
+                "lower gain and steeper high-frequency roll-off",
+                "Whisper was decoded greedily without temperature fallback; the study therefore evaluates that fixed "
+                "decoding configuration rather than the full default Whisper fallback heuristic, and the conclusions "
+                "need not transfer unchanged to other decoding settings.",
+                "The primary design was specified and version-sealed before any evaluation audio was decoded"]:
+        if " ".join(tok.split()) not in main:
+            fails.append(f"REQUIRED WORDING not in the main paper: {tok}")
+    assert up(*a1d[V]).startswith(M) and a1d[V][2] < 0    # LIN8 - LP below zero for wav2vec2 (the sentence above)
+    prose_main = re.sub(r"<!--.*?-->", "", TEXTS["taslp_submission.md"], flags=re.S)
+    prose_main = "\n".join(l for l in prose_main.splitlines() if not l.startswith("|"))
+    for mt in re.finditer(r"\b(?:CONDITIONAL GO|GO|KILL|HOLD|PROCEEDS?|FALSIFY|WEAKEN|SUPPORT|WB_BETTER|NB_BETTER|"
+                          r"NO_CLEAR_\w+|STOPPED|ROBUST_RESIDUAL|DECODER_\w+|VOIP_\w+|kill test)\b", prose_main):
+        fails.append(f"OUTCOME LABEL in the main paper (belongs in the supplement): {mt.group(0)}")
+    for word, most in (("sealed", 1), ("frozen", 0), ("fresh-speaker", 1)):
+        n_word = len(re.findall(rf"\b{word}\b", prose_main, flags=re.I))
+        if n_word > most:
+            fails.append(f"WORDING in the main paper: '{word}' {n_word} times (at most {most})")
+    if "deterministic" in prose_main:
+        fails.append("WORDING in the main paper: Whisper decoding is not to be called deterministic")
 
 # ------------------------------------------------------------------ 6. table structure
 # A caption paragraph (": ...") must follow its table after one blank line; anything else would

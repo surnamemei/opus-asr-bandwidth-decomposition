@@ -1,6 +1,6 @@
 ---
-title: "Supplementary material for: How much of the ASR penalty of 8 kbit/s Opus is bandwidth loss? A decomposition with a validated bandwidth control"
-author: "[Authors withheld for review]"
+title: "Supplementary material for: Bandwidth Removal Reproduces Only Part of the ASR Penalty of 8-kbit/s Opus"
+author: "[Author 1 Name], [Author 2 Name], [Author 3 Name], and [Author 4 Name]"
 date: "TASLP submission version, 2026-09-28"
 ---
 
@@ -63,7 +63,11 @@ component was +0.21 pp [−0.23, +0.67] (Whisper) and +2.04 pp [+1.12, +3.17] (w
 
 # S3. Confirmation: additional results
 
-Tables S3–S6 support main-paper Sections 4.2 and 4.3.
+Tables S3–S6 support main-paper Sections 4.2 and 4.3. Under the decision rule of main-paper
+Section 3.7, the confirmation could return GO (primary criterion met), CONDITIONAL GO (residual
+intervals above zero in both recognisers without the size or pilot condition), KILL (all four
+residual intervals including zero) or HOLD (any other pattern, or a positive outcome capped by a
+negative control). It returned GO for the Opus residual, and no negative control capped it.
 
 | Subset | Model | REF | LP | OPUS | SILK | LP − REF | OPUS − LP | SILK − LP |
 |---|---|---|---|---|---|---|---|---|

@@ -1,6 +1,6 @@
 ---
-title: "How much of the ASR penalty of 8 kbit/s Opus is bandwidth loss? A decomposition with a validated bandwidth control"
-author: "[Authors withheld for review]"
+title: "Bandwidth Removal Reproduces Only Part of the ASR Penalty of 8-kbit/s Opus"
+author: '[Author 1 Name], [Author 2 Name], [Author 3 Name], and [Author 4 Name]\thanks{This work was supported by [funding agency] under Grant [grant number]. (Corresponding author: [Author 1 Name].)}\thanks{[Author 1 Name] and [Author 2 Name] are with the [Department of Electrical and Computer Engineering, University Name, City, State Postcode, Country] (e-mail: [author 1 e-mail address]; [author 2 e-mail address]).}\thanks{[Author 3 Name] and [Author 4 Name] are with the [School or Laboratory Name, Institution Name, City, State Postcode, Country] (e-mail: [author 3 e-mail address]; [author 4 e-mail address]).}'
 date: "TASLP submission version, 2026-09-28"
 bibliography: references.bib
 link-citations: true
@@ -14,8 +14,10 @@ TASLP SUBMISSION VERSION (remove before submission)
   R1-R4, A1, B1, C1) taken from sealed records. Supporting material is in taslp_supplement.md.
 - Every table row and number of both files is checked against the frozen outputs by
   `python manuscript/tools/check_numbers.py --submission`; render with tools/render_ieee.sh taslp_submission.md.
-- Reproducibility statement: the review version (anonymised repository) is below; the post-acceptance
-  wording is in manuscript/submission/submission_metadata.md.
+- Author block: placeholder of realistic length (four authors, two affiliations); replace it with the real
+  names, affiliations, funding and corresponding author. IEEE SPS review is single-blind.
+- Repository: [REPOSITORY_URL] in the Reproducibility statement.
+- Acknowledgments: AI-use disclosure, marked AUTHOR_REVIEW_REQUIRED until the authors confirm their review.
 -->
 
 # Abstract
@@ -24,7 +26,7 @@ Low-bitrate narrowband codecs remove bandwidth and introduce other distortions a
 which makes their penalty on automatic speech recognition (ASR) hard to attribute. We quantify this
 for Opus at 8 kbit/s (SILK narrowband in libopus 1.4) with a zero-phase low-pass control fitted to
 SILK narrowband's measured high-rate linear transfer function and validated on unseen speakers. In
-a paired design specified and version-sealed before any evaluation audio was decoded (a pilot,
+a paired design specified before any evaluation audio was decoded (a pilot,
 then one confirmatory run on 2,174 LibriSpeech test utterances from 73 speakers), removing the
 bandwidth with the control increased corpus WER by 0.14 percentage points (pp) for Whisper
 large-v3 and 1.40 pp for wav2vec2-base-960h, whereas Opus added a further 0.69 and 2.07 pp
@@ -36,18 +38,16 @@ weightings, although the exact share, particularly for Whisper, depends on the a
 the metric. Level matching, a bitrate sweep, and decoder and application-mode sensitivities further
 constrain, but do not identify, the mechanism.
 
-**Index Terms**: speech recognition, speech coding, Opus, bandwidth limitation, robustness,
-Whisper, wav2vec 2.0
+**Index Terms**: automatic speech recognition, speech coding, Opus, bandwidth limitation, robust
+speech recognition
 
 # 1. Introduction
 
 Speech is often compressed by a lossy codec before a recogniser sees it. Opus [@rfc6716;
 @rfc8251] is one of the two audio codecs that every WebRTC endpoint must implement [@rfc7874].
 The effect of speech coding on ASR has been studied since low-rate coders entered telephone
-networks. Error rates rise as the coding rate falls [@euler1994influence; @lilly1996effect;
-@hirsch2002influence], codec effects differ between recognisers [@moller2002analytic], and
-standards bodies considered them large enough to evaluate distributed front-ends as an
-alternative to the voice codec [@3gpp2004tr26943].
+networks (Section 2), and standards bodies considered it large enough to evaluate distributed
+front-ends as an alternative to the voice codec [@3gpp2004tr26943].
 
 At low bitrates many codecs change two things at once: they reduce the audio bandwidth, and
 they add coding distortion within the band they keep. Opus illustrates this. Its
@@ -60,11 +60,8 @@ about 8 kbit/s [@skoglund2020opus]. A word-error-rate (WER) increase at 8 kbit/s
 come from the missing band, from in-band coding distortion, or from both. Studies that ran
 low-rate Opus through recognisers report the combined penalty [@khare2020opus;
 @jassim2020vocoders; @jacobellis2024mpq; @bai2026semdac]; one attributes the collapse at
-8 kbit/s to narrowband operation without a control for it [@khare2020opus]. Our preliminary
-analysis raised the same question. It used wav2vec2-base-960h on other LibriSpeech test
-utterances with a different scoring convention and is context only: WER on test-other rose by
-1.33 pp at 12 kbit/s but by 6.63 pp at 8 kbit/s, where libopus switches from wideband to
-narrowband SILK.
+8 kbit/s to narrowband operation without a control for it [@khare2020opus]. An unpublished
+preliminary analysis of ours raised the same question.
 
 Separating band limitation from other degradations is not new. Moreno and Stern
 [@moreno1994sources] showed that band-limiting TIMIT to the telephone band reproduced only part
@@ -87,17 +84,15 @@ penalty of Opus at 8 kbit/s into a bandwidth component (control minus original) 
 codec-specific residual (Opus minus control); because the decomposition is sequential, the
 bandwidth share it yields is path-dependent. Both components are estimated for Whisper
 large-v3 [@radford2023whisper] and wav2vec2-base-960h [@baevski2020wav2vec], evaluated without
-adaptation on identical, paired audio. The conditions, data split, recognisers, metrics and
-decision rules were fixed and sealed before a pilot was decoded, and a single confirmatory run
-followed; each later analysis was specified and sealed before any of its audio was encoded and was
-run once. The paper asks three questions: how much of the penalty the validated control
+adaptation on identical, paired audio, in a design specified before any evaluation audio was decoded
+(Section 3.1). The paper asks three questions: how much of the penalty the validated control
 reproduces (Section 4.2), whether the residual survives reasonable alternative explanations
 (Section 4.4), and what changing the bandwidth allocation at the same bitrate does (Section 4.5).
 The contributions are:
 
-1. **A measured, independently validated linear control** that isolates the high-rate linear response of SILK narrowband: a linear-phase low-pass filter fitted to the codec's measured transfer function and validated on held-out speakers against pre-specified tolerances, reported with its validation history, including a failed first criterion.
+1. **A measured, independently validated linear control** that isolates the high-rate linear response of SILK narrowband: a linear-phase low-pass filter fitted to the codec's measured transfer function and validated on held-out speakers against pre-specified tolerances.
 2. **A paired, prospectively specified decomposition of the 8 kbit/s Opus penalty** into a bandwidth component and a codec-specific residual for two fixed pretrained recognisers, with speaker-cluster bootstrap intervals and negative controls.
-3. **Targeted robustness tests of the residual:** it survives a more inclusive best-linear attribution of the actual codec output, RMS level matching and alternative error weightings, while its dependence on the coding rate, the decoder implementation and the encoder application mode is quantified.
+3. **Targeted robustness tests:** the codec-specific residual survives a more inclusive best-linear attribution of the actual codec output, RMS level matching and alternative error weightings, and its dependence on the coding rate is quantified; separate sensitivity analyses quantify how the decoder implementation and the encoder application mode affect the total 8 kbit/s penalty.
 4. **A low-rate bandwidth-allocation counterfactual** at the same nominal bitrate, which shows recogniser-dependent trade-offs between spectral coverage and coding fidelity.
 
 # 2. Related work
@@ -146,36 +141,37 @@ enhancement, orthogonal projection splits the enhanced signal into a linear "nat
 an artifact residual, and scaling each part shows that artifacts dominate the ASR loss
 [@iwamoto2022artifacts; @ochiai2024rethinking]. In that framework linear filtering of the
 target is not counted as error. Our bandwidth control does the reverse and measures the ASR
-cost of the linear band limitation itself. As a sensitivity analysis, we also apply their
-projection to the codec output (Section 3.9).
+cost of the linear band limitation itself. As a sensitivity to the attribution definition, we adapt
+their orthogonal-projection framework to the codec output (Section 3.9). The two analyses ask
+different questions: the control, how much of the penalty the independently validated high-rate
+SILK narrowband linear response reproduces; the adaptation, whether a residual remains when the
+gain, tilt, roll-off, phase and delay that best linearly explain the actual 8 kbit/s output are
+assigned to the linear component.
 
 **Position of this study.** The Opus–ASR studies we located report total penalties. The design
-here follows the bandwidth-versus-codec comparisons above. It differs from them in the codec
-(one whose audio bandwidth the encoder selects from the bitrate), in the control (fitted to the
-measured linear response and validated on held-out speakers), in the recognisers (fixed
-pretrained models of two architectures), in the statistics (paired, prospectively specified and
-version-sealed, with speaker-level intervals), and in testing the attribution against alternative
-definitions of linear loss, error weightings and codec configurations.
+here follows the bandwidth-versus-codec comparisons above, and cutoff-matched low-pass controls
+are prior art [@borsky2015mp3]. It differs from them in the codec (one whose audio bandwidth the
+encoder selects from the bitrate), in the control (fitted to the codec's measured linear transfer
+response rather than to a cutoff, and validated on held-out speakers), in the recognisers (fixed
+pretrained models of two architectures), in the evaluation (paired and prospectively specified,
+with speaker-level intervals), and in a separate best-linear attribution
+sensitivity (Section 3.9).
 
 # 3. Methods
 
 ## 3.1 Overview and prospective specification
 
 Every utterance was processed under six conditions and decoded by both recognisers (Table I).
-Before any pilot or confirmation utterance was decoded, a hash-stamped specification was sealed
-and committed to version control; the specification is internal and was not lodged in a public
-registry. It fixed the data selections, the conditions and exact
+Before any pilot or confirmation utterance was decoded, a hash-stamped specification was committed
+to version control; it is internal and was not lodged in a public registry. It fixed the data
+selections, the conditions and exact
 encoder settings, the recognisers and decoding options, the text normalisation, and the
-metrics, bootstrap and decision rules. The pilot was decoded once; a pre-declared kill test was
-applied, and the analysis code was then sealed again. The confirmation set was decoded once,
-without restarts, and analysed with the frozen code. A 20-utterance calibration set (4
-dev-clean speakers) was used only to check that decoding succeeded, was deterministic and had
-adequate throughput; it computed no condition comparison. The processing pipeline
+metrics, bootstrap and decision rules. The pilot was decoded once and assessed with a pre-declared stopping rule; the analysis code was
+then fixed and committed again, and the confirmation set was decoded once, without restarts, and
+analysed with that code. A 20-utterance calibration set (4
+dev-clean speakers) served only for decoding checks and computed no condition comparison. The processing pipeline
 reproduced an earlier analysis exactly (250/250 checks), and the codec and filter controls
-described below were validated in two earlier stages that used no ASR output. Every later
-analysis (Sections 3.9 and 3.10) was specified and sealed after the confirmatory analysis was
-closed and before any of its audio was encoded; none changes any confirmatory estimate or
-decision.
+described below were validated in two earlier stages that used no ASR output.
 
 ## 3.2 Data
 
@@ -198,7 +194,7 @@ excluded after decoding.
 | Condition | Processing | Encoder settings (libopus 1.4) | Packets (confirmation) |
 |---|---|---|---|
 | REF | Original waveform | — | — |
-| LP | Frozen zero-phase low-pass control (Section 3.4) | — | — |
+| LP | Fixed zero-phase low-pass control (Section 3.4) | — | — |
 | OPUS | Opus, 8 kbit/s | Bandwidth NB, `signal=auto`, application audio, unconstrained VBR, complexity 10, 20 ms frames, no FEC/DTX | 100 % SILK-NB; median 8.17 kbit/s |
 | SILK | Opus, 40 kbit/s | As OPUS, but `signal=voice` | 100 % SILK-NB; median 39.79 kbit/s |
 | NEG_LP | Negative control: zero-phase low-pass, flat to 7.0 kHz | — | — |
@@ -263,11 +259,11 @@ control's coherent 4–8 kHz power lie within 6 dB of Opus at 8 kbit/s. That qua
 bitrate-dependent coding droop across the 4 kHz edge, so the criterion contradicted the
 linear-only definition; the failed result is retained in the record. The corrected criterion
 compares the control with the linear reference at the unchanged 3 dB tolerance, and it was
-frozen before the confirmation data were downloaded. On an independent filter-validation set of
+fixed before the confirmation data were downloaded. On an independent filter-validation set of
 40 unseen train-clean-100 speakers (20 female, 20 male) with the filter taps unchanged, all criteria
 passed (Fig. 1; the measured values are in Supplementary Table S1).
 
-![Validation of the low-pass (LP) control on 40 unseen train-clean-100 speakers, drawn from the frozen confirmation curves of the control's validation. (a, b) Linear transfer $\lvert H_1\rvert$ relative to its 0.5–2 kHz level: LP follows the SILK narrowband linear reference (40 kbit/s, `signal=voice`); Opus at 8 and 12 kbit/s (narrowband) shows additional bitrate-dependent attenuation within the band and at the band edge. (c) Coherence with the input at the same frequency. (d) Coherence of the output at $f$ with the input at $8\,\mathrm{kHz} - f$: the 4–5 kHz content of the SILK narrowband conditions is a mirror image of the 3–4 kHz band, and LP contains none.](figures/fig_lp_validation.pdf){#fig:lpvalidation}
+![Validation of the low-pass (LP) control on 40 unseen train-clean-100 speakers, drawn from the curves recorded in the control's held-out validation. (a, b) Linear transfer $\lvert H_1\rvert$ relative to its 0.5–2 kHz level: LP follows the SILK narrowband linear reference (40 kbit/s, `signal=voice`); Opus at 8 and 12 kbit/s (narrowband) shows additional bitrate-dependent attenuation within the band and at the band edge. (c) Coherence with the input at the same frequency. (d) Coherence of the output at $f$ with the input at $8\,\mathrm{kHz} - f$: the 4–5 kHz content of the SILK narrowband conditions is a mirror image of the 3–4 kHz band, and LP contains none.](figures/fig_lp_validation.pdf){#fig:lpvalidation}
 
 ## 3.5 Recognisers
 
@@ -276,9 +272,7 @@ Neither recogniser was fine-tuned or adapted to any condition. Whisper large-v3
 in float16, with greedy decoding at temperature 0 and no temperature fallback (no
 compression-ratio, log-probability or no-speech thresholds), the language fixed to English,
 task *transcribe*, no timestamps, no prompt and a 30 s input window. Greedy decoding replaced
-beam search before any evaluation decoding, for compute reasons; it was deterministic across
-repeats and between batched and unbatched decoding on the calibration set, although batches of a
-different composition changed three Whisper hypotheses (Supplementary Section S4). wav2vec2-base-960h [@baevski2020wav2vec] was run from
+beam search before any evaluation decoding, for compute reasons. wav2vec2-base-960h [@baevski2020wav2vec] was run from
 the torchaudio checkpoint in float32 with greedy CTC decoding [@graves2006ctc] and no language
 model; this is the recogniser and decoder of the preliminary analysis.
 
@@ -315,17 +309,14 @@ seed). The pooled confirmation set is the primary scope; per-subset results are 
 uncorrected for multiplicity. Baseline-relative effects (component divided by a baseline WER)
 are post hoc descriptive ratios without intervals.
 
-**Decision rules (sealed before decoding).** The pilot PROCEEDS if the lower bound of the
-residual interval is above zero for any recogniser and codec. The confirmation returns:
-
-- **GO** if, for some codec, the residual interval lies above zero in both recognisers, the estimate is at least 0.5 pp in both, and the pilot estimate was positive in both;
-- **CONDITIONAL GO** if the residual is robust in both recognisers but short of GO;
-- **KILL** if all residual intervals include zero;
-- **HOLD** otherwise.
-
-GO and CONDITIONAL GO are capped at HOLD if a negative control's interval excludes zero *and*
-its estimate exceeds 0.5 pp in magnitude. Error types and exploratory correlations were
-pre-declared to run only if a residual survived.
+**Decision rules (specified before decoding).** The study was to proceed past the pilot only if a
+residual interval lay above zero for some recogniser and codec condition. The primary confirmatory
+criterion required, for some codec condition, a residual interval above zero and an estimate of at
+least 0.5 pp in both recognisers, and positive pilot estimates in both. Weaker, null and
+inconclusive outcomes were also defined, and a negative control whose interval excluded zero with
+an estimate above 0.5 pp in magnitude would have made a positive outcome inconclusive
+(Supplementary Section S3). Error types and exploratory correlations were to be analysed only if a
+residual survived.
 
 ## 3.8 Signal descriptors (descriptive only)
 
@@ -344,17 +335,18 @@ per-utterance residuals and signal features were pre-declared as exploratory.
 
 ## 3.9 Robustness analyses (specified after the confirmation)
 
-Each analysis in this section was specified in its own plan, sealed before any of its audio was
-encoded, run once and analysed with the confirmation's speaker-cluster bootstrap (10,000
-replicates). They are post-confirmation sensitivity analyses: they can qualify the confirmatory
-result but not strengthen it. Their pre-recognition checks, rule thresholds and outcomes are in the
-supplement.
+Each analysis in this section and in Section 3.10 was specified in its own plan after the
+confirmatory analysis was closed, committed to version control before any of its audio was encoded,
+run once and analysed with the confirmation's speaker-cluster bootstrap (10,000 replicates). These post-confirmation
+analyses can qualify the confirmatory result but not strengthen it; their pre-recognition checks,
+rule thresholds and outcomes are in the supplement.
 
 **Inclusive best-linear attribution.** The control reproduces SILK narrowband's high-rate linear
 response, whereas the 8 kbit/s chain has its own, lossier linear response. To test whether the
-residual is linear loss that the control leaves out, we applied the orthogonal-projection
-decomposition used for speech-enhancement output [@iwamoto2022artifacts; @ochiai2024rethinking] to
-the codec output. For each confirmation utterance, the decoded 8 kbit/s Opus waveform was projected
+residual is linear loss that the control leaves out, we adapted the orthogonal-projection
+framework used for speech-enhancement output [@iwamoto2022artifacts; @ochiai2024rethinking] to the
+codec output, with REF as the only source and the study's pre-specified centred delay span instead
+of the causal span of the original. For each confirmation utterance, the decoded 8 kbit/s Opus waveform was projected
 onto the span of REF delayed by −256 to +255 samples, that is, onto everything a 512-tap filter
 applied to REF can produce. The projection, LIN8, is the part of the Opus output that one
 time-invariant linear filter per utterance reproduces from REF, including gain, spectral tilt,
@@ -363,8 +355,7 @@ reproduces, such as time-varying coding error, the 4–5 kHz mirror image and no
 LIN8 was itself recognised, so the linear component is LIN8 − REF and the residual beyond it is
 OPUS − LIN8. Unlike the control, which is one fixed filter measured at 40 kbit/s, the projection is
 fitted to each utterance's actual 8 kbit/s output; it is an attribution, not a codec model, and it
-has no free parameter. It was calibrated and validated, signal only, on 80 new speakers before any
-confirmation-set projection was computed. The pre-declared criterion for a robust residual is that OPUS − LIN8 lies above
+has no free parameter. The pre-declared criterion for a robust residual is that OPUS − LIN8 lies above
 zero and exceeds LIN8 − REF in both recognisers. This is a sensitivity to the attribution
 definition: it does not replace the sequential decomposition, and its linear share is not a
 bandwidth share.
@@ -385,8 +376,8 @@ that declines with rate, with a slope interval that reaches at least half the sl
 confirmatory residuals at 8 and 40 kbit/s.
 
 **Decoder and application mode.** Two analyses changed one element of the codec chain and measured
-the total penalty only: the same frozen bitstreams were decoded with the libopus 1.4 reference
-decoder instead of FFmpeg 6.1.1, and the encoder was run with `OPUS_APPLICATION_VOIP` instead of
+the total penalty only: the confirmation bitstreams were decoded again with the libopus 1.4
+reference decoder instead of FFmpeg 6.1.1, and the encoder was run with `OPUS_APPLICATION_VOIP` instead of
 `application=audio`, with every other setting, including the automatic signal-type hint,
 unchanged. For each, the pre-declared outcome is whether the interval of the difference from the
 primary chain lies below zero, above zero or includes zero. No equivalence margin was declared, and
@@ -406,16 +397,14 @@ resampler are unchanged. The primary contrast is WB8 − NB8 per recogniser, and
 outcome is whether its interval lies below zero, above zero or includes zero. Forcing wideband also
 changes SILK's internal sampling rate, its LPC order and the allocation of the bit budget, so this
 is a practical bandwidth-allocation counterfactual, not a factorial estimate of an interaction
-between bandwidth loss and coding distortion, and it does not enter the decomposition. The same plan
-included two attribution analyses that were stopped before recognition (Section 4.4).
+between bandwidth loss and coding distortion, and it does not enter the decomposition.
 
 # 4. Results
 
 ## 4.1 Pilot
 
-The pilot (138 utterances, 69 speakers) was decoded once and analysed with the sealed code. Its
-pre-declared kill test returned PROCEED: the residual interval excluded zero in both
-recognisers (Supplementary Section S2, Table S2).
+On the pilot (138 utterances, 69 speakers), the residual interval excluded zero in both recognisers,
+so the study proceeded to the confirmation as specified (Supplementary Section S2, Table S2).
 
 ## 4.2 How much of the penalty does the validated control reproduce?
 
@@ -432,7 +421,7 @@ recognisers (Supplementary Section S2, Table S2).
 
 In both recognisers the ordering was REF < LP < OPUS (Table II). The word errors for
 REF, LP and OPUS were 1,084, 1,145 and 1,443 for Whisper large-v3 and 2,327, 2,937 and 3,836
-for wav2vec2-base-960h. No condition produced an empty hypothesis.
+for wav2vec2-base-960h.
 
 | Contrast | Whisper micro | Whisper macro | wav2vec2 micro | wav2vec2 macro |
 |---|---|---|---|---|
@@ -452,11 +441,11 @@ Removing SILK narrowband's bandwidth with the linear control increased corpus WE
 (Table III). Relative to the control, Opus at 8 kbit/s increased WER by a further
 0.69 pp [0.46, 0.94] and 2.07 pp [1.68, 2.57]. Along the sequential REF → LP → OPUS path,
 bandwidth removal therefore accounted for a path-dependent share of 17 % [5, 29] (Whisper) and 40 % [35, 45] (wav2vec2) of the
-total Opus penalty (Fig. 2). These shares are sequential attributions, not causal fractions; they
-also depend on the definition of linear loss and, particularly for Whisper, on the error weighting
-(Section 4.4). The macro estimates and CER point the same way; the CER residual
-was +0.31 pp [+0.20, +0.44] (Whisper) and +1.09 pp [+0.87, +1.40] (wav2vec2). The pre-declared
-rule returned GO for the Opus residual.
+total Opus penalty (Fig. 2). These shares are sequential attributions, not causal fractions, and
+both depend on the definition of linear loss (Section 4.4). The Whisper ratio is imprecise and is
+not invariant to the attribution definition or error weighting. For both components, the macro estimates and CER point the same way; the CER residual
+was +0.31 pp [+0.20, +0.44] (Whisper) and +1.09 pp [+0.87, +1.40] (wav2vec2). The Opus residual
+met the pre-declared primary criterion (Section 3.7).
 
 In absolute percentage points, wav2vec2-base-960h's residual was about three times, and its
 bandwidth component five to ten times (depending on the error weighting; Section 4.4), those of
@@ -482,16 +471,16 @@ and +0.08 insertions for Whisper, and +1.79 substitutions [+1.46, +2.21], +0.13 
 ## 4.3 High-rate reference, signal descriptors and negative controls
 
 SILK at 40 kbit/s showed no detectable pooled residual relative to the control:
-+0.02 pp [−0.04, +0.08] (Whisper) and −0.09 pp [−0.20, +0.02] (wav2vec2). Across the two
-recognisers, the intervals lie between −0.20 and +0.08 pp. No equivalence margin was
++0.02 pp [−0.04, +0.08] (Whisper) and −0.09 pp [−0.20, +0.02] (wav2vec2). No equivalence margin was
 pre-declared, so this is not a claim of equivalence. In a secondary per-subset analysis, SILK
 was slightly *below* the control for wav2vec2 on test-other: −0.24 pp [−0.50, −0.005].
 OPUS − SILK was +0.67 pp [+0.46, +0.89] and +2.16 pp [+1.73, +2.71]. Because the two conditions
 differ in bitrate and in the signal-type hint, this contrast is not a bitrate effect.
 
-Compared with LP, the Opus 8 kbit/s signal differed mainly within the retained band (Supplementary Table S6).
-Median LSD over 0–3 kHz was 6.14 dB, and median coherence over 0–3.5 kHz was 0.623; SILK at
-40 kbit/s showed 1.37 dB and 0.993. The coherent bandwidths of LP, OPUS and SILK were
+Compared with LP, the Opus 8 kbit/s signal differed mainly within the retained band: relative to
+LP, median LSD over 0–3 kHz was 6.14 dB and median coherence over 0–3.5 kHz 0.623, against
+1.37 dB and 0.993 for SILK at 40 kbit/s (relative to REF, the medians are the same to the
+precision shown; Supplementary Table S6). The coherent bandwidths of LP, OPUS and SILK were
 4,094, 4,000 and 4,094 Hz. The codec conditions and the control therefore share the same linear band
 limitation to within about 100 Hz; OPUS's slightly lower edge reflects the bitrate-dependent
 coding droop at the band edge described in Section 3.4. Both codec conditions carried 4–8 kHz
@@ -514,20 +503,19 @@ limit of the pipeline, and do not interpret effects of order 0.1 pp.
 
 ## 4.4 Does the residual survive alternative explanations?
 
-Table IV summarises the robustness analyses; their contrasts differ, so each row is read with its
-own boundary.
+Table IV summarises the robustness analyses.
 
-| Analysis | Question (contrast) | Whisper large-v3 | wav2vec2-base-960h | Interpretation boundary |
+| Analysis | Quantity tested | Whisper large-v3 | wav2vec2-base-960h | Boundary |
 |---|---|---|---|---|
-| Best-linear | Residual beyond the best-linear component of the codec output? (OPUS − LIN8) | +0.74 [+0.51, +1.00] | +2.32 [+1.85, +2.97] | Attribution sensitivity; its linear share is not a bandwidth share |
-| Level match | Residual after RMS level matching? (level-matched OPUS − LP) | +0.70 [+0.47, +0.95] | +2.09 [+1.71, +2.57] | Broadband level only |
-| Decoder | Total penalty under libopus decoding? (OPUS_LIBOPUS − REF) | +0.72 [+0.49, +0.97] | +3.56 [+2.79, +4.54] | Total penalty only |
-| Decoder | Does the decoder change the total? (OPUS_LIBOPUS − OPUS) | −0.11 [−0.17, −0.04] | +0.09 [−0.04, +0.21] | No decoder-invariant residual or share claimed |
-| Application | Total penalty in the VoIP application mode? (OPUS_VOIP8 − REF) | +0.70 [+0.48, +0.95] | +3.44 [+2.71, +4.37] | Total penalty only |
-| Application | Does the application mode change the total? (OPUS_VOIP8 − OPUS) | −0.12 [−0.25, +0.00] | −0.03 [−0.23, +0.15] | No clear difference; not equivalence |
-| Allocation | Wideband instead of narrowband at 8 kbit/s? (WB8 − NB8) | +0.14 [−0.07, +0.36] | −0.98 [−1.57, −0.42] | Practical, not factorial; sweep utterances |
+| Best-linear | Residual: OPUS − LIN8 | +0.74 [+0.51, +1.00] | +2.32 [+1.85, +2.97] | Attribution sensitivity; linear share is not a bandwidth share |
+| Level match | Residual: level-matched OPUS − LP | +0.70 [+0.47, +0.95] | +2.09 [+1.71, +2.57] | Broadband level only |
+| Decoder | Total: OPUS_LIBOPUS − REF | +0.72 [+0.49, +0.97] | +3.56 [+2.79, +4.54] | No share or residual computed |
+| Decoder | Change in total: OPUS_LIBOPUS − OPUS | −0.11 [−0.17, −0.04] | +0.09 [−0.04, +0.21] | No decoder-invariant residual or share claimed |
+| Application | Total: OPUS_VOIP8 − REF | +0.70 [+0.48, +0.95] | +3.44 [+2.71, +4.37] | No share or residual computed |
+| Application | Change in total: OPUS_VOIP8 − OPUS | −0.12 [−0.25, +0.00] | −0.03 [−0.23, +0.15] | No clear difference; not equivalence |
+| Allocation | Practical contrast: WB8 − NB8 | +0.14 [−0.07, +0.36] | −0.98 [−1.57, −0.42] | Not factorial; sweep utterances |
 
-: Post-confirmation robustness analyses (pooled, pp, 95 % speaker-bootstrap intervals). The first six rows use the 2,174 confirmation utterances, the last row the 1,665 utterances of the bitrate sweep. The contrasts differ between rows: a residual beyond a linear component (first two rows), a total penalty (third and fifth), or the effect of one change of the codec chain (fourth, sixth and seventh).
+: Post-confirmation robustness analyses (pooled, pp, 95 % speaker-bootstrap intervals). Residual: beyond a linear component; total: the total 8 kbit/s penalty; change in total: the difference between two codec chains. The first six rows use the 2,174 confirmation utterances, the last row the 1,665 utterances of the bitrate sweep.
 
 **Inclusive best-linear attribution.** The best-linear component of the actual 8 kbit/s output kept
 the chain's lower gain and steeper in-band roll-off: its median gain over 0.5–2 kHz was −2.22 dB,
@@ -549,8 +537,9 @@ and +0.018 pp [−0.028, +0.062]. The pre-declared criterion was met in both rec
 **Coding rate.** Within forced SILK narrowband, the residual beyond the control decreased as the
 bitrate rose, in both recognisers (Table V, Fig. 3). At 8 kbit/s it was +0.55 pp [+0.37, +0.74]
 (Whisper large-v3) and +2.07 pp [+1.65, +2.55] (wav2vec2-base-960h), close to the confirmatory
-+0.69 and +2.07 pp on different utterances; at 24 and 40 kbit/s no residual was detectable. The
-slope on log2 bitrate was −0.206 pp per doubling [−0.267, −0.146] for Whisper and −0.854
++0.69 and +2.07 pp on different utterances. Neither 24 nor 40 kbit/s showed a detectable residual
+relative to LP individually, although for wav2vec2 their paired 24–40 kbit/s contrast resolved a
+smaller difference (+0.10 pp [+0.007, +0.20]; Supplementary Table S8). The slope on log2 bitrate was −0.206 pp per doubling [−0.267, −0.146] for Whisper and −0.854
 [−1.074, −0.657] for wav2vec2, which met the pre-declared criterion in both recognisers; with the
 signal-type hint fixed, SILK8 − SILK40 was +0.52 pp [+0.36, +0.68] and +2.13 pp [+1.65, +2.67].
 For Whisper, the 8 kbit/s residual was concentrated in test-other (+0.95 pp [+0.65, +1.28]; on
@@ -568,11 +557,11 @@ depends on the coding rate, not which rate-dependent property produces it.
 | SILK24 − LP | 23.46 | +0.05 [−0.04, +0.14] | +0.05 [−0.11, +0.20] |
 | SILK40 − LP | 38.96 | +0.03 [−0.05, +0.11] | −0.06 [−0.21, +0.09] |
 
-: Bitrate sweep of forced SILK narrowband (fresh-utterance, not fresh-speaker, holdout; 1,665 utterances, 70 speakers, 31,601 reference words): residual beyond the control at each rate (pp, pooled, 95 % speaker-bootstrap intervals) and median payload bitrate.
+: Bitrate sweep of forced SILK narrowband (fresh-utterance holdout; 1,665 utterances, 70 speakers, 31,601 reference words): residual beyond the control at each rate (pp, pooled, 95 % speaker-bootstrap intervals) and median payload bitrate.
 
-![Bitrate sweep: residual beyond the linear control (SILK $b$ − LP) of forced SILK narrowband at five bitrates on 1,665 fresh test utterances (a fresh-utterance, not fresh-speaker, holdout), with 95 % speaker-bootstrap intervals and the fitted log2-bitrate slope (dashed; drawn through the mean of the five estimates). Hollow grey markers: the confirmatory OPUS − LP (8 kbit/s, `signal=auto`) and SILK − LP (40 kbit/s) residuals on the confirmation utterances.](figures/fig_sweep.pdf){#fig:sweep}
+![Bitrate sweep: residual beyond the linear control (SILK $b$ − LP) of forced SILK narrowband at five bitrates on 1,665 fresh test utterances, with 95 % speaker-bootstrap intervals and the fitted log2-bitrate slope (dashed; drawn through the mean of the five estimates). Hollow grey markers: the confirmatory OPUS − LP (8 kbit/s, `signal=auto`) and SILK − LP (40 kbit/s) residuals on the confirmation utterances.](figures/fig_sweep.pdf){#fig:sweep}
 
-**Decoder.** When the same frozen bitstreams were decoded with the libopus 1.4 reference decoder
+**Decoder.** When the confirmation bitstreams were decoded with the libopus 1.4 reference decoder
 instead of FFmpeg 6.1.1, the total penalty remained positive for both recognisers:
 +0.72 pp [+0.49, +0.97] for Whisper large-v3 and +3.56 pp [+2.79, +4.54] for wav2vec2-base-960h;
 with FFmpeg decoding the totals were +0.83 and +3.48 pp. Relative to FFmpeg decoding, the libopus
@@ -598,7 +587,7 @@ share ranged from 0.17 (corpus WER) to 0.28 (CER), and the wav2vec2 share from 0
 **Stopped analyses.** Two additional attribution sensitivities were prospectively gated but stopped
 before ASR because their signal-domain controls failed held-out validation. A bandwidth control
 matched to the libopus decoder and a surrogate of the coherent linear response at 8 kbit/s both
-failed the frozen transition-shape criterion (Supplementary Section S9); neither was refitted.
+failed the pre-specified transition-shape criterion (Supplementary Section S9); neither was refitted.
 
 ## 4.5 What does changing the low-rate bandwidth allocation do?
 
@@ -607,8 +596,8 @@ median payload bitrates were 7.36 (NB8) and 7.76 kbit/s (WB8). At approximately 
 wideband reduced the WER of wav2vec2-base-960h relative to forced narrowband by
 0.98 pp [0.42, 1.57], whereas Whisper large-v3 showed no clear difference: +0.14 pp [−0.07, +0.36]
 (Table IV). Wideband coding restored the energy above 4 kHz (pooled 4–8 kHz power relative to
-REF: +2.14 dB, against −16.54 dB for NB8) but worsened in-band fidelity: median coherence with REF
-over 0–3.5 kHz fell from 0.623 to 0.559, and median LSD over 0–3 kHz rose from 6.19 to 6.77 dB.
+REF: +2.14 dB, against −16.54 dB for NB8) but worsened in-band fidelity relative to REF: median
+coherence over 0–3.5 kHz fell from 0.623 to 0.559, and median LSD over 0–3 kHz rose from 6.19 to 6.77 dB.
 Coding therefore changed with the band, so the comparison does not isolate a bandwidth × coding
 interaction and does not change the decomposition. The result was recogniser-dependent and does
 not show a general advantage of wideband coding at this rate (Supplementary Section S7).
@@ -623,28 +612,26 @@ output, which absorbs the chain's gain, spectral tilt, roll-off, phase and delay
 the same direction in both recognisers, both test subsets and an independent pilot, and neither
 level matching nor the choice among four error weightings removed it. The attribution of the
 8 kbit/s penalty to narrowband operation [@khare2020opus] is therefore incomplete for these
-recognisers and data. That coding can cost more than band limitation is not new: the same direction
-was reported for AMR-NB at 12.2 kbit/s [@bauer2010wtimit] and for MP3 at 12 kbit/s
-[@borsky2015mp3], whereas band limitation dominated for GSM full rate at 13 kbit/s
-[@besacier2001effect; @heymans2022multistyle]. Our high-rate reference, SILK narrowband at
-40 kbit/s, showed no detectable pooled residual, which places it on the GSM side of that contrast.
-Such comparisons between studies are directional only, because recognisers, languages, training
-regimes and metrics differ.
+recognisers and data. The direction is not new: coding also cost more than band limitation for
+AMR-NB and MP3, but not for GSM full rate (Section 1), and our high-rate SILK reference, without a
+detectable pooled residual, falls on the GSM side; comparisons between studies are directional only.
 
 **What depends on definitions.** The share assigned to bandwidth is not an invariant quantity. It
 is sequential and path-dependent; it depends on how linear loss is defined (for Whisper 0.17 along
 the primary path against 0.10 under the best-linear attribution, for wav2vec2 0.40 against 0.33);
-and for Whisper it also depends on the error weighting (0.17 to 0.28). Whisper's bandwidth
-component was small and detectable only on test-other. The shares describe an attribution; they
-are not causal fractions of the penalty.
+and for Whisper it also depends on the error weighting (0.17 to 0.28). The shares describe an
+attribution; they are not causal fractions of the penalty. For wav2vec2, the best-linear component
+was slightly less harmful than the primary control despite its lower gain and steeper high-frequency
+roll-off, showing that ASR sensitivity is not ordered monotonically by these simple spectral
+descriptors and reinforcing that neither linear share should be interpreted as a unique physical
+fraction.
 
 **What depends on configuration.** The total 8 kbit/s Opus penalty persisted under the libopus
 reference decoder for both recognisers; its magnitude was lower for Whisper, while no clear decoder
 difference was established for wav2vec2, and the bandwidth decomposition itself remains defined for
 the FFmpeg decoder chain. No clear application-mode difference was established for either
-recogniser. Within forced SILK narrowband, the residual depended on the coding rate. All of this
-holds for one encoder version, one decoder chain for the decomposition, one read-speech corpus and
-two recognisers.
+recogniser, and within forced SILK narrowband the residual depended on the coding rate. The evidence
+comes from one encoder version, one corpus and two recognisers.
 
 **A candidate organising hypothesis.** Low-rate ASR behaviour in these data is consistent with a
 bitrate-allocation trade-off between spectral coverage and fidelity. Within narrowband, raising the
@@ -668,38 +655,35 @@ power and the same lag and decode path yet shows no pooled residual, and NEG_COD
 container, decoder and resampling chain alone leave WER unchanged (being CELT-coded, it does not
 exercise the SILK upsampling step [@ffmpeg611]); an image of low-rate *coded* content may
 nevertheless affect recognition differently. No condition manipulated in-band coding degradation
-while holding everything else fixed, so the mechanism is not established. Whether the pattern
-holds for other codec versions, decoders, corpora and recognisers is also unknown.
+while holding everything else fixed, so the mechanism is not established.
 
 **Practical reading.** For pipelines that transcribe low-rate Opus with pretrained recognisers,
-restoring the missing band alone would not target the residual, which was the larger component in
-both recognisers. Higher coding rates removed it on these data (no detectable residual at 24 kbit/s
-and above), and decoder-side enhancement of low-rate SILK [@buethe2024nolace] is a candidate to the
-extent that the residual is coding degradation. At the same 8 kbit/s, a wideband allocation
-lowered WER for one recogniser only. Restoring the band without changing the coding, as bandwidth
-extension would, and decoder-side enhancement were not tested.
+restoring the missing band alone would not target the residual, the larger component in both
+recognisers. Higher coding rates removed it on these data, and decoder-side enhancement of low-rate
+SILK [@buethe2024nolace] is a candidate to the extent that the residual is coding degradation;
+neither bandwidth extension nor decoder-side enhancement was tested.
 
 # 6. Limitations
 
 1. **Path dependence.** The primary decomposition is sequential (REF → LP → OPUS); its bandwidth share is path-dependent, not an interaction-free attribution.
-2. **Definition and metric.** The exact share depends on the definition of linear loss and on the error weighting (Section 4.4). The control itself was fitted to a reference measured at 40 kbit/s that had not fully converged: near the band edge the reference still rose by up to 0.83 dB between 32 and 40 kbit/s.
+2. **Definition and metric.** The exact share depends on the definition of linear loss and on the error weighting (Section 4.4), and the control's high-rate reference had not fully converged (up to 0.83 dB near the band edge; Section 3.4).
 3. **No factorial interaction.** Estimating the interaction would need a factorial design. A forced-wideband 8 kbit/s counterfactual was tested, but changing bandwidth allocation also changes the coding-distortion budget, so the comparison does not identify a factorial interaction between bandwidth loss and coding distortion.
 4. **Mechanism.** The residual is a bundle, not a uniquely identified mechanism: it contains in-band coding degradation, the mirror image, a small level difference, a 1–2 sample lag and the decode path. Level matching was broadband only, and the bitrate sweep changed in-band distortion, level and image fidelity together.
-5. **Decoder.** The primary decomposition is defined for FFmpeg 6.1.1 decoding, and Opus leaves decoder resampling to the implementation [@rfc6716]. A post-confirmation sensitivity using the libopus 1.4 reference decoder showed that the total 8 kbit/s penalty persisted for both recognisers, although its magnitude was lower for Whisper. Because the decoder-matched bandwidth control failed held-out validation before ASR, decoder invariance of the bandwidth share or codec-specific residual was not established.
-6. **Encoder version.** One encoder version (libopus 1.4) was used. The automatic choice of bandwidth depends on the version: 8 kbit/s selects narrowband in every version we inspected, but the wideband threshold has moved over time.
-7. **Application mode.** The encoder used `application=audio`, retained to reproduce the frozen codec baseline of the preliminary analysis; `OPUS_APPLICATION_VOIP` was tested only as a post-confirmation sensitivity of the total penalty.
-8. **Recognisers and corpus.** Two recognisers were tested, both without a language model or beam search, on one corpus of read English audiobooks with one text normalisation policy. wav2vec2-base-960h was fine-tuned on LibriSpeech training data (evaluation used only held-out subsets), Whisper's training data are undisclosed, and the confirmation speakers are those of the preliminary analysis; the fresh-utterance holdouts reuse them.
+5. **Decoder.** The primary decomposition is defined for FFmpeg 6.1.1 decoding. A post-confirmation sensitivity using the libopus 1.4 reference decoder showed that the total 8 kbit/s penalty persisted for both recognisers, although its magnitude was lower for Whisper. Because the decoder-matched bandwidth control failed held-out validation before ASR, decoder invariance of the bandwidth share or codec-specific residual was not established.
+6. **Encoder version.** One encoder version (libopus 1.4) was used. The automatic choice of bandwidth depends on the version: 8 kbit/s selects narrowband in every version we inspected, but the wideband threshold has moved over time. Later libopus releases introduced optional or experimental decoder enhancements that act only on wideband SILK (neural enhancement in 1.5, bandwidth extension in 1.6) [@opus15; @opus16]; these do not apply to the narrowband conditions studied here but may affect the forced-wideband 8 kbit/s counterfactual.
+7. **Application mode.** The encoder used `application=audio`, retained to reproduce the codec configuration of the preliminary analysis; `OPUS_APPLICATION_VOIP` was tested only as a post-confirmation sensitivity of the total penalty.
+8. **Recognisers and corpus.** Two recognisers were tested, both without a language model or beam search, on one corpus of read English audiobooks with one text normalisation policy. wav2vec2-base-960h was fine-tuned on LibriSpeech training data (evaluation used only held-out subsets), Whisper's training data are undisclosed, and the confirmation speakers are those of the preliminary analysis.
 9. **Source audio.** LibriSpeech derives from LibriVox recordings, which are MP3-compressed [@panayotov2015librispeech, Sec. 5], so REF is lossless relative to this study's manipulations but is not guaranteed to represent never-lossy-coded source speech; the paired within-utterance contrasts remain valid, but generalisation to pristine-source recordings is limited.
-10. **Recogniser nondeterminism.** Greedy float16 decoding of Whisper was not exactly reproducible when batch composition changed (3 of 4,348 hypotheses differed when the confirmation audio was decoded again); this component is contained, not separated, in the cross-run comparisons.
-11. **Transmission and acoustic conditions.** Packet loss, jitter, FEC, DTX and other network conditions were not tested, nor were noisy, far-field, conversational or multilingual speech.
-12. **External replication.** No external corpus and no new speakers were tested, so the findings have not been replicated beyond the LibriSpeech test speakers.
+10. **Decoding configuration.** Whisper was decoded greedily without temperature fallback; the study therefore evaluates that fixed decoding configuration rather than the full default Whisper fallback heuristic, and the conclusions need not transfer unchanged to other decoding settings.
+11. **Recogniser nondeterminism.** Greedy float16 decoding of Whisper was not exactly reproducible when batch composition changed (3 of 4,348 hypotheses differed when the confirmation audio was decoded again); this component is contained, not separated, in the cross-run comparisons.
+12. **Transmission and acoustic conditions.** Packet loss, jitter, FEC, DTX and other network conditions were not tested, nor were noisy, far-field, conversational or multilingual speech.
+13. **External replication.** No external corpus and no new speakers were tested, so the findings have not been replicated beyond the LibriSpeech test speakers.
 
 # 7. Conclusion
 
 We decomposed the ASR penalty of Opus at 8 kbit/s into a bandwidth component and a codec-specific
 residual, using a linear low-pass control fitted to SILK narrowband's measured high-rate transfer
-function and validated on held-out speakers. In a prospectively specified, version-sealed paired
-design, the validated control reproduced only a minority of the penalty, and a substantial
+function and validated on held-out speakers. In a paired design, the validated control reproduced only a minority of the penalty, and a substantial
 residual (0.69 and 2.07 pp) remained in both recognisers, both test subsets and the pilot. The
 residual survived an inclusive best-linear attribution of the actual codec output, level matching
 and alternative error weightings, and the total penalty persisted under the reference decoder and
@@ -715,17 +699,24 @@ bandwidth and coding.
 
 # Reproducibility statement
 
-The primary design (conditions, encoder settings, data selections, recognisers and decoding
-options, normalisation, metrics, bootstrap and decision rules) was specified, sealed with SHA-256
-hashes and committed to version control before any pilot or confirmation audio was decoded. Each
-later analysis was specified in its own sealed plan before any of its audio was encoded and was run
-once; stopped analyses and failed validation criteria are retained and reported. Data selections,
-per-utterance outputs and intermediate reports are archived with the code. Code and sealed analysis
-records are available in an anonymised review repository at [ANONYMOUS_REPOSITORY]. LibriSpeech,
-the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
+The primary design was specified and version-sealed before any evaluation audio was decoded; each
+later analysis was specified separately before any of its audio was encoded (Sections 3.1 and 3.9).
+Stopped analyses and failed validation criteria are retained and reported. Code, analysis records,
+data selections, per-utterance outputs and intermediate reports are archived at [REPOSITORY_URL].
+LibriSpeech, the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
 
-<!-- POST-ACCEPTANCE (non-blind) wording of the repository sentence: "Code, sealed analysis records and
-per-utterance outputs are available at [PUBLIC_REPOSITORY]." -->
+# Acknowledgments
+
+<!-- AUTHOR_REVIEW_REQUIRED: AI-use disclosure in the authors' wording (IEEE policy: the AI systems used, and the
+sections containing AI-generated content, are identified in the Acknowledgments). Keep the visible marker until
+the authors explicitly confirm that they have personally reviewed and, where necessary, revised all AI-assisted
+manuscript sections. -->
+
+[AUTHOR_REVIEW_REQUIRED] OpenAI ChatGPT and Codex, and Anthropic Claude through Claude Code, were used for
+research ideation, code-development assistance, adversarial review of the experimental design, and drafting
+and editorial assistance throughout the manuscript and supplementary material. AI-assisted text and code were reviewed, revised,
+and independently verified by the authors, who take full responsibility for the experimental design,
+analyses, results, interpretations, and final manuscript.
 
 # References
 
