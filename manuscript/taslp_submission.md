@@ -1,23 +1,19 @@
 ---
 title: "Bandwidth Removal Reproduces Only Part of the ASR Penalty of 8-kbit/s Opus"
-author: '[Author 1 Name], [Author 2 Name], [Author 3 Name], and [Author 4 Name]\thanks{This work was supported by [funding agency] under Grant [grant number]. (Corresponding author: [Author 1 Name].)}\thanks{[Author 1 Name] and [Author 2 Name] are with the [Department of Electrical and Computer Engineering, University Name, City, State Postcode, Country] (e-mail: [author 1 e-mail address]; [author 2 e-mail address]).}\thanks{[Author 3 Name] and [Author 4 Name] are with the [School or Laboratory Name, Institution Name, City, State Postcode, Country] (e-mail: [author 3 e-mail address]; [author 4 e-mail address]).}'
+author: 'Jinghang Mei\thanks{This work received no funding. (Corresponding author: Jinghang Mei.)}\thanks{J. Mei is with the School of Electrical and Computer Engineering, The University of Sydney, Sydney, NSW 2006, Australia (e-mail: jmei0175@uni.sydney.edu.au).}'
 date: "TASLP submission version, 2026-09-28"
 bibliography: references.bib
 link-citations: true
 ---
 
 <!--
-TASLP SUBMISSION VERSION (remove before submission)
+TASLP submission version (generated file; edit tools/build_submission.py and rebuild)
 
 - Built from draft 2 (manuscript/manuscript.md, commit dbf8d5c) by tools/build_submission.py: draft-2 text for
   Sections 1-3.8 and the primary results, plus text and tables of the later sealed analyses (Additions A and B,
   R1-R4, A1, B1, C1) taken from sealed records. Supporting material is in taslp_supplement.md.
 - Every table row and number of both files is checked against the frozen outputs by
   `python manuscript/tools/check_numbers.py --submission`; render with tools/render_ieee.sh taslp_submission.md.
-- Author block: placeholder of realistic length (four authors, two affiliations); replace it with the real
-  names, affiliations, funding and corresponding author. IEEE SPS review is single-blind.
-- Repository: [REPOSITORY_URL] in the Reproducibility statement.
-- Acknowledgments: AI-use disclosure, marked AUTHOR_REVIEW_REQUIRED until the authors confirm their review.
 -->
 
 # Abstract
@@ -60,8 +56,7 @@ about 8 kbit/s [@skoglund2020opus]. A word-error-rate (WER) increase at 8 kbit/s
 come from the missing band, from in-band coding distortion, or from both. Studies that ran
 low-rate Opus through recognisers report the combined penalty [@khare2020opus;
 @jassim2020vocoders; @jacobellis2024mpq; @bai2026semdac]; one attributes the collapse at
-8 kbit/s to narrowband operation without a control for it [@khare2020opus]. An unpublished
-preliminary analysis of ours raised the same question.
+8 kbit/s to narrowband operation without a control for it [@khare2020opus].
 
 Separating band limitation from other degradations is not new. Moreno and Stern
 [@moreno1994sources] showed that band-limiting TIMIT to the telephone band reproduced only part
@@ -170,7 +165,7 @@ metrics, bootstrap and decision rules. The pilot was decoded once and assessed w
 then fixed and committed again, and the confirmation set was decoded once, without restarts, and
 analysed with that code. A 20-utterance calibration set (4
 dev-clean speakers) served only for decoding checks and computed no condition comparison. The processing pipeline
-reproduced an earlier analysis exactly (250/250 checks), and the codec and filter controls
+reproduced an earlier, unpublished preliminary analysis exactly (250/250 checks), and the codec and filter controls
 described below were validated in two earlier stages that used no ASR output.
 
 ## 3.2 Data
@@ -702,21 +697,18 @@ bandwidth and coding.
 The primary design was specified and version-sealed before any evaluation audio was decoded; each
 later analysis was specified separately before any of its audio was encoded (Sections 3.1 and 3.9).
 Stopped analyses and failed validation criteria are retained and reported. Code, analysis records,
-data selections, per-utterance outputs and intermediate reports are archived at [REPOSITORY_URL].
-LibriSpeech, the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
+data selections, per-utterance outputs and intermediate reports are archived at
+<https://doi.org/10.5281/zenodo.23011460> and maintained at
+<https://github.com/surnamemei/opus-asr-bandwidth-decomposition>. LibriSpeech, the recogniser
+checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
 
 # Acknowledgments
 
-<!-- AUTHOR_REVIEW_REQUIRED: AI-use disclosure in the authors' wording (IEEE policy: the AI systems used, and the
-sections containing AI-generated content, are identified in the Acknowledgments). Keep the visible marker until
-the authors explicitly confirm that they have personally reviewed and, where necessary, revised all AI-assisted
-manuscript sections. -->
-
-[AUTHOR_REVIEW_REQUIRED] OpenAI ChatGPT and Codex, and Anthropic Claude through Claude Code, were used for
-research ideation, code-development assistance, adversarial review of the experimental design, and drafting
-and editorial assistance throughout the manuscript and supplementary material. AI-assisted text and code were reviewed, revised,
-and independently verified by the authors, who take full responsibility for the experimental design,
-analyses, results, interpretations, and final manuscript.
+OpenAI ChatGPT and Codex, and Anthropic Claude through Claude Code, were used for research ideation,
+code-development assistance, adversarial review of the experimental design, and drafting and editorial
+assistance throughout the manuscript and supplementary material. AI-assisted text and code were
+reviewed, revised, and independently verified by the author, who takes full responsibility for the
+experimental design, analyses, results, interpretations, and final manuscript.
 
 # References
 

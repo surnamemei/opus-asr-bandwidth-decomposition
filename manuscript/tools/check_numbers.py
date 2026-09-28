@@ -534,7 +534,8 @@ for p in re.findall(r"\]\(([^)]+\.(?:png|pdf))\)", MS):
     if not (ROOT / "manuscript" / p).resolve().exists():
         fails.append(f"FIGURE missing: {p}")
 bib = set(re.findall(r"^@\w+\{([^,]+),", (ROOT / "manuscript" / "references.bib").read_text(), re.M))
-for key in sorted(set(re.findall(r"@([A-Za-z0-9_]+)", body)) - bib):
+# a citation key follows an @ that is not inside a word (pandoc's rule), so e-mail addresses are not keys
+for key in sorted(set(re.findall(r"(?<![\w.])@([A-Za-z0-9_]+)", body)) - bib):
     fails.append(f"CITATION missing in bib: {key}")
 
 print(f"files: {', '.join(FILES)}")

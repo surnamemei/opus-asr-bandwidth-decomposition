@@ -1,6 +1,6 @@
 ---
 title: "Supplementary material for: Bandwidth Removal Reproduces Only Part of the ASR Penalty of 8-kbit/s Opus"
-author: "[Author 1 Name], [Author 2 Name], [Author 3 Name], and [Author 4 Name]"
+author: "Jinghang Mei"
 date: "TASLP submission version, 2026-09-28"
 ---
 

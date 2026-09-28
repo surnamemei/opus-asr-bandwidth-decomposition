@@ -240,7 +240,7 @@ def build_spec() -> dict:
                    "a resurrection of R2 (a global zero-phase surrogate)", "a causal coding-distortion decomposition"],
         "method": {
             "choice": "option A of the pass instructions: the orthogonal projection-based decomposition (OPD) target "
-                      "component of Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE TASLP 2024), i.e. "
+                      "component of Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE/ACM TASLP 2024), i.e. "
                       "the BSS Eval projection; see A1_METHOD_NOTE.md",
             "definition": "for each utterance u with REF x_u and the exact Stage 3 OPUS waveform y_u (FFmpeg decode, "
                           "16 kHz, length T), LIN8_u = P_x y_u restricted to the T samples of REF, where P_x projects "

@@ -4,7 +4,7 @@ Written before any A1 code was run or any A1 audio was read (2026-09-27).
 
 ## 1. Closest prior method
 
-Iwamoto et al. [Interspeech 2022, arXiv:2201.06685] and Ochiai et al. [IEEE TASLP 32,
+Iwamoto et al. [Interspeech 2022, arXiv:2201.06685] and Ochiai et al. [IEEE/ACM TASLP 32,
 3589–3602, 2024, arXiv:2404.14860] analyse how speech-enhancement errors affect ASR. Both use the
 orthogonal projection-based decomposition (OPD) of BSS Eval [Vincent et al., IEEE TASLP 14(4), 2006].
 

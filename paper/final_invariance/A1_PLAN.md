@@ -22,7 +22,7 @@ A1 is not:
 
 ## 2. Method
 
-- **choice**: option A of the pass instructions: the orthogonal projection-based decomposition (OPD) target component of Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE TASLP 2024), i.e. the BSS Eval projection; see A1_METHOD_NOTE.md
+- **choice**: option A of the pass instructions: the orthogonal projection-based decomposition (OPD) target component of Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE/ACM TASLP 2024), i.e. the BSS Eval projection; see A1_METHOD_NOTE.md
 - **definition**: for each utterance u with REF x_u and the exact Stage 3 OPUS waveform y_u (FFmpeg decode, 16 kHz, length T), LIN8_u = P_x y_u restricted to the T samples of REF, where P_x projects onto the span of x_u delayed by tau = -256 ... +255 (L = 512 basis vectors); the residual is y_u - LIN8_u
 - **copied**: L = 512 (BSS Eval default, Ochiai et al.); per-utterance, time-domain, unconstrained least-squares FIR projection; mir_eval._project algorithm (zero padding by L - 1, FFT autocorrelation Toeplitz Gram matrix, FFT cross-correlation, exact solve with least-squares fallback), reimplemented in numpy (a1_opd.py)
 - **adapted**: the delay span is centred (tau = -256 ... +255) instead of causal (0 ... 511), because the decoded signal is aligned with REF to within 1-2 samples and the chain's linear response is two-sided (linear-phase resampler); implemented as in BSS Eval by delaying the estimate by 256 samples and advancing the projection. The centring is fixed a priori at L/2; the causal variant is computed on the calibration set only, as a descriptive check, and selects nothing
