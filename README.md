@@ -1,5 +1,7 @@
 # How much of the ASR penalty of low-rate Opus is bandwidth loss?
 
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23011460.svg)](https://doi.org/10.5281/zenodo.23011460)
+
 This is the paper repository for a decomposition of the automatic speech recognition (ASR)
 penalty of 8 kbit/s Opus into two parts: a bandwidth component and a codec-specific residual.
 The bandwidth component is measured with a validated linear bandwidth control.
