@@ -394,7 +394,7 @@ for rate, p in zip(RATES, payload):
 out.append("")
 
 SWC = ["LP"] + [f"SILK{r}" for r in RATES]
-out.append("TABLE 8 (addition B: descriptors; per-utterance medians and pooled vs REF)")
+out.append("TABLE 8 (addition B: descriptors; per-utterance medians and pooled vs REF) [full manuscript]")
 out.append(row("Descriptor (addition B)", SWC))
 out.append("|---|" + "---|" * len(SWC))
 
@@ -464,7 +464,7 @@ out.append("")
 
 # ---------------------------------------------------------------- Table S5 split (submission supplement)
 # the same cells as Table S5, one table per addition, so that neither needs shrinking
-out.append("TABLE S5A (addition A, per subset, secondary) [submission]")
+out.append("TABLE S5A (addition A, per subset, secondary) [repository]")
 out.append("| Subset | Model | OPUS8_LEVEL_MATCHED − LP | OPUS8_LEVEL_MATCHED − OPUS |")
 out.append("|---|---|---|---|")
 for s in ["test-clean", "test-other"]:
@@ -472,7 +472,7 @@ for s in ["test-clean", "test-other"]:
         out.append(row(s, [name, ci(*a(m, "L_level_matched_minus_lp", scope=s)),
                            ci(*a(m, "K_level_matched_minus_opus", scope=s), dec=3)]))
 out.append("")
-out.append("TABLE S5B (addition B, per subset, secondary) [submission]")
+out.append("TABLE S5B (addition B, per subset, secondary) [repository]")
 out.append("| Subset | Model | SILK8 − LP | Slope (pp per doubling) |")
 out.append("|---|---|---|---|")
 for s in ["test-clean", "test-other"]:
@@ -481,7 +481,7 @@ for s in ["test-clean", "test-other"]:
 out.append("")
 
 # ---------------------------------------------------------------- Table S6: sweep WER by condition
-out.append("TABLE S6 (addition B: corpus WER by condition, %, 95% CI)")
+out.append("TABLE S6 (addition B: corpus WER by condition, %, 95% CI) [full manuscript]")
 out.append(row("Condition (addition B, WER %)", [n for _, n in MODELS]))
 out.append("|---|---|---|")
 for c in SWC:
@@ -511,7 +511,7 @@ def r3(model, quantity, scope="pooled", kind="micro"):
 
 
 # ---------------------------------------------------------------- Table S13: R3 WER and W
-out.append("TABLE S13 (R3: forced wideband vs forced narrowband at 8 kbit/s, practical counterfactual) [submission]")
+out.append("TABLE S13 (R3: forced wideband vs forced narrowband at 8 kbit/s, practical counterfactual) [repository]")
 out.append("| Scope | Recogniser | WER NB8 (%) | WER WB8 (%) | WB8 − NB8 (pp) | Outcome (frozen rule) |")
 out.append("|---|---|---|---|---|---|")
 for scope in ["pooled", "test-clean", "test-other"]:
@@ -525,7 +525,7 @@ R3_MED = R3_DESC["signal_descriptor_medians"]
 R3_POOL = R3_DESC["pooled_against_ref"]
 R3_HYP = R3_DESC["hypothesis_differences"]
 R3_PAY = R_SWEEP["median_payload_kbps"]
-out.append("TABLE S14 (R3: packets and signal descriptors; medians over utterances or pooled against REF) [submission]")
+out.append("TABLE S14 (R3: packets and signal descriptors; medians over utterances or pooled against REF) [repository]")
 out.append("| Descriptor | NB8 | WB8 |")
 out.append("|---|---|---|")
 out.append(row("Median payload bitrate (kbit/s)", [f"{R3_PAY['NB8']:.2f}", f"{R3_PAY['WB8']:.2f}"]))
@@ -587,7 +587,7 @@ def r4(model, quantity, scope="pooled"):
     return ub(R4_BOOT, model, quantity, scope, "micro")
 
 
-out.append("TABLE S15 (R4: reference-decoder sensitivity of the total penalty, pooled) [submission]")
+out.append("TABLE S15 (R4: reference-decoder sensitivity of the total penalty, pooled) [repository]")
 out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
 out.append("|---|---|---|")
 for label, q, signed in [("WER, REF (%)", "wer_REF", False), ("WER, OPUS_FFMPEG (%)", "wer_OPUS_FFMPEG", False),
@@ -598,7 +598,7 @@ for label, q, signed in [("WER, REF (%)", "wer_REF", False), ("WER, OPUS_FFMPEG 
     out.append(row(label, [ci(*r4(m, q), signed=signed) for m, _ in MODELS]))
 out.append(row("Outcome (frozen rule)", [R4_OUT[m] for m, _ in MODELS]))
 out.append("")
-out.append("TABLE S16 (R4 per subset, secondary) [submission]")
+out.append("TABLE S16 (R4 per subset, secondary) [repository]")
 out.append("| Subset | Recogniser | WER, OPUS_LIBOPUS (%) | T_ffmpeg (pp) | T_libopus (pp) | D (pp) |")
 out.append("|---|---|---|---|---|---|")
 for scope in ["test-clean", "test-other"]:
@@ -617,7 +617,7 @@ S3_OPUS_MAN = [r for r in load(ROOT / "results_paper" / "stage3_asr" / "raw" / "
 R4_CLIPS = {"OPUS_FFMPEG": (sum(int(r["clip_count"]) for r in S3_OPUS_MAN), sum(int(r["clip_count"]) > 0 for r in S3_OPUS_MAN)),
             "OPUS_LIBOPUS": (sum(int(r["libopus_clip_count"]) for r in R4_ROWS),
                              sum(int(r["libopus_clip_count"]) > 0 for r in R4_ROWS))}
-out.append("TABLE S17 (R4 descriptive decoder and signal diagnostics; no descriptor enters the rule) [submission]")
+out.append("TABLE S17 (R4 descriptive decoder and signal diagnostics; no descriptor enters the rule) [repository]")
 out.append("| Descriptor (against REF; descriptive) | OPUS_FFMPEG | OPUS_LIBOPUS |")
 out.append("|---|---|---|")
 dF, dL = R4_DIAG["OPUS_FFMPEG"], R4_DIAG["OPUS_LIBOPUS"]
@@ -672,18 +672,18 @@ def a1(model, quantity, scope="pooled", kind="micro"):
 
 
 out.append("TABLE A1 (inclusive best-linear attribution of the 8 kbit/s output, pooled) [submission]")
-out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("| Pooled | Whisper large-v3 | wav2vec2-base-960h |")
 out.append("|---|---|---|")
 for label, q, signed in [("WER, LIN8 (%)", "wer_LIN8", False),
-                         ("LIN8 − REF (inclusive linear component, pp)", "L8", True),
-                         ("OPUS − LIN8 (residual beyond the best-linear surrogate, pp)", "R8", True),
+                         ("LIN8 − REF (pp)", "L8", True),
+                         ("OPUS − LIN8 (pp)", "R8", True),
                          ("LIN8 − LP (pp)", "delta_L", True)]:
     out.append(row(label, [ci(*a1(m, q), signed=signed) for m, _ in MODELS]))
-out.append(row("Linear share, (LIN8 − REF)/(OPUS − REF)", [ci(*a1(m, "S8", kind="ratio"), signed=False) for m, _ in MODELS]))
-out.append(row("Sequential share along REF → LP → OPUS", [ci(*a1(m, "S_primary", kind="ratio"), signed=False) for m, _ in MODELS]))
+out.append(row("Linear share", [ci(*a1(m, "S8", kind="ratio"), signed=False) for m, _ in MODELS]))
+out.append(row("Sequential share", [ci(*a1(m, "S_primary", kind="ratio"), signed=False) for m, _ in MODELS]))
 out.append(row("Outcome (frozen rule)", [A1_DEC["outcome"]] * 2))
 out.append("")
-out.append("TABLE A1S (inclusive best-linear attribution per subset, secondary) [submission]")
+out.append("TABLE A1S (inclusive best-linear attribution per subset, secondary) [repository]")
 out.append("| Subset | Recogniser | LIN8 − REF | OPUS − LIN8 | LIN8 − LP |")
 out.append("|---|---|---|---|---|")
 for scope in ["test-clean", "test-other"]:
@@ -704,21 +704,24 @@ def lp_response():
 
 LP_GAIN, LP_REL = lp_response()
 A1_SUM = {"calibration": A1_CAL["summary"], "validation": A1_VAL["summary"], "confirmation": A1_EVAL["summary"]}
-out.append("TABLE A1D (linear response of the 8 kbit/s chain: per-utterance medians; LP control for comparison) [submission]")
-out.append("| Descriptor | LIN8, calibration | LIN8, validation | LIN8, confirmation | LP control |")
-out.append("|---|---|---|---|---|")
-out.append(row("Projection NMSE (dB)", [fmt(A1_SUM[s]["nmse_db"]["median"]) for s in A1_SUM] + ["—"]))
-out.append(row("Energy explained", [fmt(A1_SUM[s]["explained_energy_fraction"]["median"], dec=3) for s in A1_SUM] + ["—"]))
-out.append(row("Gain, 0.5–2 kHz (dB)", [fmt(A1_SUM[s]["gain_0p5_2k_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_GAIN, 2) + 0.0)]))
+A1D_HEAD = ["| Descriptor | LIN8, calibration | LIN8, validation | LIN8, confirmation | LP control |", "|---|---|---|---|---|"]
+A1D_ROWS = [row("Projection NMSE (dB)", [fmt(A1_SUM[s]["nmse_db"]["median"]) for s in A1_SUM] + ["—"]),
+            row("Energy explained", [fmt(A1_SUM[s]["explained_energy_fraction"]["median"], dec=3) for s in A1_SUM] + ["—"]),
+            row("Gain, 0.5–2 kHz (dB)", [fmt(A1_SUM[s]["gain_0p5_2k_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_GAIN, 2) + 0.0)])]
 for hz in [2000, 2500, 3000, 3500, 4000]:
-    out.append(row(f"Response at {hz / 1000:.1f} kHz, relative (dB)",
-                   [fmt(A1_SUM[s][f"rel_{hz}_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_REL[hz], 2) + 0.0)]))
-out.append(row("Delay (samples)", [fmt(A1_SUM[s]["linear_delay_samples"]["median"]) for s in A1_SUM] + ["0"]))
+    A1D_ROWS.append(row(f"Response at {hz / 1000:.1f} kHz, relative (dB)",
+                        [fmt(A1_SUM[s][f"rel_{hz}_db"]["median"]) for s in A1_SUM] + [fmt(round(LP_REL[hz], 2) + 0.0)]))
+A1D_ROWS.append(row("Delay (samples)", [fmt(A1_SUM[s]["linear_delay_samples"]["median"]) for s in A1_SUM] + ["0"]))
 pc, pv = A1_CAL["pooled"], A1_VAL["pooled"]
-out.append(row("Pooled coherence 0–3.5 kHz, OPUS / LIN8", [f"{fmt(p['REF->OPUS8']['mean_coherence_0_3500'], dec=3)} / "
-                                                              f"{fmt(p['REF->LIN8']['mean_coherence_0_3500'], dec=3)}" for p in (pc, pv)] + ["—", "—"]))
-out.append(row("Pooled 4–8 kHz power vs REF, OPUS / LIN8 (dB)", [f"{fmt(p['REF->OPUS8']['total_hf_power_db'], dec=1)} / "
-                                                                   f"{fmt(p['REF->LIN8']['total_hf_power_db'], dec=1)}" for p in (pc, pv)] + ["—", "—"]))
+A1D_ROWS.append(row("Pooled coherence 0–3.5 kHz, OPUS / LIN8", [f"{fmt(p['REF->OPUS8']['mean_coherence_0_3500'], dec=3)} / "
+                                                                   f"{fmt(p['REF->LIN8']['mean_coherence_0_3500'], dec=3)}" for p in (pc, pv)] + ["—", "—"]))
+A1D_ROWS.append(row("Pooled 4–8 kHz power vs REF, OPUS / LIN8 (dB)", [f"{fmt(p['REF->OPUS8']['total_hf_power_db'], dec=1)} / "
+                                                                        f"{fmt(p['REF->LIN8']['total_hf_power_db'], dec=1)}" for p in (pc, pv)] + ["—", "—"]))
+out.append("TABLE A1D (linear response of the 8 kbit/s chain: per-utterance medians; LP control for comparison) [repository]")
+out.extend(A1D_HEAD + A1D_ROWS)
+out.append("")
+out.append("TABLE A1DS (supplement: linear response of the 8 kbit/s chain, selected rows of Table A1D) [submission]")
+out.extend(A1D_HEAD + [r for r in A1D_ROWS if not r.startswith(("| Energy explained", "| Response at 2.0", "| Response at 2.5"))])
 out.append("")
 g = A1_VAL["gates"]
 out.append(f"A1 gates: calibration NMSE median {fmt(A1_CAL['summary']['nmse_db']['median'])} dB, tolerance "
@@ -792,7 +795,7 @@ def b1(model, quantity, scope="pooled", kind="micro"):
     return ub(B1_BOOT, model, quantity, scope, kind)
 
 
-out.append("TABLE B1 (encoder application mode: total penalty under OPUS_APPLICATION_VOIP, pooled) [submission]")
+out.append("TABLE B1 (encoder application mode: total penalty under OPUS_APPLICATION_VOIP, pooled) [repository]")
 out.append("| Pooled (confirmation set) | Whisper large-v3 | wav2vec2-base-960h |")
 out.append("|---|---|---|")
 for label, q, signed in [("WER, OPUS_AUDIO8 (= OPUS) (%)", "wer_OPUS_AUDIO8", False), ("WER, OPUS_VOIP8 (%)", "wer_OPUS_VOIP8", False),
@@ -802,7 +805,7 @@ for label, q, signed in [("WER, OPUS_AUDIO8 (= OPUS) (%)", "wer_OPUS_AUDIO8", Fa
 out.append(row("D_app, CER (pp)", [ci(*b1(m, "D_app", kind="micro_cer")) for m, _ in MODELS]))
 out.append(row("Outcome (frozen rule)", [B1_OUT[m] for m, _ in MODELS]))
 out.append("")
-out.append("TABLE B1S (encoder application mode per subset, secondary) [submission]")
+out.append("TABLE B1S (encoder application mode per subset, secondary) [repository]")
 out.append("| Subset | Recogniser | V = OPUS_VOIP8 − REF | D_app = OPUS_VOIP8 − OPUS_AUDIO8 |")
 out.append("|---|---|---|---|")
 for scope in ["test-clean", "test-other"]:
@@ -810,7 +813,7 @@ for scope in ["test-clean", "test-other"]:
         out.append(row(scope, [name, ci(*b1(m, "V", scope)), ci(*b1(m, "D_app", scope))]))
 out.append("")
 BD = B1_VAL["descriptive"]
-out.append("TABLE B1D (encoder application mode: packets and signal descriptors against REF, 2,174 utterances; descriptive) [submission]")
+out.append("TABLE B1D (encoder application mode: packets and signal descriptors against REF, 2,174 utterances; descriptive) [repository]")
 out.append("| Descriptor | OPUS_AUDIO8 | OPUS_VOIP8 |")
 out.append("|---|---|---|")
 C_ = ["OPUS_AUDIO8", "OPUS_VOIP8"]
@@ -834,7 +837,7 @@ out.append(f"B1 checks: AUDIO8 reproduced {K['K1']['ogg_identical']:,} and {K['K
 out.append("")
 # ---------------------------------------------------------------- main-paper Table VII (Section 4.12)
 B1_ROWS_ENABLED = True
-out.append("TABLE 9 (post-confirmation sensitivity of the residual and of the total, pooled) [submission]")
+out.append("TABLE 9 (post-confirmation sensitivity of the residual and of the total, pooled) [repository]")
 out.append("| Pooled (confirmation set, pp) | Whisper large-v3 | wav2vec2-base-960h |")
 out.append("|---|---|---|")
 out.append(row("LIN8 − REF (inclusive linear component)", [ci(*a1(m, "L8")) for m, _ in MODELS]))
@@ -844,6 +847,75 @@ out.append(row("Linear share, (LIN8 − REF)/(OPUS − REF)", [ci(*a1(m, "S8", k
 if B1_ROWS_ENABLED:
     out.append(row("OPUS_VOIP8 − REF (total, VoIP application mode)", [ci(*b1(m, "V")) for m, _ in MODELS]))
     out.append(row("OPUS_VOIP8 − OPUS (application mode)", [ci(*b1(m, "D_app")) for m, _ in MODELS]))
+out.append("")
+
+
+# ================================================================ Final submission layout (editorial pass): compact tables
+# Tables tagged [repository] above are superseded in the submission by the compact tables below; they are still
+# generated from the sealed records (check_numbers.py skips them in both documents).
+out.append("TABLE 10 (main paper: post-confirmation robustness analyses, pooled) [submission]")
+out.append("| Analysis | Question (contrast) | Whisper large-v3 | wav2vec2-base-960h | Interpretation boundary |")
+out.append("|---|---|---|---|---|")
+for label, question, cells, boundary in [
+        ("Best-linear", "Residual beyond the best-linear component of the codec output? (OPUS − LIN8)",
+         [ci(*a1(m, "R8")) for m, _ in MODELS], "Attribution sensitivity; its linear share is not a bandwidth share"),
+        ("Level match", "Residual after RMS level matching? (level-matched OPUS − LP)",
+         [ci(*a(m, "L_level_matched_minus_lp")) for m, _ in MODELS], "Broadband level only"),
+        ("Decoder", "Total penalty under libopus decoding? (OPUS_LIBOPUS − REF)",
+         [ci(*r4(m, "T_libopus")) for m, _ in MODELS], "Total penalty only"),
+        ("Decoder", "Does the decoder change the total? (OPUS_LIBOPUS − OPUS)",
+         [ci(*r4(m, "D")) for m, _ in MODELS], "No decoder-invariant residual or share claimed"),
+        ("Application", "Total penalty in the VoIP application mode? (OPUS_VOIP8 − REF)",
+         [ci(*b1(m, "V")) for m, _ in MODELS], "Total penalty only"),
+        ("Application", "Does the application mode change the total? (OPUS_VOIP8 − OPUS)",
+         [ci(*b1(m, "D_app")) for m, _ in MODELS], "No clear difference; not equivalence"),
+        ("Allocation", "Wideband instead of narrowband at 8 kbit/s? (WB8 − NB8)",
+         [ci(*r3(m, "W")) for m, _ in MODELS], "Practical, not factorial; sweep utterances")]:
+    out.append(row(label, [question] + cells + [boundary]))
+out.append("")
+out.append("TABLE SC (supplement: decoder, application mode and bandwidth allocation, pooled) [submission]")
+out.append("| Pooled | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|")
+for label, cells in [
+        ("WER, OPUS: FFmpeg, application audio (%)", [ci(*r4(m, "wer_OPUS_FFMPEG"), signed=False) for m, _ in MODELS]),
+        ("WER, OPUS_LIBOPUS (%)", [ci(*r4(m, "wer_OPUS_LIBOPUS"), signed=False) for m, _ in MODELS]),
+        ("WER, OPUS_VOIP8 (%)", [ci(*b1(m, "wer_OPUS_VOIP8"), signed=False) for m, _ in MODELS]),
+        ("OPUS_LIBOPUS − OPUS (pp)", [ci(*r4(m, "D")) for m, _ in MODELS]),
+        ("Outcome, decoder (frozen rule)", [R4_OUT[m] for m, _ in MODELS]),
+        ("OPUS_VOIP8 − OPUS (pp)", [ci(*b1(m, "D_app")) for m, _ in MODELS]),
+        ("OPUS_VOIP8 − OPUS, CER (pp)", [ci(*b1(m, "D_app", kind="micro_cer")) for m, _ in MODELS]),
+        ("Outcome, application (frozen rule)", [B1_OUT[m] for m, _ in MODELS]),
+        ("WER, NB8, sweep utterances (%)", [ci(*r3(m, "wer_NB8"), signed=False) for m, _ in MODELS]),
+        ("WER, WB8, sweep utterances (%)", [ci(*r3(m, "wer_WB8"), signed=False) for m, _ in MODELS]),
+        ("WB8 − NB8 (pp)", [ci(*r3(m, "W")) for m, _ in MODELS]),
+        ("Outcome, allocation (frozen rule)", [R3_OUT[m] for m, _ in MODELS])]:
+    out.append(row(label, cells))
+out.append("")
+out.append("TABLE SP (supplement: robustness analyses per subset, secondary) [submission]")
+out.append("| Analysis (pp) | Subset | Whisper large-v3 | wav2vec2-base-960h |")
+out.append("|---|---|---|---|")
+for label, fn, dec in [("Level matching: OPUS8_LEVEL_MATCHED − LP", lambda m, s: a(m, "L_level_matched_minus_lp", s), 2),
+                       ("Level matching: OPUS8_LEVEL_MATCHED − OPUS", lambda m, s: a(m, "K_level_matched_minus_opus", s), 3),
+                       ("Sweep: SILK8 − LP", lambda m, s: sw(m, "R_8", s), 2),
+                       ("Sweep: slope (pp per doubling)", lambda m, s: sw(m, "S_log2", s, kind="trend"), 3),
+                       ("Best-linear: OPUS − LIN8", lambda m, s: a1(m, "R8", s), 2),
+                       ("Decoder: OPUS_LIBOPUS − OPUS", lambda m, s: r4(m, "D", s), 2),
+                       ("Application: OPUS_VOIP8 − OPUS", lambda m, s: b1(m, "D_app", s), 2),
+                       ("Allocation: WB8 − NB8", lambda m, s: r3(m, "W", s), 2)]:
+    for scope in ["test-clean", "test-other"]:
+        out.append(row(label, [scope] + [ci(*fn(m, scope), dec=dec) for m, _ in MODELS]))
+out.append("")
+out.append("TABLE SR (supplement: attribution analyses stopped before ASR) [submission]")
+out.append("| Analysis | Intended question | Failed held-out criterion | Value (dB) | Threshold (dB) | Consequence |")
+out.append("|---|---|---|---|---|---|")
+out.append(row("LP_LIBOPUS", ["Decomposition under the libopus decoder",
+               f"Transition shape: RMS $\\lvert H_1\\rvert$ difference, {R1_TOL['g6_h1_rms_band_hz'][0] / 1000:.1f}–"
+               f"{R1_TOL['g6_h1_rms_band_hz'][1] / 1000:.1f} kHz", f"{R1_RMS:.2f}", f"{R1_TOL['g6_h1_rms_max_db']:.1f}", "STOPPED"]))
+out.append(row("SURR8", ["Share under a more inclusive linear-loss definition",
+               "Transition shape: RMS difference from its target", f"{R2_V3['rms_db']:.2f}", f"{R2_TOL['V3_rms_max_db']:.1f}",
+               "STOPPED"]))
+out.append(row("SURR8", ["(as above)", "Transition shape: maximum difference from its target", f"{R2_V3['max_abs_db']:.2f}",
+               f"{R2_TOL['V3_abs_max_db']:.1f}", "STOPPED"]))
 out.append("")
 
 print("\n".join(out))

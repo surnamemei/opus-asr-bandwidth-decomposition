@@ -36,14 +36,32 @@ def need(token, why):
         fails.append(f"MISSING [{why}]: {token}")
 
 
+def need_full_only(token, why):
+    """A detail that draft 2 states and the submission leaves to the repository (sealed records)."""
+    if not SUBMISSION:
+        need(token, why)
+
+
 # ------------------------------------------------------------------ 1. tables
 generated = subprocess.run([sys.executable, str(HERE / "make_tables.py")], capture_output=True,
                            text=True, check=True).stdout
+def is_rule(line):
+    return line.startswith("|") and set(line.replace("|", "").strip()) <= set("-: ")
+
+
+def cells_of(line):
+    return [c.strip() for c in line.strip().strip("|").split("|")]
+
+
 ms_rows = {}
-for line in MS.splitlines():
-    if line.startswith("|") and not set(line.replace("|", "").strip()) <= set("-: "):
-        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+ms_headers = []                     # header rows (the row above a rule), for the corner-free comparison
+_ms_lines = MS.splitlines()
+for i, line in enumerate(_ms_lines):
+    if line.startswith("|") and not is_rule(line):
+        cells = cells_of(line)
         ms_rows.setdefault(cells[0], []).append(cells)
+        if i + 1 < len(_ms_lines) and is_rule(_ms_lines[i + 1]):
+            ms_headers.append(cells)
 
 SKIP_FIRST = {"Condition", "Contrast", "Subset", "Model", "Descriptor", "", "Measure",
               "Contrast (micro, pp)", "Descriptor (median vs REF)",
@@ -52,13 +70,25 @@ SKIP_FIRST = {"Condition", "Contrast", "Subset", "Model", "Descriptor", "", "Mea
 NORMALISE = {"0.000": "0.00"}  # manuscript prints LSD of NEG_LP as 0.00 (value 3e-5 dB)
 checked = 0
 skip_tag = "[full manuscript]" if SUBMISSION else "[submission]"   # tables that belong to the other document
+# tables tagged [repository] are superseded in both documents by compact tables; they are still generated
+# from the sealed records for traceability
 skipping = False
+header_next = False
 for line in generated.splitlines():
     if line.startswith("TABLE"):
-        skipping = line.rstrip().endswith(skip_tag)
-    if skipping or not line.startswith("|") or set(line.replace("|", "").strip()) <= set("-: "):
+        skipping = line.rstrip().endswith(skip_tag) or line.rstrip().endswith("[repository]")
+        header_next = True
+    if skipping or not line.startswith("|") or is_rule(line):
         continue
-    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+    cells = cells_of(line)
+    if header_next:             # header row: compared without its corner cell
+        header_next = False
+        if cells[0] in SKIP_FIRST:
+            continue
+        checked += 1
+        if not any(len(h) == len(cells) and h[1:] == cells[1:] for h in ms_headers):
+            fails.append(f"TABLE HEADER MISMATCH (corner cell ignored): {line}")
+        continue
     if cells[0] in SKIP_FIRST:
         continue
     candidates = ms_rows.get(cells[0], [])
@@ -142,7 +172,7 @@ for m in (W, V):
     need(up(*K[m], dec=3), f"A effect of level matching {m}")
     subs = T.a(m, "L_level_matched_minus_lp_S", kind="micro_error_type")
     need(f"{fmt(subs[0], True)} substitutions [{fmt(subs[1], True)}, {fmt(subs[2], True)}]", f"A substitutions {m}")
-need(f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", "A abstract")
+need_full_only(f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", "A abstract")
 cells = T.A_DEC["cells"]
 need(f"{cells[W]['retained_fraction_L_over_T_star']:.2f} and {cells[V]['retained_fraction_L_over_T_star']:.2f} times",
      "A retained share")
@@ -156,17 +186,17 @@ need(f"median of {fmt(g['median'], True, 3)} dB (5th–95th percentile {fmt(g['p
      f"{fmt(g['p95'], True, 3)} dB; range {fmt(g['min'], True, 3)} to\n{fmt(g['max'], True, 3)} dB)", "A gains")
 for key, tok in (("max_abs_level_error_db", "$1.6 \\times 10^{-8}$ dB"),
                  ("max_abs_gain_reproduction_error_db", "$1.4 \\times 10^{-14}$ dB")):
-    need(tok, f"A {key}")
+    need_full_only(tok, f"A {key}")
 assert f"{T.A_REG['max_abs_level_error_db']:.1e}" == "1.6e-08"
 assert f"{T.A_REG['max_abs_gain_reproduction_error_db']:.1e}" == "1.4e-14"
 clip = {c: [r for r in T.LV_MAN if r["condition"] == c] for c in ("OPUS", T.LM)}
 n = {c: (sum(int(r["clip_count"]) for r in rs), sum(int(r["clip_count"]) > 0 for r in rs)) for c, rs in clip.items()}
-need(f"from {n['OPUS'][0]} in {n['OPUS'][1]} utterances\n(OPUS) to {n[T.LM][0]} in {n[T.LM][1]} utterances", "A clipping")
+need_full_only(f"from {n['OPUS'][0]} in {n['OPUS'][1]} utterances\n(OPUS) to {n[T.LM][0]} in {n[T.LM][1]} utterances", "A clipping")
 diff = {(r["model"], r["condition"]): int(r["differing"]) for r in T.REPRO}
 assert diff[(V, "LP")] == diff[(V, "OPUS")] == 0 and (diff[(W, "LP")], diff[(W, "OPUS")]) == (2, 1)
 need(f"{diff[(W, 'LP')] + diff[(W, 'OPUS')]} of {2 * T.N_A:,} hypotheses", "A reproduction")
 same_run = T.a(W, "T_opus_minus_lp")[0] - T.SPEC["A"]["anchors"][W]["T_star"]["estimate"]
-need(f"OPUS − LP by {same_run:.3f} pp", "A same-run shift")
+need_full_only(f"OPUS − LP by {same_run:.3f} pp", "A same-run shift")
 
 R8 = {m: T.sw(m, "R_8") for m in (W, V)}
 S_ = {m: T.sw(m, "S_log2", kind="trend") for m in (W, V)}
@@ -174,7 +204,7 @@ for m in (W, V):
     need(up(*R8[m]), f"B R_8 {m}")
 need(f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(S_[W][2], True, 3)}]", "B slope whisper")
 need(f"{fmt(S_[V][0], True, 3)}\n[{fmt(S_[V][1], True, 3)}, {fmt(S_[V][2], True, 3)}]", "B slope wav2vec2")
-need(f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling", "B abstract")
+need_full_only(f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling", "B abstract")
 thr = T.B_DEC["cells"]
 need(f"{fmt(thr[W]['meaningful_decline_threshold'], True, 3)} | {fmt(thr[V]['meaningful_decline_threshold'], True, 3)}",
      "B thresholds (Table S9)")
@@ -185,8 +215,8 @@ need(", ".join(f"{p:.2f}" for p in T.payload[:-1]) + f" and {T.payload[-1]:.2f} 
 dev = sorted(100 * (1 - p / r) for p, r in zip(T.payload, T.RATES))
 need(f"{dev[0]:.1f}–{dev[-1]:.1f} % below nominal", "B payload deviation")
 cont = T.B_VAL["median_container_kbps"]
-need(f"{cont[0]:.2f}–{cont[-1]:.2f} kbit/s", "B Ogg bitrates")
-need(f"{sum(int(float(r['num_packets'])) for r in T.SW_ROWS if r['condition'] == 'SILK8'):,} packets", "B packets")
+need_full_only(f"{cont[0]:.2f}–{cont[-1]:.2f} kbit/s", "B Ogg bitrates")
+need_full_only(f"{sum(int(float(r['num_packets'])) for r in T.SW_ROWS if r['condition'] == 'SILK8'):,} packets", "B packets")
 assert T.B_VAL["bridge_share_silk8_identical_to_stage3_opus_settings"] == 1.0
 need(f"for all {T.SW_SEL['n_utterances']:,} utterances", "B bridge")
 d812 = {m: T.sw(m, "D_8_12")[0] for m in (W, V)}
@@ -271,17 +301,24 @@ if SUBMISSION:
     # checked full manuscript (its hand-made tables: conditions, control validation)
     full = (ROOT / "manuscript" / "manuscript.md").read_text(encoding="utf-8")
     known = {" ".join(l.split()) for l in (generated + "\n" + full).splitlines() if l.startswith("|")}
+    _src = (generated + "\n" + full).splitlines()
+    known_headers = {tuple(cells_of(l)[1:]) for i, l in enumerate(_src)
+                     if l.startswith("|") and not is_rule(l) and i + 1 < len(_src) and is_rule(_src[i + 1])}
     for f, text in TEXTS.items():
-        for line in text.splitlines():
-            if line.startswith("|") and " ".join(line.split()) not in known:
-                fails.append(f"UNCHECKED TABLE ROW in {f}: {line}")
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            if not line.startswith("|") or " ".join(line.split()) in known:
+                continue
+            header = i + 1 < len(lines) and is_rule(lines[i + 1])
+            if header and tuple(cells_of(line)[1:]) in known_headers:
+                continue
+            fails.append(f"UNCHECKED TABLE ROW in {f}: {line}")
     main = " ".join(TEXTS["taslp_submission.md"].split())
     primary = [pp("delta_bw", m, unsigned=True) for m in (W, V)] + \
               [pp("delta_opus_residual", m, unsigned=True) for m in (W, V)] + \
               [up(*L[m]) for m in (W, V)] + [up(*K[m], dec=3) for m in (W, V)] + \
               [up(*R8[m]) for m in (W, V)] + [up(*E[m]) for m in (W,)] + \
-              [f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(S_[W][2], True, 3)}]",
-               f"{L[W][0]:.2f} and {L[V][0]:.2f} pp remained", f"by {abs(S_[W][0]):.2f} and {abs(S_[V][0]):.2f} pp per doubling"]
+              [f"{fmt(S_[W][0], True, 3)} pp per doubling [{fmt(S_[W][1], True, 3)}, {fmt(S_[W][2], True, 3)}]"]
     for m in (W, V):
         e, lo, hi = b("confirmation", m, "bw_share_of_opus_total", kind="ratio")
         primary.append(f"{round(100*e):.0f} % [{round(100*lo):.0f}, {round(100*hi):.0f}]")
@@ -315,19 +352,19 @@ if SUBMISSION:
     ]
     if " ".join(stopped.split()) not in " ".join(TEXTS["taslp_supplement.md"].split()):
         fails.append(f"MISSING in the supplement: {stopped}")
-    need(f"NB8's Ogg files and raw hypotheses were identical to those of Addition B's SILK8 for all "
+    need(f"NB8's Ogg files and raw hypotheses were identical to those of the sweep's SILK8 for all "
          f"{T.R3_HYP[W]['utterances']:,} utterances in both recognisers", "R3 reproduction (S7)")
-    need(f"decoder-matched control failed held-out transition-shape validation: RMS difference {T.R1_RMS:.2f} dB "
-         f"over 3.0–4.2 kHz (limit {T.R1_TOL['g6_h1_rms_max_db']:.1f} dB)", "R1-V gate 6 (S7)")
-    need("8-kbit/s effective coherent-linear surrogate", "R2 label (S7)")
-    need(f"failed held-out transition-shape validation: RMS difference from its target {T.R2_V3['rms_db']:.2f} dB "
-         f"(limit {T.R2_TOL['V3_rms_max_db']:.1f} dB), maximum {T.R2_V3['max_abs_db']:.2f} dB "
-         f"(limit {T.R2_TOL['V3_abs_max_db']:.1f} dB)", "R2-V3 (S7)")
-    need(f"(median {T.R_DELAY['calibration']['median']:.2f} and {T.R_DELAY['validation']['median']:.2f} samples "
-         f"at 16 kHz", "exploratory delay (S7)")
-    need(f"3.0–4.15 kHz: {T.R_STAB['libopus_frozen']:.2f} dB, against {T.R_STAB['libopus_fixed0']:.2f} dB with one "
-         f"fixed alignment and {T.R_STAB['ffmpeg_fixed2']:.2f} dB for the FFmpeg-decoded chain", "exploratory stability (S7)")
-    need("This fractional-delay diagnosis is post hoc and exploratory", "exploratory label (S7)")
+    # R1 and R2 stay STOPPED: their failed held-out criteria are the rows of the generated Table S15 (checked
+    # above as table rows, from the sealed validation records); the fractional-delay diagnosis is post hoc and
+    # exploratory, and only its label is in the supplement (the numbers are in the repository)
+    sr = [l for l in generated.split("TABLE SR ", 1)[1].split("\n\n", 1)[0].splitlines() if l.startswith("| ")][1:]
+    assert len(sr) == 3 and all(l.rstrip().endswith("| STOPPED |") for l in sr)
+    assert f"| {T.R1_RMS:.2f} | {T.R1_TOL['g6_h1_rms_max_db']:.1f} |" in sr[0]
+    assert f"| {T.R2_V3['rms_db']:.2f} | {T.R2_TOL['V3_rms_max_db']:.1f} |" in sr[1]
+    assert f"| {T.R2_V3['max_abs_db']:.2f} | {T.R2_TOL['V3_abs_max_db']:.1f} |" in sr[2]
+    assert T.R1_RMS > T.R1_TOL['g6_h1_rms_max_db'] and T.R2_V3['rms_db'] > T.R2_TOL['V3_rms_max_db'] \
+        and T.R2_V3['max_abs_db'] > T.R2_TOL['V3_abs_max_db']
+    need("A post hoc and exploratory diagnosis points to a sub-sample, content-dependent delay", "exploratory label (S9)")
     need(f"Whisper large-v3 on test-clean lay above zero ({up(*T.r3(W, 'W', 'test-clean'))})", "R3 secondary (S7)")
     need(f"wav2vec2-base-960h on test-other below zero ({up(*T.r3(V, 'W', 'test-other'))})", "R3 secondary (S7)")
     for tok in primary:
@@ -340,13 +377,14 @@ if SUBMISSION:
     r4 = {(m, q): T.r4(m, q) for m in (W, V) for q in ("T_ffmpeg", "T_libopus", "D")}
     d_w = r4[(W, "D")]
     primary += [
-        f"The total Opus penalty remained positive for both recognisers: {up(*r4[(W, 'T_libopus')])} for Whisper "
-        f"large-v3 and {up(*r4[(V, 'T_libopus')])} for wav2vec2-base-960h.",
+        f"the total penalty remained positive for both recognisers: {up(*r4[(W, 'T_libopus')])} for Whisper "
+        f"large-v3 and {up(*r4[(V, 'T_libopus')])} for wav2vec2-base-960h",
         f"Relative to FFmpeg decoding, the libopus decoder reduced Whisper WER by {abs(d_w[0]):.2f} pp "
         f"[{abs(d_w[2]):.2f}, {abs(d_w[1]):.2f}], whereas no clear decoder difference was established for wav2vec2 "
         f"({up(*r4[(V, 'D')])}).",
-        "This sensitivity tests the total penalty only; the bandwidth decomposition remains defined for the FFmpeg chain.",
-        f"With FFmpeg decoding the totals were {fmt(r4[(W, 'T_ffmpeg')][0], True)} and {fmt(r4[(V, 'T_ffmpeg')][0], True)} pp",
+        "The bandwidth decomposition remains defined for the FFmpeg chain, and no decoder-invariant residual or share "
+        "is claimed.",
+        f"FFmpeg decoding the totals were {fmt(r4[(W, 'T_ffmpeg')][0], True)} and {fmt(r4[(V, 'T_ffmpeg')][0], True)} pp",
         "The primary decomposition is defined for FFmpeg 6.1.1 decoding. A post-confirmation sensitivity using the "
         "libopus 1.4 reference decoder showed that the total 8 kbit/s penalty persisted for both recognisers, although "
         "its magnitude was lower for Whisper. Because the decoder-matched bandwidth control failed held-out validation "
@@ -355,18 +393,10 @@ if SUBMISSION:
         "magnitude was lower for Whisper, while no clear decoder difference was established for wav2vec2, and the "
         "bandwidth decomposition itself remains defined for the FFmpeg decoder chain",
     ]
-    dd, H = T.R4_DIAG["decoder_difference"], T.R4_DESC["hypothesis_differences"]
-    need(f"their SNR had a median of {dd['snr_unaligned_db']['median']:.2f} dB unaligned and "
-         f"{dd['snr_one_sample_db']['median']:.2f} dB after the better one-sample shift (minimum "
-         f"{dd['snr_one_sample_db']['min']:.2f} dB; the better shift was −1 in "
-         f"{dd['one_sample_shift_counts']['-1']:,} utterances and +1 in one)", "R4 decoder SNR (S8)")
-    need(f"Relative to OPUS_FFMPEG, {H[W]['raw_hypothesis_differs']} raw ({H[W]['normalised_hypothesis_differs']} "
-         f"normalised) Whisper transcripts and {H[V]['raw_hypothesis_differs']} raw ({H[V]['normalised_hypothesis_differs']} "
-         f"normalised) wav2vec2 transcripts of the {H[W]['utterances']:,} changed under OPUS_LIBOPUS", "R4 transcripts (S8)")
-    need("a post-analysis descriptive addition, not pre-specified", "R4 transcripts label (S8)")
-    need("so not every Whisper transcript difference can be interpreted as a decoder effect", "R4 batching caveat (S8)")
-    need("no bandwidth component, share or residual was computed under libopus", "R4 claim boundary (S8)")
-    need("a result without a clear difference is not an equivalence claim", "R4 claim boundary (S8)")
+    # decoder SNR, transcript-difference counts and signal diagnostics are in the repository (sealed R4 records)
+    need("no bandwidth component, share or residual was computed under libopus", "R4 claim boundary (S7)")
+    need("a result without a clear difference is not an equivalence claim", "R4 claim boundary (S7)")
+    need("this component is contained, not separated, in the cross-run comparisons", "Whisper batch component (Limitations)")
     # SPS Information for Authors: "The abstract must be between 150-250 words."
     abstract = TEXTS["taslp_submission.md"].split("# Abstract", 1)[1].split("**Index Terms**", 1)[0]
     if not 150 <= len(abstract.split()) <= 250:
@@ -380,23 +410,26 @@ if SUBMISSION:
     sections = re.split(r"\n(?=#{1,2} )", TEXTS["taslp_submission.md"])
     w_share = f"{round(100 * b('confirmation', W, 'bw_share_of_opus_total', kind='ratio')[0]):.0f} %"
     where = [sec.split("\n", 1)[0] for sec in sections if w_share in sec]
-    if where != ["## 4.3 Bandwidth component and codec-specific residual"]:
-        fails.append(f"WHISPER SHARE '{w_share}' outside Section 4.3: {where}")
+    if where != ["## 4.2 How much of the penalty does the validated control reproduce?"]:
+        fails.append(f"WHISPER SHARE '{w_share}' outside Section 4.2: {where}")
     # limitations added in the final pass (encoder application mode; lossy-coded source audio)
     # final invariance pass (sealed A1 and C1 records): the inclusive best-linear attribution and the metric
     # audit in the main paper (Sections 3.11 and 4.12) and their details in Supplementary Sections S9 and S11
     assert T.A1_DEC["outcome"] == "ROBUST_RESIDUAL"
     a1r = {m: T.a1(m, "R8") for m in (W, V)}
     a1d = {m: T.a1(m, "delta_L") for m in (W, V)}
-    for tok in [f"The residual beyond it was {up(*a1r[W])} and {up(*a1r[V])}",
+    for tok in [f"The residual beyond the best-linear component was {up(*a1r[W])} and {up(*a1r[V])}",
                 f"LIN8 − LP was {up(*a1d[W])} for Whisper large-v3 and {up(*a1d[V])} for wav2vec2-base-960h",
-                "the exact split depends on how linear loss is defined, but the residual did not shrink",
-                "The attribution does not replace the sequential decomposition, and its linear share is not a bandwidth share.",
-                "its excess over the bandwidth component held under four error weightings"]:
+                "the exact attribution changed, but the residual did not disappear",
+                "This is a sensitivity to the attribution definition: it does not replace the sequential decomposition, "
+                "and its linear share is not a bandwidth share.",
+                "The residual remained positive and larger than the primary bandwidth component under all four tested "
+                "error weightings; the exact share, especially for Whisper, was not invariant.",
+                "residual beyond the linear component"]:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
-    need("The frozen outcome was ROBUST_RESIDUAL", "A1 outcome (S9)")
-    need("the Whisper share was unstable and the wav2vec2 share robust", "C1 classes (S11)")
+    need("The frozen outcome was ROBUST_RESIDUAL", "A1 outcome (S6)")
+    need("the Whisper share was unstable and the wav2vec2 share robust", "C1 classes (S8)")
     cl = T.C1_REC["classifications"]
     assert cl["whisper: sequential share B/T"]["classes"] == ["RATIO_UNSTABLE"]
     assert all(cl[f"{m}: {s}"]["classes"] == ["METRIC_ROBUST"] for m in (W, V) for s in ("residual R > 0", "ordering R > B"))
@@ -405,15 +438,17 @@ if SUBMISSION:
     assert T.B1_OUT == {W: "NO_CLEAR_APPLICATION_DIFFERENCE", V: "NO_CLEAR_APPLICATION_DIFFERENCE"}
     b1v = {m: T.b1(m, "V") for m in (W, V)}
     b1d = {m: T.b1(m, "D_app") for m in (W, V)}
-    for tok in [f"OPUS_VOIP8 − REF was {up(*b1v[W])} for Whisper large-v3 and {up(*b1v[V])} for wav2vec2-base-960h",
-                f"OPUS_VOIP8 − OPUS was {up(*b1d[W])} and {up(*b1d[V])}",
+    for tok in [f"the total penalty remained positive: {up(*b1v[W])} (Whisper large-v3) and {up(*b1v[V])} "
+                f"(wav2vec2-base-960h)",
+                "No clear application-mode difference was established",
+                f"VoIP minus audio was {up(*b1d[W])} and {up(*b1d[V])}",
                 "no equivalence is claimed",
                 "`application=audio`, retained to reproduce the frozen codec baseline",
-                "`OPUS_APPLICATION_VOIP` alone showed that the total penalty persisted"]:
+                "`OPUS_APPLICATION_VOIP` was tested only as a post-confirmation sensitivity of the total penalty"]:
         if " ".join(tok.split()) not in main:
             fails.append(f"PRIMARY RESULT not in the main paper: {tok}")
-    need("both recognisers returned NO_CLEAR_APPLICATION_DIFFERENCE", "B1 outcome (S10)")
-    need("For Whisper large-v3 the upper bound is exactly zero", "B1 boundary case (S10)")
+    need("both recognisers returned NO_CLEAR_APPLICATION_DIFFERENCE", "B1 outcome (S7)")
+    need("For Whisper large-v3 the upper bound is exactly zero", "B1 boundary case (S7)")
     need("MP3-compressed [@panayotov2015librispeech, Sec. 5]", "limitation: LibriVox MP3 source")
     need("generalisation to pristine-source recordings is limited", "limitation: LibriVox MP3 source")
     for f, text in TEXTS.items():
@@ -439,7 +474,7 @@ FORBIDDEN = [r"\b(the |be )?first (to|study|studies|work|paper|time|demonstrat\w
              r"statistically indistinguishable", r"\bequivalent\b", r"caused by (in-band )?coding",
              r"byte-identical to the prior study\b", r"\bproves?\b",
              r"\bwideband (coding )?(is|was) (generally |universally |always )?(better|superior)\b",
-             r"\bdecoder[-\s]+(independent|invariant)\b", r"\b(independent|invariant)\s+(of|to)\s+the\s+decoder\b",
+             r"(?<!no )\bdecoder[-\s]+(independent|invariant)\b", r"\b(independent|invariant)\s+(of|to)\s+the\s+decoder\b",
              r"\buniversally superior\b"]
 body = re.sub(r"<!--.*?-->", "", MS, flags=re.S)
 for pat in FORBIDDEN:
