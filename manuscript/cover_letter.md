@@ -6,12 +6,12 @@ sending; nothing here states author details that are not yet known. -->
 [Date]
 
 The Editor-in-Chief
-IEEE/ACM Transactions on Audio, Speech, and Language Processing
+IEEE Transactions on Audio, Speech, and Language Processing
 
 Dear Editor,
 
 We submit the manuscript "Bandwidth Removal Reproduces Only Part of the ASR Penalty of 8-kbit/s
-Opus" for consideration as a regular paper in the IEEE/ACM Transactions on Audio, Speech, and
+Opus" for consideration as a regular paper in the IEEE Transactions on Audio, Speech, and
 Language Processing.
 
 At low bitrates, speech codecs such as Opus switch to narrowband operation, so the loss of audio

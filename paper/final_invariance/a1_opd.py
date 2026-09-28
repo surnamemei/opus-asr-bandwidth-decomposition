@@ -1,6 +1,6 @@
 """
 A1: the orthogonal projection-based decomposition (OPD) target component of BSS Eval, as used by
-Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE/ACM TASLP 2024), adapted to codec output.
+Iwamoto et al. (Interspeech 2022) and Ochiai et al. (IEEE TASLP 2024), adapted to codec output.
 
     project(reference, estimate)        -> the linear component (length T), filter taps and checks
 

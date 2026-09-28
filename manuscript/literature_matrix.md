@@ -52,7 +52,7 @@ Preprints are flagged "(preprint, not peer-reviewed)".
 | buethe2024nolace | 2024 · ICASSP | 3,4 | SpeechBrain Conformer + LM | Opus at 6/9/12/20 kb/s ± LACE/NoLACE (WB SILK implied by the set-up; ASR encoder settings not stated) | S1 (WB, inferred) | M0 | N | THREATENS (generic: low-rate SILK coding alone raises WER) |
 | tseng2025probing | 2025 · Interspeech | 4,5 | Whisper-large (evaluator) | Neural codecs; codec frequency responses measured with sine sweeps | S1 | M0 | N | NARROWS (measuring a codec's linear response is not new) |
 | iwamoto2022artifacts | 2022 · Interspeech | 6 | Kaldi DNN-HMM | SE output split by projection into target/noise/artifact; components re-scaled and decoded | NA | Partial (oracle) | N | NARROWS (method) |
-| ochiai2024rethinking | 2024 · IEEE/ACM TASLP | 6 | Kaldi DNN-HMMs | As above, extended (interference/noise/artifact) | NA | Partial (oracle) | Partly | NARROWS (method) |
+| ochiai2024rethinking | 2024 · IEEE TASLP | 6 | Kaldi DNN-HMMs | As above, extended (interference/noise/artifact) | NA | Partial (oracle) | Partly | NARROWS (method) |
 | sehr2010reverberation | 2010 · IWAENC | 6 | HTK HMM | Measured RIR: early part kept, tail attenuated | NA | Yes (exact partial channel) | N | NARROWS (method) |
 | khare2020opus | 2020 · arXiv | 4 | LSTM hybrid + beamforming | Opus CBR 8/16/32/128 kbit/s per channel | S0 | M0 | N | SUPPORTS (motivation: 8 kbit/s loss attributed to narrowband, untested) |
 | jassim2020vocoders | 2020 · QoMEX | 3,4 | Google STT | Opus 6 kb/s (NB SILK) vs 9 kb/s (WB SILK); vocoders | S0 | M0 | N | SUPPORTS / CONTEXT |
@@ -343,7 +343,7 @@ Compact records give every required field. Where a field is omitted, it is NA or
 - **Relation: SUPPORTS.** A prior bandwidth-only magnitude on the same test set, for a wideband-trained hybrid system.
 
 #### Compact records (category 2; all CONTEXT; none involves Opus)
-- **gao2019mixedbw** — Gao, J., Du, J., & Chen, E. (2019). Mixed-bandwidth cross-channel speech recognition via joint optimization of DNN-based bandwidth expansion and acoustic modeling. *IEEE/ACM TASLP* 27(3):559–571. doi:10.1109/TASLP.2018.2886739.
+- **gao2019mixedbw** — Gao, J., Du, J., & Chen, E. (2019). Mixed-bandwidth cross-channel speech recognition via joint optimization of DNN-based bandwidth expansion and acoustic modeling. *IEEE TASLP* 27(3):559–571. doi:10.1109/TASLP.2018.2886739.
   - Ev FT. Mandarin DNN-HMM; 6 kHz VOX-compressed call-centre data confounded with channel. Sep S0.
 - **gao2016ijcnn** — Gao, J., Du, J., Kong, C., Lu, H., Chen, E., & Lee, C.-H. (2016). An experimental study on joint modeling of mixed-bandwidth data via deep neural networks for robust speech recognition. *IJCNN 2016*, pp. 588–594. doi:10.1109/IJCNN.2016.7727253.
   - Ev FT. Real telephony narrowband; no codec named.
@@ -630,7 +630,7 @@ For these records the recogniser, corpus, Multi and LP fields are NA (design doc
   - Speech enhancement, not codecs; one recogniser.
 
 #### ochiai2024rethinking
-**Ochiai, T., Iwamoto, K., Delcroix, M., Ikeshita, R., Sato, H., Araki, S., & Katagiri, S. (2024). Rethinking processing distortions: Disentangling the impact of speech enhancement errors on speech recognition performance. *IEEE/ACM TASLP* 32:3589–3602. doi:10.1109/TASLP.2024.3426924 (arXiv:2404.14860)**
+**Ochiai, T., Iwamoto, K., Delcroix, M., Ikeshita, R., Sato, H., Araki, S., & Katagiri, S. (2024). Rethinking processing distortions: Disentangling the impact of speech enhancement errors on speech recognition performance. *IEEE TASLP* 32:3589–3602. doi:10.1109/TASLP.2024.3426924 (arXiv:2404.14860)**
 - **Ev:** FT (arXiv) · **Categories:** 6
 - **Recognisers:** Kaldi DNN-HMM back-ends (different training data; a CSJ system).
 - **Intervention:** Target/interference/noise/artifact projection; scaling analysis; observation adding (OA).
@@ -668,7 +668,7 @@ For these records the recogniser, corpus, Multi and LP fields are NA (design doc
   - Ev FT (review).
 - **kanedera1997modulation** — Kanedera, N., Arai, T., Hermansky, H., & Pavel, M. (1997). On the importance of various modulation frequencies for speech recognition. *Eurospeech 1997*, pp. 1079–1082. doi:10.21437/Eurospeech.1997-104.
   - Ev FT.
-- **trinh2021listening** — Trinh, V. A., & Mandel, M. I. (2021). Directly comparing the listening strategies of humans and machines. *IEEE/ACM TASLP* 29:312–323. doi:10.1109/TASLP.2020.3040545.
+- **trinh2021listening** — Trinh, V. A., & Mandel, M. I. (2021). Directly comparing the listening strategies of humans and machines. *IEEE TASLP* 29:312–323. doi:10.1109/TASLP.2020.3040545.
   - Ev AB. Bubble-noise importance maps.
 - **mandel2016listening** — Mandel, M. I. (2016). Directly comparing the listening strategies of humans and machines. *Interspeech 2016*, pp. 660–664. doi:10.21437/Interspeech.2016-932.
   - Ev FT.

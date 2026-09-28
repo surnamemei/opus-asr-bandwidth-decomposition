@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Render a manuscript file (default manuscript.md; e.g. taslp_submission.md) in IEEE journal format (IEEEtran, 10 pt, two columns, US letter) to
-# build/ieee/manuscript_ieee.pdf, for a page-count and layout check of an IEEE/ACM TASLP
+# build/ieee/manuscript_ieee.pdf, for a page-count and layout check of an IEEE TASLP
 # submission (presentation only; the manuscript text is not changed).
 # Needs pandoc >= 3 (set PANDOC=/path/to/pandoc if it is not on PATH), xelatex, latexmk and the
 # IEEEtran class (TeX Live). References use the IEEE CSL style (tools/ieee.csl, CC BY-SA 3.0,
