@@ -99,32 +99,24 @@ head = SRC[:find(SRC, "\n# 4. Results", "draft-2 section") + 1]
 head = rep(head, 'title: "How much of the ASR penalty of low-rate Opus is bandwidth loss? A decomposition with a validated bandwidth control"',
            f'title: "{TITLE}"')
 head = rep(head, 'date: "Draft 2, 2026-09-27"', 'date: "TASLP submission version, 2026-09-28"')
-# IEEE SPS review is single-blind: a placeholder author block of realistic length (four authors, two
-# affiliations) stands in for the real names, affiliations, funding and corresponding author
-AUTHORS = "[Author 1 Name], [Author 2 Name], [Author 3 Name], and [Author 4 Name]"
-AUTHOR_BLOCK = (AUTHORS + r"\thanks{This work was supported by [funding agency] under Grant [grant number]. "
-                r"(Corresponding author: [Author 1 Name].)}"
-                r"\thanks{[Author 1 Name] and [Author 2 Name] are with the [Department of Electrical and Computer "
-                r"Engineering, University Name, City, State Postcode, Country] (e-mail: [author 1 e-mail address]; "
-                r"[author 2 e-mail address]).}"
-                r"\thanks{[Author 3 Name] and [Author 4 Name] are with the [School or Laboratory Name, Institution "
-                r"Name, City, State Postcode, Country] (e-mail: [author 3 e-mail address]; [author 4 e-mail address]).}")
+# final author block as supplied by the author (IEEE SPS review is single-blind): one author, who is the
+# corresponding author; no funding. The affiliation is the institution of the supplied e-mail address.
+AUTHORS = "Jinghang Mei"
+AUTHOR_BLOCK = (AUTHORS + r"\thanks{This work received no funding. (Corresponding author: Jinghang Mei.)}"
+                r"\thanks{J. Mei is with the University of Sydney, Sydney, NSW 2006, Australia "
+                r"(e-mail: jmei0175@uni.sydney.edu.au).}")
 head = rep(head, 'author: "[Authors withheld for review]"', "author: '" + AUTHOR_BLOCK + "'")
 head = rep(head, "**Index Terms**: speech recognition, speech coding, Opus, bandwidth limitation, robustness,\nWhisper, wav2vec 2.0",
            "**Index Terms**: automatic speech recognition, speech coding, Opus, bandwidth limitation, robust\nspeech recognition")
 comment = between(head, "<!--", "-->\n") + "-->\n"
 head = rep(head, comment, """<!--
-TASLP SUBMISSION VERSION (remove before submission)
+TASLP submission version (generated file; edit tools/build_submission.py and rebuild)
 
 - Built from draft 2 (manuscript/manuscript.md, commit dbf8d5c) by tools/build_submission.py: draft-2 text for
   Sections 1-3.8 and the primary results, plus text and tables of the later sealed analyses (Additions A and B,
   R1-R4, A1, B1, C1) taken from sealed records. Supporting material is in taslp_supplement.md.
 - Every table row and number of both files is checked against the frozen outputs by
   `python manuscript/tools/check_numbers.py --submission`; render with tools/render_ieee.sh taslp_submission.md.
-- Author block: placeholder of realistic length (four authors, two affiliations); replace it with the real
-  names, affiliations, funding and corresponding author. IEEE SPS review is single-blind.
-- Repository: [REPOSITORY_URL] in the Reproducibility statement.
-- Acknowledgments: AI-use disclosure, marked AUTHOR_REVIEW_REQUIRED until the authors confirm their review.
 -->
 """)
 
@@ -192,11 +184,12 @@ head = rep(head, "The effect of speech coding on ASR has been studied since low-
            "The effect of speech coding on ASR has been studied since low-rate coders entered telephone\n"
            "networks (Section 2), and standards bodies considered it large enough to evaluate distributed\n"
            "front-ends as an alternative to the voice codec [@3gpp2004tr26943].")
-# the unpublished preliminary numbers stay in draft 2 (checked there); the submission names the analysis only
+# the unpublished preliminary analysis is not part of the Introduction (its numbers stay in draft 2, checked
+# there); Methods name it where its provenance and exclusions matter (Section 3.1 onwards)
 head = rep(head, " Our preliminary\nanalysis raised the same question. It used wav2vec2-base-960h on other LibriSpeech test\n"
                  "utterances with a different scoring convention and is context only: WER on test-other rose by\n"
                  "1.33 pp at 12 kbit/s but by 6.63 pp at 8 kbit/s, where libopus switches from wideband to\nnarrowband SILK.",
-           " An unpublished\npreliminary analysis of ours raised the same question.")
+           "")
 head = rep(head, "## 3.1 Overview and pre-registration", "## 3.1 Overview and prospective specification")
 head = rep(head, "A 20-utterance calibration set (4\ndev-clean speakers) was used only to check that decoding succeeded, was deterministic and had\n"
                  "adequate throughput; it computed no condition comparison.",
@@ -215,7 +208,7 @@ head = rep(head, "One amendment, recorded before the\nconfirmation, was presenta
                  "3.9) was sealed and committed before any of their audio was encoded or decoded. Their code was\n"
                  "frozen after a check on the calibration set, and each was decoded once. Neither changes any\n"
                  "confirmatory estimate or decision.",
-           "The processing pipeline\nreproduced an earlier analysis exactly (250/250 checks), and the codec and filter controls\n"
+           "The processing pipeline\nreproduced an earlier, unpublished preliminary analysis exactly (250/250 checks), and the codec and filter controls\n"
            "described below were validated in two earlier stages that used no ASR output.")
 head = rep(head, "Exclusions were fixed at selection time from metadata\nonly:\n\n- utterances longer than 30 s (Whisper's input window);\n"
                  "- utterances with an empty normalised reference;\n- the development utterances used for the controls;\n"
@@ -632,21 +625,17 @@ bandwidth and coding.
 The primary design was specified and version-sealed before any evaluation audio was decoded; each
 later analysis was specified separately before any of its audio was encoded (Sections 3.1 and 3.9).
 Stopped analyses and failed validation criteria are retained and reported. Code, analysis records,
-data selections, per-utterance outputs and intermediate reports are archived at [REPOSITORY_URL].
-LibriSpeech, the recogniser checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
+data selections, per-utterance outputs and intermediate reports are archived at
+<https://github.com/surnamemei/opus-asr-bandwidth-decomposition>. LibriSpeech, the recogniser
+checkpoints (pinned revisions), libopus 1.4 and FFmpeg 6.1.1 are public.
 
 # Acknowledgments
 
-<!-- AUTHOR_REVIEW_REQUIRED: AI-use disclosure in the authors' wording (IEEE policy: the AI systems used, and the
-sections containing AI-generated content, are identified in the Acknowledgments). Keep the visible marker until
-the authors explicitly confirm that they have personally reviewed and, where necessary, revised all AI-assisted
-manuscript sections. -->
-
-[AUTHOR_REVIEW_REQUIRED] OpenAI ChatGPT and Codex, and Anthropic Claude through Claude Code, were used for
-research ideation, code-development assistance, adversarial review of the experimental design, and drafting
-and editorial assistance throughout the manuscript and supplementary material. AI-assisted text and code were reviewed, revised,
-and independently verified by the authors, who take full responsibility for the experimental design,
-analyses, results, interpretations, and final manuscript.
+OpenAI ChatGPT and Codex, and Anthropic Claude through Claude Code, were used for research ideation,
+code-development assistance, adversarial review of the experimental design, and drafting and editorial
+assistance throughout the manuscript and supplementary material. AI-assisted text and code were
+reviewed, revised, and independently verified by the author, who takes full responsibility for the
+experimental design, analyses, results, interpretations, and final manuscript.
 
 # References
 
